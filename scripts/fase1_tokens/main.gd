@@ -16,6 +16,10 @@ func _ready() -> void:
 	$Espinho2.atingido.connect(_on_espinho_atingido)
 	$Espinho.atingido.connect(_on_espinho_atingido)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
+
 func _on_token_coletado() -> void:
 	tokens_coletados += 1
 

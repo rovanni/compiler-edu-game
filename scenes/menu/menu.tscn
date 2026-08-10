@@ -1,0 +1,168 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8n8q6l8m4k82"]
+
+[ext_resource type="Script" uid="uid://dm2k4k6x8p8q1" path="res://scripts/menu/menu.gd" id="1_menu"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="3_bg"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_bg")
+expand_mode = 1
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.08, 0.15, 0.55)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 54
+text = "Compiler Edu Game"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Aprenda Compiladores Jogando!"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="BtnJogar" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(260, 55)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+text = "Iniciar Jogo"
+
+[node name="BtnFases" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(260, 55)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+text = "Selecionar Fase"
+
+[node name="BtnSair" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(260, 55)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+text = "Sair"
+
+[node name="PanelFases" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -210.0
+offset_right = 220.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelFases"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxFases" type="VBoxContainer" parent="PanelFases/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LblFases" type="Label" parent="PanelFases/MarginContainer/VBoxFases"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "Selecione a Fase"
+horizontal_alignment = 1
+
+[node name="BtnFase1" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "1. Reino dos Tokens"
+
+[node name="BtnFase2" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+disabled = true
+text = "2. Vale do Scanner (Em breve)"
+
+[node name="BtnFase3" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+disabled = true
+text = "3. Caverna do Parser (Em breve)"
+
+[node name="BtnFase4" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+disabled = true
+text = "4. Floresta da AST (Em breve)"
+
+[node name="BtnFase5" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+disabled = true
+text = "5. Castelo Léxico (Em breve)"
+
+[node name="BtnFase6" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+disabled = true
+text = "6. Fortaleza Sintática (Em breve)"
+
+[node name="BtnFecharFases" type="Button" parent="PanelFases/MarginContainer/VBoxFases"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Voltar"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnJogar" to="." method="_on_btn_jogar_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnFases" to="." method="_on_btn_fases_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnSair" to="." method="_on_btn_sair_pressed"]
+[connection signal="pressed" from="PanelFases/MarginContainer/VBoxFases/BtnFase1" to="." method="_on_btn_fase_1_pressed"]
+[connection signal="pressed" from="PanelFases/MarginContainer/VBoxFases/BtnFecharFases" to="." method="_on_btn_fechar_fases_pressed"]
