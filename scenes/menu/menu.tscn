@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8n8q6l8m4k82"]
+[gd_scene format=3 uid="uid://c8n8q6l8m4k82"]
 
-[ext_resource type="Script" uid="uid://dm2k4k6x8p8q1" path="res://scripts/menu/menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://cn7bwn5hyjgyg" path="res://scripts/menu/menu.gd" id="1_menu"]
 [ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="3_bg"]
+[ext_resource type="Texture2D" uid="uid://ckuirlc62xbqn" path="res://assets/menu/01.png" id="4_037ec"]
 
-[node name="Menu" type="Control"]
+[node name="Menu" type="Control" unique_id=642599159]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=187342096]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +24,7 @@ grow_vertical = 2
 texture = ExtResource("3_bg")
 expand_mode = 1
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="." unique_id=757502730]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.04, 0.08, 0.16, 0.5)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=621633888]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,57 +45,57 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxRoot" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxRoot" type="VBoxContainer" parent="MarginContainer" unique_id=1073248776]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot"]
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=438234055]
 layout_mode = 2
 
-[node name="BtnConfiguracoes" type="Button" parent="MarginContainer/VBoxRoot/TopBar"]
+[node name="BtnConfiguracoes" type="Button" parent="MarginContainer/VBoxRoot/TopBar" unique_id=162885844]
 custom_minimum_size = Vector2(160, 42)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "⚙️ CONFIGURAÇÕES"
 
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxRoot/TopBar"]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxRoot/TopBar" unique_id=1809722050]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BtnRanking" type="Button" parent="MarginContainer/VBoxRoot/TopBar"]
+[node name="BtnRanking" type="Button" parent="MarginContainer/VBoxRoot/TopBar" unique_id=858708169]
 custom_minimum_size = Vector2(140, 42)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "🏆 RANKING"
 
-[node name="ControlSpacer" type="Control" parent="MarginContainer/VBoxRoot/TopBar"]
+[node name="ControlSpacer" type="Control" parent="MarginContainer/VBoxRoot/TopBar" unique_id=80702742]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="BtnTutorial" type="Button" parent="MarginContainer/VBoxRoot/TopBar"]
+[node name="BtnTutorial" type="Button" parent="MarginContainer/VBoxRoot/TopBar" unique_id=614640308]
 custom_minimum_size = Vector2(140, 42)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "📖 TUTORIAL"
 
-[node name="HBoxMain" type="HBoxContainer" parent="MarginContainer/VBoxRoot"]
+[node name="HBoxMain" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=740995855]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 24
 
-[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain"]
+[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain" unique_id=35083535]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel"]
+[node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel" unique_id=431445392]
 layout_mode = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer"]
+[node name="Title" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760380]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
@@ -105,11 +106,11 @@ theme_override_font_sizes/font_size = 46
 text = "COMPILER ⚙️ EDU GAME"
 horizontal_alignment = 1
 
-[node name="RibbonBanner" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer"]
+[node name="RibbonBanner" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1048419870]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
-[node name="LblRibbon" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/RibbonBanner"]
+[node name="LblRibbon" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/RibbonBanner" unique_id=512251305]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -118,21 +119,21 @@ text = "APRENDA COMPILADORES JOGANDO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentSplit" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel"]
+[node name="ContentSplit" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel" unique_id=836412977]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="MissionBoard" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit"]
+[node name="MissionBoard" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit" unique_id=1356318782]
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxMission" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard"]
+[node name="VBoxMission" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard" unique_id=990078799]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="LblMissionTitle" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission"]
+[node name="LblMissionTitle" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission" unique_id=1108434871]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -140,7 +141,7 @@ theme_override_font_sizes/font_size = 20
 text = "📜 MISSÃO:"
 horizontal_alignment = 1
 
-[node name="LblMissionText" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission"]
+[node name="LblMissionText" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission" unique_id=926715488]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
@@ -149,13 +150,13 @@ text = "Atravesse as fases e derrote os erros para dominar os compiladores!"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ActionButtons" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit"]
+[node name="ActionButtons" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit" unique_id=1616829223]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="BtnJogar" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons"]
+[node name="BtnJogar" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons" unique_id=299551710]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -164,7 +165,7 @@ theme_override_font_sizes/font_size = 22
 text = "▶ JOGAR
 (INICIAR A AVENTURA)"
 
-[node name="BtnFases" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons"]
+[node name="BtnFases" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons" unique_id=1904888751]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
@@ -172,7 +173,7 @@ theme_override_font_sizes/font_size = 20
 text = "📖 FASES
 (ESCOLHER FASE)"
 
-[node name="BtnAprender" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons"]
+[node name="BtnAprender" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons" unique_id=1043258617]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
@@ -180,7 +181,7 @@ theme_override_font_sizes/font_size = 20
 text = "🎓 APRENDER
 (CONCEITOS)"
 
-[node name="BtnCreditos" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons"]
+[node name="BtnCreditos" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons" unique_id=1296459052]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
@@ -188,15 +189,15 @@ theme_override_font_sizes/font_size = 20
 text = "👥 CRÉDITOS
 (SOBRE A EQUIPE)"
 
-[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain"]
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain" unique_id=571307837]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxMundos" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel"]
+[node name="VBoxMundos" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel" unique_id=1497682785]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="LblMundosTitle" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos"]
+[node name="LblMundosTitle" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos" unique_id=543646797]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -204,25 +205,23 @@ theme_override_font_sizes/font_size = 24
 text = "🗺️ MUNDOS DA COMPILAÇÃO"
 horizontal_alignment = 1
 
-[node name="GridCards" type="GridContainer" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos"]
+[node name="GridCards" type="GridContainer" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos" unique_id=471078081]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 
-[node name="CardFase1" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase1" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1017485029]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "1
-REINO DOS TOKENS
-(Tokens)"
+icon = ExtResource("4_037ec")
 
-[node name="CardFase2" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase2" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=2001405712]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -233,7 +232,7 @@ text = "2
 VALE DO SCANNER
 (Scanner)"
 
-[node name="CardFase3" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase3" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1606507251]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -244,7 +243,7 @@ text = "3
 CAVERNA DO PARSER
 (Parser)"
 
-[node name="CardFase4" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase4" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1185042163]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -255,7 +254,7 @@ text = "4
 FLORESTA DA AST
 (Árvore Sintática)"
 
-[node name="CardFase5" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase5" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1196646109]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -266,7 +265,7 @@ text = "5
 CASTELO LÉXICO
 (Erros Léxicos)"
 
-[node name="CardFase6" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+[node name="CardFase6" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1082927564]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -277,33 +276,34 @@ text = "6
 FORTALEZA SINTÁTICA
 (Erros Sintáticos)"
 
-[node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot"]
+[node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=1367784228]
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
-[node name="LblFooter" type="Label" parent="MarginContainer/VBoxRoot/FooterBar"]
+[node name="LblFooter" type="Label" parent="MarginContainer/VBoxRoot/FooterBar" unique_id=763263795]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.8, 0.88, 1, 0.9)
 theme_override_font_sizes/font_size = 13
 text = "★ COMPILER EDU GAME • ATIVIDADE DE EXTENSÃO • CIÊNCIA DA COMPUTAÇÃO - UENP"
 
-[node name="LblVersion" type="Label" parent="MarginContainer/VBoxRoot/FooterBar"]
+[node name="LblVersion" type="Label" parent="MarginContainer/VBoxRoot/FooterBar" unique_id=592074739]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 0.8)
 theme_override_font_sizes/font_size = 13
 text = "v1.0.0"
 
-[node name="Modais" type="Control" parent="."]
+[node name="Modais" type="Control" parent="." unique_id=1359566494]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1, 0.99497485)
 mouse_filter = 2
 
-[node name="ModalConfig" type="PanelContainer" parent="Modais"]
+[node name="ModalConfig" type="PanelContainer" parent="Modais" unique_id=293710363]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -318,33 +318,33 @@ offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxConfig" type="VBoxContainer" parent="Modais/ModalConfig"]
+[node name="VBoxConfig" type="VBoxContainer" parent="Modais/ModalConfig" unique_id=282116549]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="LblConfigTitle" type="Label" parent="Modais/ModalConfig/VBoxConfig"]
+[node name="LblConfigTitle" type="Label" parent="Modais/ModalConfig/VBoxConfig" unique_id=1032715108]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "⚙️ CONFIGURAÇÕES"
 horizontal_alignment = 1
 
-[node name="ChkSom" type="CheckBox" parent="Modais/ModalConfig/VBoxConfig"]
+[node name="ChkSom" type="CheckBox" parent="Modais/ModalConfig/VBoxConfig" unique_id=1085399450]
 layout_mode = 2
 button_pressed = true
 text = "Efeitos Sonoros"
 
-[node name="ChkMusica" type="CheckBox" parent="Modais/ModalConfig/VBoxConfig"]
+[node name="ChkMusica" type="CheckBox" parent="Modais/ModalConfig/VBoxConfig" unique_id=1317981766]
 layout_mode = 2
 button_pressed = true
 text = "Música de Fundo"
 
-[node name="BtnVoltarConfig" type="Button" parent="Modais/ModalConfig/VBoxConfig"]
+[node name="BtnVoltarConfig" type="Button" parent="Modais/ModalConfig/VBoxConfig" unique_id=817966315]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Fechar"
 
-[node name="ModalRanking" type="PanelContainer" parent="Modais"]
+[node name="ModalRanking" type="PanelContainer" parent="Modais" unique_id=610828575]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -359,18 +359,18 @@ offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxRanking" type="VBoxContainer" parent="Modais/ModalRanking"]
+[node name="VBoxRanking" type="VBoxContainer" parent="Modais/ModalRanking" unique_id=36331315]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblRankingTitle" type="Label" parent="Modais/ModalRanking/VBoxRanking"]
+[node name="LblRankingTitle" type="Label" parent="Modais/ModalRanking/VBoxRanking" unique_id=612235547]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "🏆 RANKING"
 horizontal_alignment = 1
 
-[node name="LblRankingText" type="Label" parent="Modais/ModalRanking/VBoxRanking"]
+[node name="LblRankingText" type="Label" parent="Modais/ModalRanking/VBoxRanking" unique_id=1632585047]
 layout_mode = 2
 size_flags_vertical = 3
 text = "1. Player1 - 500 pts
@@ -379,12 +379,12 @@ text = "1. Player1 - 500 pts
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BtnVoltarRanking" type="Button" parent="Modais/ModalRanking/VBoxRanking"]
+[node name="BtnVoltarRanking" type="Button" parent="Modais/ModalRanking/VBoxRanking" unique_id=2047130264]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Fechar"
 
-[node name="ModalTutorial" type="PanelContainer" parent="Modais"]
+[node name="ModalTutorial" type="PanelContainer" parent="Modais" unique_id=378842989]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -399,18 +399,18 @@ offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxTutorial" type="VBoxContainer" parent="Modais/ModalTutorial"]
+[node name="VBoxTutorial" type="VBoxContainer" parent="Modais/ModalTutorial" unique_id=695592694]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblTutorialTitle" type="Label" parent="Modais/ModalTutorial/VBoxTutorial"]
+[node name="LblTutorialTitle" type="Label" parent="Modais/ModalTutorial/VBoxTutorial" unique_id=919577299]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "📖 TUTORIAL DE JOGO"
 horizontal_alignment = 1
 
-[node name="LblTutorialText" type="Label" parent="Modais/ModalTutorial/VBoxTutorial"]
+[node name="LblTutorialText" type="Label" parent="Modais/ModalTutorial/VBoxTutorial" unique_id=337487405]
 layout_mode = 2
 size_flags_vertical = 3
 text = "• Mover: Setas <- -> ou A / D
@@ -418,12 +418,12 @@ text = "• Mover: Setas <- -> ou A / D
 • Objetivo: Coletar os Tokens corretos e evitar os espinhos para avançar nas fases do compilador!"
 autowrap_mode = 2
 
-[node name="BtnVoltarTutorial" type="Button" parent="Modais/ModalTutorial/VBoxTutorial"]
+[node name="BtnVoltarTutorial" type="Button" parent="Modais/ModalTutorial/VBoxTutorial" unique_id=1323219493]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Entendi!"
 
-[node name="ModalAprender" type="PanelContainer" parent="Modais"]
+[node name="ModalAprender" type="PanelContainer" parent="Modais" unique_id=1621642787]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -438,18 +438,18 @@ offset_bottom = 210.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxAprender" type="VBoxContainer" parent="Modais/ModalAprender"]
+[node name="VBoxAprender" type="VBoxContainer" parent="Modais/ModalAprender" unique_id=241837785]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblAprenderTitle" type="Label" parent="Modais/ModalAprender/VBoxAprender"]
+[node name="LblAprenderTitle" type="Label" parent="Modais/ModalAprender/VBoxAprender" unique_id=1987507489]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "🎓 CONCEITOS DE COMPILADORES"
 horizontal_alignment = 1
 
-[node name="LblAprenderText" type="Label" parent="Modais/ModalAprender/VBoxAprender"]
+[node name="LblAprenderText" type="Label" parent="Modais/ModalAprender/VBoxAprender" unique_id=1243233719]
 layout_mode = 2
 size_flags_vertical = 3
 text = "• Tokens: Palavras-chave, identificadores, números e operadores da linguagem.
@@ -457,12 +457,12 @@ text = "• Tokens: Palavras-chave, identificadores, números e operadores da li
 • Parser: Analisador sintático que constrói a estrutura gramatical do programa (AST)."
 autowrap_mode = 2
 
-[node name="BtnVoltarAprender" type="Button" parent="Modais/ModalAprender/VBoxAprender"]
+[node name="BtnVoltarAprender" type="Button" parent="Modais/ModalAprender/VBoxAprender" unique_id=1195472201]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Fechar"
 
-[node name="ModalCreditos" type="PanelContainer" parent="Modais"]
+[node name="ModalCreditos" type="PanelContainer" parent="Modais" unique_id=1761935399]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -477,18 +477,18 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxCreditos" type="VBoxContainer" parent="Modais/ModalCreditos"]
+[node name="VBoxCreditos" type="VBoxContainer" parent="Modais/ModalCreditos" unique_id=1353045254]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblCreditosTitle" type="Label" parent="Modais/ModalCreditos/VBoxCreditos"]
+[node name="LblCreditosTitle" type="Label" parent="Modais/ModalCreditos/VBoxCreditos" unique_id=1424018414]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "👥 SOBRE A EQUIPE"
 horizontal_alignment = 1
 
-[node name="LblCreditosText" type="Label" parent="Modais/ModalCreditos/VBoxCreditos"]
+[node name="LblCreditosText" type="Label" parent="Modais/ModalCreditos/VBoxCreditos" unique_id=781109180]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Compiler Edu Game
@@ -499,7 +499,7 @@ Universidade Estadual do Norte do Paraná - UENP"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="BtnVoltarCreditos" type="Button" parent="Modais/ModalCreditos/VBoxCreditos"]
+[node name="BtnVoltarCreditos" type="Button" parent="Modais/ModalCreditos/VBoxCreditos" unique_id=928636479]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Fechar"
