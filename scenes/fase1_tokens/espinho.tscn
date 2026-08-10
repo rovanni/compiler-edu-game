@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://csh1bwsdpm4dx"]
 
-[ext_resource type="Script" uid="uid://c1m8wunxbn1xy" path="res://fase1-Tokens/scripts/espinho.gd" id="1_h08b8"]
+[ext_resource type="Script" uid="uid://c1m8wunxbn1xy" path="res://scripts/fase1_tokens/espinho.gd" id="1_h08b8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c64tm"]
 size = Vector2(128.5, 30)

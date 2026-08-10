@@ -7,7 +7,7 @@ path="res://.godot/imported/Friend Bestie.otf-8b483ec5179c513f89a9ae99b430f7f8.f
 
 [deps]
 
-source_file="res://fase1-Tokens/arts/Friend Bestie.otf"
+source_file="res://fonts/Friend Bestie.otf"
 dest_files=["res://.godot/imported/Friend Bestie.otf-8b483ec5179c513f89a9ae99b430f7f8.fontdata"]
 
 [params]

@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dywj2ibrbhnlp"]
 
-[ext_resource type="Script" uid="uid://cydtpn70wmkhw" path="res://fase1-Tokens/scripts/jogador.gd" id="1_afppw"]
-[ext_resource type="Texture2D" uid="uid://byaqjrrernlny" path="res://fase1-Tokens/arts/Player2.png" id="2_r1x4d"]
-[ext_resource type="Texture2D" uid="uid://f4mn0cyk1t86" path="res://fase1-Tokens/arts/Player1.png" id="2_xuwbs"]
-[ext_resource type="Texture2D" uid="uid://cbusj6mgq2vxg" path="res://fase1-Tokens/arts/Player3.png" id="4_32bi3"]
+[ext_resource type="Script" uid="uid://cydtpn70wmkhw" path="res://scripts/fase1_tokens/jogador.gd" id="1_afppw"]
+[ext_resource type="Texture2D" uid="uid://byaqjrrernlny" path="res://assets/fase1_tokens/Player2.png" id="2_r1x4d"]
+[ext_resource type="Texture2D" uid="uid://f4mn0cyk1t86" path="res://assets/fase1_tokens/Player1.png" id="2_xuwbs"]
+[ext_resource type="Texture2D" uid="uid://cbusj6mgq2vxg" path="res://assets/fase1_tokens/Player3.png" id="4_32bi3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_r1x4d"]
 animations = [{

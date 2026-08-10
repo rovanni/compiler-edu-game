@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bv1ga6htghoi"]
 
-[ext_resource type="Script" uid="uid://3f0g1vtg5vq7" path="res://fase1-Tokens/scripts/tokens.gd" id="1_wdsol"]
-[ext_resource type="Texture2D" uid="uid://dcgjl4mvegm5r" path="res://fase1-Tokens/arts/Tokens.png" id="2_wo26k"]
-[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fase1-Tokens/arts/Friend Bestie.otf" id="3_wo26k"]
+[ext_resource type="Script" uid="uid://3f0g1vtg5vq7" path="res://scripts/fase1_tokens/tokens.gd" id="1_wdsol"]
+[ext_resource type="Texture2D" uid="uid://dcgjl4mvegm5r" path="res://assets/fase1_tokens/Tokens.png" id="2_wo26k"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="3_wo26k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdufg"]
 size = Vector2(27, 26.5)

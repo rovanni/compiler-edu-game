@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://fase1-Tokens/arts/Background.png"
+source_file="res://assets/fase1_tokens/Background.png"
 dest_files=["res://.godot/imported/Background.png-2168ba0b2c2d80d1a7dbe19fe7c6a4e8.ctex"]
 
 [params]

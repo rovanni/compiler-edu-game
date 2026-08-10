@@ -1,11 +1,11 @@
 [gd_scene load_steps=20 format=3 uid="uid://b6541lxc5xemv"]
 
-[ext_resource type="Script" uid="uid://bsi3nkafeycju" path="res://fase1-Tokens/scripts/main.gd" id="1_aok25"]
-[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://fase1-Tokens/scenes/jogador.tscn" id="1_fw3yd"]
-[ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://fase1-Tokens/arts/Background.png" id="2_31vik"]
-[ext_resource type="PackedScene" uid="uid://bv1ga6htghoi" path="res://fase1-Tokens/scenes/token.tscn" id="3_7jglo"]
-[ext_resource type="Texture2D" uid="uid://ensm70pc12mq" path="res://fase1-Tokens/arts/Background2.png" id="3_c1hp4"]
-[ext_resource type="PackedScene" uid="uid://csh1bwsdpm4dx" path="res://fase1-Tokens/scenes/espinho.tscn" id="4_7jglo"]
+[ext_resource type="Script" uid="uid://bsi3nkafeycju" path="res://scripts/fase1_tokens/main.gd" id="1_aok25"]
+[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://scenes/fase1_tokens/jogador.tscn" id="1_fw3yd"]
+[ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="2_31vik"]
+[ext_resource type="PackedScene" uid="uid://bv1ga6htghoi" path="res://scenes/fase1_tokens/token.tscn" id="3_7jglo"]
+[ext_resource type="Texture2D" uid="uid://ensm70pc12mq" path="res://assets/fase1_tokens/Background2.png" id="3_c1hp4"]
+[ext_resource type="PackedScene" uid="uid://csh1bwsdpm4dx" path="res://scenes/fase1_tokens/espinho.tscn" id="4_7jglo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2iikd"]
 size = Vector2(1152, 70)
