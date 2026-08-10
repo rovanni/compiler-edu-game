@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv1ga6htghoi"]
+
+[ext_resource type="Script" uid="uid://3f0g1vtg5vq7" path="res://fase1-Tokens/scripts/tokens.gd" id="1_wdsol"]
+[ext_resource type="Texture2D" uid="uid://dcgjl4mvegm5r" path="res://fase1-Tokens/arts/Tokens.png" id="2_wo26k"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fase1-Tokens/arts/Friend Bestie.otf" id="3_wo26k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdufg"]
+size = Vector2(27, 26.5)
+
+[node name="Token" type="Area2D"]
+position = Vector2(236, 138)
+scale = Vector2(2, 2)
+script = ExtResource("1_wdsol")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.5000019, 0.49999762)
+scale = Vector2(0.06367188, 0.063330084)
+texture = ExtResource("2_wo26k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.75)
+shape = SubResource("RectangleShape2D_wdufg")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -12.0
+offset_top = -9.5
+offset_right = 108.0
+offset_bottom = 73.5
+scale = Vector2(0.2, 0.2)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_wo26k")
+theme_override_font_sizes/font_size = 60
+text = "INT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

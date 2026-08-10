@@ -1,0 +1,182 @@
+[gd_scene load_steps=20 format=3 uid="uid://b6541lxc5xemv"]
+
+[ext_resource type="Script" uid="uid://bsi3nkafeycju" path="res://fase1-Tokens/scripts/main.gd" id="1_aok25"]
+[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://fase1-Tokens/scenes/jogador.tscn" id="1_fw3yd"]
+[ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://fase1-Tokens/arts/Background.png" id="2_31vik"]
+[ext_resource type="PackedScene" uid="uid://bv1ga6htghoi" path="res://fase1-Tokens/scenes/token.tscn" id="3_7jglo"]
+[ext_resource type="Texture2D" uid="uid://ensm70pc12mq" path="res://fase1-Tokens/arts/Background2.png" id="3_c1hp4"]
+[ext_resource type="PackedScene" uid="uid://csh1bwsdpm4dx" path="res://fase1-Tokens/scenes/espinho.tscn" id="4_7jglo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2iikd"]
+size = Vector2(1152, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aok25"]
+size = Vector2(74, 788)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c1hp4"]
+size = Vector2(155, 64.5625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jmotk"]
+size = Vector2(265, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rqy2x"]
+size = Vector2(887, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oj5sr"]
+size = Vector2(296, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opyur"]
+size = Vector2(155, 143)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0rat"]
+size = Vector2(172.5, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_laf11"]
+size = Vector2(152.25, 32.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fhtre"]
+size = Vector2(153.75, 26.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_khjkm"]
+size = Vector2(186, 23.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_205e0"]
+size = Vector2(189, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gkhts"]
+size = Vector2(107, 107)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_aok25")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(576, 313.00003)
+scale = Vector2(0.6889953, 0.66524976)
+texture = ExtResource("2_31vik")
+
+[node name="Terreno" type="Sprite2D" parent="."]
+position = Vector2(575, 333.49997)
+scale = Vector2(0.77734375, 0.94433594)
+texture = ExtResource("3_c1hp4")
+
+[node name="Cenário" type="Node2D" parent="."]
+
+[node name="Chão" type="StaticBody2D" parent="Cenário"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Chão"]
+position = Vector2(576, 683)
+shape = SubResource("RectangleShape2D_2iikd")
+
+[node name="Teto" type="StaticBody2D" parent="Cenário"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Teto"]
+position = Vector2(576, -35)
+shape = SubResource("RectangleShape2D_2iikd")
+
+[node name="Parede1" type="StaticBody2D" parent="Cenário"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Parede1"]
+position = Vector2(-37, 324)
+shape = SubResource("RectangleShape2D_aok25")
+
+[node name="Parede2" type="StaticBody2D" parent="Cenário"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Parede2"]
+position = Vector2(1189, 324)
+shape = SubResource("RectangleShape2D_aok25")
+
+[node name="Jogador" parent="." instance=ExtResource("1_fw3yd")]
+position = Vector2(38, 244)
+scale = Vector2(0.8, 0.8)
+
+[node name="Tokens" type="Node2D" parent="."]
+
+[node name="Token" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(362, 189)
+
+[node name="Token2" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(584, 68)
+texto = "X"
+
+[node name="Token3" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(935, 194)
+texto = "="
+
+[node name="Token4" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(150, 537)
+texto = "12"
+
+[node name="Token5" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(332, 422)
+texto = "+"
+
+[node name="Token6" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(961, 496)
+texto = "8"
+
+[node name="Token7" parent="Tokens" instance=ExtResource("3_7jglo")]
+position = Vector2(625, 249)
+texto = ";"
+
+[node name="Espinho" parent="." instance=ExtResource("4_7jglo")]
+position = Vector2(348, 612)
+
+[node name="Espinho2" parent="." instance=ExtResource("4_7jglo")]
+position = Vector2(928, 617)
+
+[node name="Colisões" type="StaticBody2D" parent="."]
+
+[node name="Colisão1" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(77.5, 438.71875)
+shape = SubResource("RectangleShape2D_c1hp4")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão2" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(132.5, 613)
+shape = SubResource("RectangleShape2D_jmotk")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão3" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(708.5, 640.5)
+shape = SubResource("RectangleShape2D_rqy2x")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão4" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(550, 600)
+shape = SubResource("RectangleShape2D_oj5sr")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão5" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(775.5, 561.5)
+shape = SubResource("RectangleShape2D_opyur")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão6" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(1065.75, 612)
+shape = SubResource("RectangleShape2D_l0rat")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão7" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(1076.125, 304.75)
+shape = SubResource("RectangleShape2D_laf11")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão8" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(798, 343.75)
+shape = SubResource("RectangleShape2D_fhtre")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão9" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(584, 137)
+shape = SubResource("RectangleShape2D_khjkm")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão10" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(303.5, 263.5)
+shape = SubResource("RectangleShape2D_205e0")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
+
+[node name="Colisão11" type="CollisionShape2D" parent="Colisões"]
+position = Vector2(53.5, 524.5)
+shape = SubResource("RectangleShape2D_gkhts")
+debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)

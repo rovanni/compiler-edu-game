@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://csh1bwsdpm4dx"]
+
+[ext_resource type="Script" uid="uid://c1m8wunxbn1xy" path="res://fase1-Tokens/scripts/espinho.gd" id="1_h08b8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c64tm"]
+size = Vector2(128.5, 30)
+
+[node name="Espinho" type="Area2D"]
+script = ExtResource("1_h08b8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-13.25, 0)
+shape = SubResource("RectangleShape2D_c64tm")
+debug_color = Color(0.8279885, 0.39601815, 3.85046e-07, 0.41960785)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

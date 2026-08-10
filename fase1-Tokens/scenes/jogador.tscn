@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://dywj2ibrbhnlp"]
+
+[ext_resource type="Script" uid="uid://cydtpn70wmkhw" path="res://fase1-Tokens/scripts/jogador.gd" id="1_afppw"]
+[ext_resource type="Texture2D" uid="uid://byaqjrrernlny" path="res://fase1-Tokens/arts/Player2.png" id="2_r1x4d"]
+[ext_resource type="Texture2D" uid="uid://f4mn0cyk1t86" path="res://fase1-Tokens/arts/Player1.png" id="2_xuwbs"]
+[ext_resource type="Texture2D" uid="uid://cbusj6mgq2vxg" path="res://fase1-Tokens/arts/Player3.png" id="4_32bi3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r1x4d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r1x4d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_xuwbs")
+}],
+"loop": true,
+"name": &"andar",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xuwbs")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_32bi3")
+}],
+"loop": false,
+"name": &"pular",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32bi3"]
+size = Vector2(17.5, 40)
+
+[node name="Jogador" type="CharacterBody2D"]
+script = ExtResource("1_afppw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.9999999, 0)
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_r1x4d")
+animation = &"andar"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, -7)
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_32bi3")
