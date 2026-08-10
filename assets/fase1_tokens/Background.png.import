@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://biiokgv8l4ems"
-path="res://.godot/imported/Background.png-2168ba0b2c2d80d1a7dbe19fe7c6a4e8.ctex"
+path="res://.godot/imported/Background.png-72bcad886f1ab4e3794180ad30c54e7b.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/fase1_tokens/Background.png"
-dest_files=["res://.godot/imported/Background.png-2168ba0b2c2d80d1a7dbe19fe7c6a4e8.ctex"]
+dest_files=["res://.godot/imported/Background.png-72bcad886f1ab4e3794180ad30c54e7b.ctex"]
 
 [params]
 
