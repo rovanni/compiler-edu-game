@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://fase4_no_ast"]
+
+[ext_resource type="Script" uid="uid://i4o167t8okyy" path="res://scripts/fase4_ast/no_ast.gd" id="1_noast"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_noast"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_noast"]
+size = Vector2(80, 80)
+
+[node name="NoAST" type="Area2D"]
+script = ExtResource("1_noast")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_noast")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="LabelTipo" type="Label" parent="."]
+offset_left = -50.0
+offset_top = -62.0
+offset_right = 50.0
+offset_bottom = -44.0
+theme_override_colors/font_color = Color(1, 0.87, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_noast")
+theme_override_font_sizes/font_size = 13
+text = "RAIZ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelToken" type="Label" parent="."]
+offset_left = -38.0
+offset_top = -22.0
+offset_right = 38.0
+offset_bottom = 22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_noast")
+theme_override_font_sizes/font_size = 28
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerPisca" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="TimerPisca" to="." method="_on_timer_pisca_timeout"]

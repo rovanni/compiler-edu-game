@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://fase4_hud"]
+
+[ext_resource type="Script" uid="uid://hjuak0zo5hhg" path="res://scripts/fase4_ast/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="PainelHUD" type="PanelContainer" parent="."]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -90.0
+offset_bottom = 0.0
+grow_vertical = 0
+
+[node name="HBoxHUD" type="HBoxContainer" parent="PainelHUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 20
+
+[node name="TokenInfo" type="VBoxContainer" parent="PainelHUD/HBoxHUD"]
+custom_minimum_size = Vector2(220, 0)
+alignment = 1
+
+[node name="LabelTokenTitulo" type="Label" parent="PainelHUD/HBoxHUD/TokenInfo"]
+theme_override_colors/font_color = Color(1, 0.87, 0.4, 1)
+theme_override_font_sizes/font_size = 13
+text = "TOKEN NA MÃO"
+horizontal_alignment = 1
+
+[node name="LabelTokenValor" type="Label" parent="PainelHUD/HBoxHUD/TokenInfo"]
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "+"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="PainelHUD/HBoxHUD"]
+custom_minimum_size = Vector2(2, 0)
+
+[node name="Instrucao" type="VBoxContainer" parent="PainelHUD/HBoxHUD"]
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelInstrucao" type="Label" parent="PainelHUD/HBoxHUD/Instrucao"]
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+text = "Selecione um nó e pressione  E  para alocar"
+horizontal_alignment = 1
+autowrap_mode = 3
