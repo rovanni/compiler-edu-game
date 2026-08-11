@@ -15,6 +15,7 @@ var musica_ativa: bool = true
 func _ready() -> void:
 	esconder_todos_modais()
 	aplicar_estilos_prototipo()
+	atualizar_estado_da_sessao()
 
 func esconder_todos_modais() -> void:
 	if container_modais: container_modais.hide()
@@ -175,7 +176,13 @@ func adicionar_contorno_titulos() -> void:
 # --- Ações Principais ---
 
 func _on_btn_jogar_pressed() -> void:
+	GameManager.start_new_session(1)
 	iniciar_fase("res://scenes/fase1_tokens/Main.tscn")
+
+func _on_btn_fases_pressed() -> void:
+	var grid = $MarginContainer/VBoxRoot/HBoxMain/RightPanel
+	if grid:
+		grid.grab_focus()
 
 func _on_btn_aprender_pressed() -> void:
 	abrir_modal(modal_aprender)
@@ -197,10 +204,12 @@ func _on_btn_tutorial_pressed() -> void:
 # --- Ações dos Cards de Mundos ---
 
 func _on_card_fase_1_pressed() -> void:
+	preparar_fase(1)
 	iniciar_fase("res://scenes/fase1_tokens/Main.tscn")
 
 func _on_card_fase_2_pressed() -> void:
-	exibir_mensagem_em_breve("Vale do Scanner")
+	preparar_fase(2)
+	iniciar_fase("res://scenes/fase2_scanner/main.tscn")
 
 func _on_card_fase_3_pressed() -> void:
 	exibir_mensagem_em_breve("Caverna do Parser")
@@ -218,6 +227,22 @@ func _on_card_fase_6_pressed() -> void:
 
 func iniciar_fase(caminho_cena: String) -> void:
 	get_tree().change_scene_to_file(caminho_cena)
+
+func preparar_fase(fase_id: int) -> void:
+	if GameManager.session_active:
+		GameManager.begin_phase(fase_id)
+	else:
+		GameManager.start_new_session(fase_id)
+
+func atualizar_estado_da_sessao() -> void:
+	var status: Label = $MarginContainer/VBoxRoot/FooterBar/LblVersion
+	if not GameManager.session_active:
+		status.text = "v1.0.0"
+		return
+	status.text = "PONTOS %d • VIDAS %d" % [GameManager.score, GameManager.lives]
+	var card_fase_2: Button = $MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase2
+	if GameManager.is_phase_completed(2):
+		card_fase_2.text = "✓ 2\nVALE DO SCANNER\n(CONCLUÍDA)"
 
 func exibir_mensagem_em_breve(nome_fase: String) -> void:
 	print("A fase '", nome_fase, "' está em desenvolvimento!")

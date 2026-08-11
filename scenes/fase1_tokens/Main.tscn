@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://b6541lxc5xemv"]
 
 [ext_resource type="Script" uid="uid://bsi3nkafeycju" path="res://scripts/fase1_tokens/main.gd" id="1_aok25"]
-[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://scenes/fase1_tokens/jogador.tscn" id="1_fw3yd"]
+[ext_resource type="PackedScene" path="res://scenes/common/player.tscn" id="1_fw3yd"]
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="2_31vik"]
 [ext_resource type="PackedScene" uid="uid://bv1ga6htghoi" path="res://scenes/fase1_tokens/token.tscn" id="3_7jglo"]
 [ext_resource type="Texture2D" uid="uid://ensm70pc12mq" path="res://assets/fase1_tokens/Background2.png" id="3_c1hp4"]
@@ -48,6 +48,10 @@ size = Vector2(107, 107)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_aok25")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+zoom = Vector2(1.111111, 1.111111)
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(576, 313.00003)
