@@ -83,7 +83,7 @@ func aplicar_estilos_prototipo() -> void:
 
 	var mission = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard")
 	if mission:
-		estilar_painel(mission, Color("#4A2E16"), cor_borda_preta, 10, 2)
+		estilar_painel(mission, Color("#4A2E16"), cor_borda_preta, 10, 2, 10)
 
 	var right_panel = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel")
 	if right_panel:
@@ -139,21 +139,25 @@ func estilar_botao(btn: Button, bg: Color, hover_bg: Color, border: Color, corne
 func estilar_card(btn: Button, bg: Color, border: Color) -> void:
 	estilar_botao(btn, bg, bg.lightened(0.15), border, 10, 3)
 
-func estilar_painel(panel: PanelContainer, bg: Color, border: Color, corner_radius: int = 10, border_width: int = 2) -> void:
+func estilar_painel(panel: PanelContainer, bg: Color, border: Color, corner_radius: int = 10, border_width: int = 2, margin: int = 14) -> void:
 	var style = StyleBoxFlat.new()
 	style.bg_color = bg
 	style.border_color = border
 	style.set_border_width_all(border_width)
 	style.set_corner_radius_all(corner_radius)
-	style.content_margin_left = 16
-	style.content_margin_top = 16
-	style.content_margin_right = 16
-	style.content_margin_bottom = 16
+	style.content_margin_left = margin
+	style.content_margin_top = margin
+	style.content_margin_right = margin
+	style.content_margin_bottom = margin
 	panel.add_theme_stylebox_override("panel", style)
 
 func adicionar_contorno_titulos() -> void:
 	var labels = [
-		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/Title"),
+		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1/LblCompiler"),
+		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1/LblGear"),
+		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2/LblCode"),
+		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2/LblEdu"),
+		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2/LblGame"),
 		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/RibbonBanner/LblRibbon"),
 		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission/LblMissionTitle"),
 		get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/LblMundosTitle"),
@@ -166,7 +170,7 @@ func adicionar_contorno_titulos() -> void:
 	for l in labels:
 		if l:
 			l.add_theme_color_override("font_outline_color", Color.BLACK)
-			l.add_theme_constant_override("outline_size", 6)
+			l.add_theme_constant_override("outline_size", 8)
 
 # --- Ações Principais ---
 

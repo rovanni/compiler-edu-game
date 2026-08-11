@@ -95,27 +95,77 @@ theme_override_constants/separation = 10
 [node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel" unique_id=431445392]
 layout_mode = 2
 alignment = 1
+theme_override_constants/separation = 6
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760380]
+[node name="HBoxTitleLine1" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760380]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+
+[node name="LblCompiler" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1" unique_id=1092760381]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 38
-text = "COMPILER ⚙️ EDU GAME"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 46
+text = "COMPILER"
+
+[node name="LblGear" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1" unique_id=1092760382]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "⚙️"
+
+[node name="HBoxTitleLine2" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760383]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="LblCode" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2" unique_id=1092760384]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.66, 0.33, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 46
+text = "{</>}"
+
+[node name="LblEdu" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2" unique_id=1092760385]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.74, 0.02, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 46
+text = "EDU"
+
+[node name="LblGame" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2" unique_id=1092760386]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26, 0.52, 0.96, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 46
+text = "GAME"
+
+[node name="TitleSpacer" type="Control" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760387]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
 
 [node name="RibbonBanner" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1048419870]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
 
 [node name="LblRibbon" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/RibbonBanner" unique_id=512251305]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 17
 text = "APRENDA COMPILADORES JOGANDO!"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -128,26 +178,26 @@ theme_override_constants/separation = 12
 [node name="MissionBoard" type="PanelContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit" unique_id=1356318782]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.85
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.6
 
 [node name="VBoxMission" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard" unique_id=990078799]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
+alignment = 1
 
 [node name="LblMissionTitle" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission" unique_id=1108434871]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 17
 text = "📜 MISSÃO:"
 horizontal_alignment = 1
 
 [node name="LblMissionText" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/MissionBoard/VBoxMission" unique_id=926715488]
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "Atravesse as fases e derrote os erros para dominar os compiladores!"
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -155,7 +205,7 @@ autowrap_mode = 2
 [node name="ActionButtons" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit" unique_id=1616829223]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.15
+size_flags_stretch_ratio = 1.4
 theme_override_constants/separation = 10
 alignment = 1
 
@@ -214,9 +264,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "1\nTOKENS"
-autowrap_mode = 2
+text = "1
+TOKENS"
 icon = ExtResource("4_037ec")
+autowrap_mode = 2
 expand_icon = true
 
 [node name="CardFase2" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=2001405712]
@@ -225,7 +276,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "2\nVALE DO SCANNER\n(Scanner)"
+text = "2
+VALE DO SCANNER
+(Scanner)"
 autowrap_mode = 2
 
 [node name="CardFase3" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1606507251]
@@ -234,7 +287,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "3\nCAVERNA PARSER\n(Parser)"
+text = "3
+CAVERNA PARSER
+(Parser)"
 autowrap_mode = 2
 
 [node name="CardFase4" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1185042163]
@@ -243,7 +298,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "4\nFLORESTA AST\n(Árvore Sintática)"
+text = "4
+FLORESTA AST
+(Árvore Sintática)"
 autowrap_mode = 2
 
 [node name="CardFase5" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1196646109]
@@ -252,7 +309,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "5\nCASTELO LÉXICO\n(Erros Léxicos)"
+text = "5
+CASTELO LÉXICO
+(Erros Léxicos)"
 autowrap_mode = 2
 
 [node name="CardFase6" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1082927564]
@@ -261,7 +320,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "6\nFORTALEZA SINTÁTICA\n(Erros Sintáticos)"
+text = "6
+FORTALEZA SINTÁTICA
+(Erros Sintáticos)"
 autowrap_mode = 2
 
 [node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=1367784228]
@@ -504,7 +565,6 @@ text = "Fechar"
 [connection signal="pressed" from="MarginContainer/VBoxRoot/TopBar/BtnRanking" to="." method="_on_btn_ranking_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/TopBar/BtnTutorial" to="." method="_on_btn_tutorial_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons/BtnJogar" to="." method="_on_btn_jogar_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons/BtnFases" to="." method="_on_btn_fases_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons/BtnAprender" to="." method="_on_btn_aprender_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/ContentSplit/ActionButtons/BtnCreditos" to="." method="_on_btn_creditos_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase1" to="." method="_on_card_fase_1_pressed"]
