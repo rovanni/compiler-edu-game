@@ -74,13 +74,32 @@ Tabela detalhada contendo as entradas, ações e resultados esperados.
 ---
 
 ### 5️⃣ Matriz RACI e Registro de Contribuições
-Garante a transparência e avaliação individual do trabalho em equipe.
 
-- **RACI (Responsible, Accountable, Consulted, Informed):**
-  - **R (Responsável):** Quem faz a tarefa.
-  - **A (Aprovador):** Líder/Quem valida a entrega.
-  - **C (Consultado):** Quem dá apoio (ex: responsável pedagógico).
-  - **I (Informado):** Integrantes informados da alteração.
+A **Matriz RACI** é uma ferramenta de gestão usada na Engenharia de Software para atribuir responsabilidades claras a cada membro da equipe durante o ciclo de vida do projeto. Ela garante transparência, evita retrabalho e permite ao professor/orientador avaliar a participação individual de cada estudante.
+
+#### O Significado do Acrônimo RACI:
+
+| Letra | Papel em Inglês | Função no Projeto | Explicação Detalhada | Exemplo no Compiler Edu Game |
+|:---:|---|---|---|---|
+| **R** | **Responsible** | **Responsável (Mão na Massa)** | Quem efetivamente **executa a tarefa** ou escreve o código/artefato. | O aluno que programa a movimentação do personagem ou constrói a cena da fase no Godot. |
+| **A** | **Accountable** | **Aprovador / Autoridade** | Quem **responde pelo resultado final** e tem autoridade para aprovar a entrega. **Regra de Ouro:** Deve existir apenas **1 Aprovador** por tarefa para evitar conflito de decisões. | O Líder do Grupo ou o responsável pelo Code Review que valida o Pull Request na branch `develop`. |
+| **C** | **Consulted** | **Consultado** | Especialista ou colega que deve ser **consultado antes ou durante** a tarefa para dar orientações técnicas, pedagógicas ou de design. | O aluno responsável pelo conteúdo pedagógico, consultado pelo programador para confirmar se os tokens estão corretos. |
+| **I** | **Informed** | **Informado** | Pessoas que **precisam ser avisadas** quando a tarefa for concluída ou alterada, mas não precisam opinar diretamente. | Os membros de outros grupos que precisam ser notificados quando a interface comum for atualizada. |
+
+#### Regras Práticas para Montar a Matriz RACI no Grupo:
+1. **Pelo menos 1 Responsável (R):** Toda atividade precisa ter ao menos um executor.
+2. **Exatamente 1 Aprovador (A):** Nenhuma tarefa pode ter dois aprovadores finais. Alguém precisa ser a palavra final.
+3. **Não exagere nos Consultados (C):** Consultar pessoas demais pode atrasar o desenvolvimento.
+4. **Uma pessoa pode acumular papéis:** Em grupos menores, um aluno pode ser **R/A** (Responsável e Aprovador) de uma tarefa específica.
+
+#### Exemplo de Aplicação Prática:
+
+| Atividade do Projeto | Aluno A (Programador) | Aluno B (Líder) | Aluno C (Pedagógico) | Aluno D (Designer) |
+|---|:---:|:---:|:---:|:---:|
+| Criar Layout da Cena no Godot | C | A | I | **R** |
+| Programar Coleta e Validação de Tokens | **R** | A | C | I |
+| Escrever Explicações Didáticas de Erros | I | A | **R** | C |
+| Executar Testes Funcionais e de Usabilidade | C | A | C | **R** |
 
 ---
 

@@ -88,14 +88,23 @@ FaseX_Nome (Node2D)
 
 ## 6. 👥 Matriz RACI de Responsabilidades
 
-| Atividade / Entregável | Aluno 1 (Líder) | Aluno 2 (UI) | Aluno 3 (Pedagógico) | Aluno 4 (QA) |
-|---|:---:|:---:|:---:|:---:|
-| Modelagem da Cena no Godot | C | **R** / **A** | I | I |
-| Programação da Mecânica | **R** / **A** | C | I | C |
-| Elaboração dos Textos Didáticos | I | I | **R** / **A** | C |
-| Execução dos Casos de Teste | I | C | C | **R** / **A** |
+A Matriz RACI define os papéis de cada integrante para os entregáveis da fase. Para maiores detalhes teóricos, consulte [docs/engenharia_software.md](../engenharia_software.md).
 
-> *Legenda:* **R** = Responsável por executar | **A** = Aprovador final | **C** = Consultado | **I** = Informado
+### Definições dos Papéis:
+- **R (Responsável / Responsible):** Quem executa a tarefa ("mão na massa").
+- **A (Aprovador / Accountable):** Quem valida e responde pelo resultado final (apenas 1 por atividade).
+- **C (Consultado / Consulted):** Quem dá apoio técnico, pedagógico ou artístico antes/durante a tarefa.
+- **I (Informado / Informed):** Quem é notificado sobre a conclusão da tarefa.
+
+### Tabela de Responsabilidades do Grupo:
+
+| Atividade / Entregável | [Aluno 1 - Nome/Função] | [Aluno 2 - Nome/Função] | [Aluno 3 - Nome/Função] | [Aluno 4 - Nome/Função] |
+|---|:---:|:---:|:---:|:---:|
+| Modelagem da Cena no Godot | C | **R** | **A** | I |
+| Programação da Mecânica GDScript | **R** | C | **A** | C |
+| Elaboração dos Textos Didáticos | I | I | **R** / **A** | C |
+| Execução do Plano de Testes | C | C | I | **R** / **A** |
+| Coleta de Evidências AEX | **R** | I | C | **A** |
 
 ---
 
