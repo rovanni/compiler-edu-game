@@ -488,21 +488,39 @@ Main Menu
 
 ---
 
-# 🎨 Identidade Visual
+# 🎨 Identidade Visual e Layout do Menu (Baseado no Protótipo)
 
-Todas as fases devem manter uma identidade visual comum.
+O jogo segue rigorosamente o layout e a paleta do **protótipo oficial** do **Compiler Edu Game**:
 
-Recomendações:
+### 🖼️ Estrutura e Cores do Menu Principal
 
-- mesma fonte;
-- padrão semelhante de botões;
-- HUD consistente;
-- sistema de cores coerente;
-- mesmo personagem principal;
-- estilo visual 2D;
-- feedback visual para acertos e erros.
+#### 1. Título do Jogo (`COMPILER {</>} EDU GAME`)
+- **`COMPILER`**: Fonte pixel art estilizada em Branco com borda preta.
+- **`{</>}`**: Ícone de código em **Verde Vibrant** (`#34A853`).
+- **`EDU`**: Texto em **Amarelo Google** (`#FBBC05`).
+- **`GAME`**: Texto em **Azul Google** (`#4285F4`).
+- **Faixa Roxa (Ribbon):** `APRENDA COMPILADORES JOGANDO!`
 
-Cada grupo poderá criar o cenário e os elementos próprios de sua fase.
+#### 2. Coluna de Botões Principais (Coloridos com Subtítulos)
+- 🟢 **JOGAR** (`#34A853` - Verde): *INICIAR A AVENTURA*
+- 🔵 **FASES** (`#4285F4` - Azul): *ESCOLHER FASE*
+- 🟣 **APRENDER** (`#8A2BE2` - Roxo): *CONCEITOS*
+- 🟠 **CRÉDITOS** (`#E67E22` - Laranja): *SOBRE A EQUIPE*
+
+#### 3. Painel de Seleção de Mundos (6 Cards Didáticos)
+Cada card possui um badge numérico e ilustra a temática da fase:
+1. 🟢 **1 - REINO DOS TOKENS:** Plataforma 2D e coleta seletiva de símbolos.
+2. 🔵 **2 - VALE DO SCANNER:** Dispositivo laser e sequenciamento de tokens.
+3. 🟡 **3 - CAVERNA DO PARSER:** Enigmas com peças de quebra-cabeça sintático.
+4. 🟣 **4 - FLORESTA DA ÁRVORE SINTÁTICA:** Árvore brilhante e montagem da AST.
+5. 🔴 **5 - CASTELO DOS ERROS LÉXICOS:** Castelo com ícones de alerta e combate a caracteres inválidos.
+6. 🍷 **6 - FORTALEZA DOS ERROS SINTÁTICOS:** Castelo sombrio do Boss *Compiler Bug*.
+
+#### 4. Elementos Adicionais da Interface
+- **Placa de Missão (Esquerda):** `MISSÃO: ATRAVESSE AS FASES E DERROTE OS ERROS PARA DOMINAR OS COMPILADORES!`.
+- **Mascote:** Personagem em Pixel Art com moletom azul `{</>}`.
+- **Top Bar (Superior):** Botões `⚙️ CONFIGURAÇÕES`, `🏆 RANKING` e `📖 TUTORIAL`.
+- **Rodapé (Footer):** `⭐ COMPILER EDU GAME • ATIVIDADE DE EXTENSÃO • CIÊNCIA DA COMPUTAÇÃO - UENP | v1.0.0`
 
 ---
 

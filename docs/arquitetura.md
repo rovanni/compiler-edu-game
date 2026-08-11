@@ -68,7 +68,24 @@ Para evitar conflitos durante a integração de código:
 
 ---
 
-## 🎨 4. Diretrizes de Interface e HUD
+## 🎨 4. Diretrizes de Interface, HUD e Protótipo Visual
 
-- Todas as fases devem instanciar a cena comum do HUD (`res://scenes/common/hud.tscn`) em vez de recriar barras de vida e pontuação próprias.
-- A resolução base do projeto deve seguir **1920x1080** ou **1280x720** com modo de estiramento `canvas_items` habilitado no `project.godot`.
+- **Instanciação Comum:** Todas as fases devem instanciar a cena comum do HUD (`res://scenes/common/hud.tscn`) em vez de recriar barras de vida e pontuação próprias.
+- **Resolução Base:** A resolução base do projeto deve seguir **1920x1080** ou **1280x720** com modo de estiramento `canvas_items` habilitado no `project.godot`.
+- **Esquema Visual do Menu Principal (Conforme Protótipo Oficial):**
+  - **Título estilizado:** `COMPILER` (Branco com contorno) + `{</>}` (Verde `#34A853`) + `EDU` (Amarelo `#FBBC05`) + `GAME` (Azul `#4285F4`).
+  - **Faixa Roxa (Ribbon Banner):** `APRENDA COMPILADORES JOGANDO!` sob o título.
+  - **Botões Coloridos com Ícone + Título + Subtítulo:**
+    - 🟢 **JOGAR:** Verde (`#34A853`) | *INICIAR A AVENTURA*
+    - 🔵 **FASES:** Azul (`#4285F4`) | *ESCOLHER FASE*
+    - 🟣 **APRENDER:** Roxo (`#8A2BE2`) | *CONCEITOS*
+    - 🟠 **CRÉDITOS:** Laranja (`#E67E22`) | *SOBRE A EQUIPE*
+  - **Painel de Mundos (Cards Didáticos 1 a 6):**
+    - Card 1 (Verde) - *Reino dos Tokens*
+    - Card 2 (Azul) - *Vale do Scanner*
+    - Card 3 (Amarelo) - *Caverna do Parser*
+    - Card 4 (Roxo) - *Floresta da Árvore Sintática*
+    - Card 5 (Vermelho Alerta) - *Castelo dos Erros Léxicos*
+    - Card 6 (Vinho Sombrio) - *Fortaleza dos Erros Sintáticos*
+  - **Barra Superior (TopBar):** Botões escuros arredondados (`⚙️ CONFIGURAÇÕES`, `🏆 RANKING`, `📖 TUTORIAL`).
+  - **Rodapé:** Banner inferior identificando o projeto da AEX UENP e versão (`v1.0.0`).
