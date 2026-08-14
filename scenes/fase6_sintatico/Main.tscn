@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://c6f1main001"]
+
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/gerenciador_expressao.gd" id="2_ger"]
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/spawner_baloes.gd" id="3_spa"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/balao.tscn" id="5_bal"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/chao.tscn" id="6_cha"]
+[ext_resource type="Resource" path="res://resources/fase6_sintatico/fase1.tres" id="7_cfg"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+config = ExtResource("7_cfg")
+
+[node name="GerenciadorExpressao" type="Node" parent="."]
+script = ExtResource("2_ger")
+
+[node name="SpawnerBaloes" type="Node2D" parent="."]
+position = Vector2(20, 0)
+script = ExtResource("3_spa")
+cena_balao = ExtResource("5_bal")
+
+[node name="Chao" parent="." instance=ExtResource("6_cha")]
+position = Vector2(576, 620)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="LabelExpressao" type="RichTextLabel" parent="UI"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 900.0
+offset_bottom = 56.0
+theme_override_font_sizes/normal_font_size = 22
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+text = "Expressão: "
+
+[node name="LabelVidas" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 200.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 20
+text = "Vidas: 3"
+
+[node name="LabelProgresso" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 94.0
+offset_right = 300.0
+offset_bottom = 120.0
+theme_override_font_sizes/font_size = 18
+text = "Progresso: 0/0"
+
+[node name="LabelFase" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 124.0
+offset_right = 300.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 18
+text = "Fase 1/3"
+
+[node name="LabelMensagem" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 520.0
+offset_right = 600.0
+offset_bottom = 548.0
+theme_override_font_sizes/font_size = 18
+text = ""
+
+[node name="PainelFimDeJogo" type="Control" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Fundo" type="ColorRect" parent="UI/PainelFimDeJogo"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="CentroFim" type="VBoxContainer" parent="UI/PainelFimDeJogo"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -60.0
+offset_right = 160.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="LabelFimTitulo" type="Label" parent="UI/PainelFimDeJogo/CentroFim"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+text = "Fim de jogo!"
+
+[node name="BotaoReiniciar" type="Button" parent="UI/PainelFimDeJogo/CentroFim"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Reiniciar fase"
+
+[node name="BotaoProximaFase" type="Button" parent="UI/PainelFimDeJogo/CentroFim"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Próxima fase"

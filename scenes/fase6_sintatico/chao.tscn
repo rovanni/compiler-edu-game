@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c6f1chao001"]
+
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/chao.gd" id="1_chao"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
+size = Vector2(1200, 10)
+
+[node name="Chao" type="Area2D"]
+script = ExtResource("1_chao")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_chao")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -600.0
+offset_top = -5.0
+offset_right = 600.0
+offset_bottom = 5.0
+color = Color(0.3, 0.6, 0.3, 1)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

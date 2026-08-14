@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c6f1efeito01"]
+
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/estouro_1.svg" id="1_e1"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/estouro_2.svg" id="2_e2"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/estouro_3.svg" id="3_e3"]
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/efeito_estouro.gd" id="4_script"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_estouro"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_e1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_e2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e3")
+}],
+"loop": false,
+"name": &"estourar",
+"speed": 12.0
+}]
+
+[node name="EfeitoEstouro" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_estouro")
+animation = &"estourar"
+autoplay = "estourar"
+script = ExtResource("4_script")
