@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://ckuirlc62xbqn" path="res://assets/menu/01.png" id="4_037ec"]
+[ext_resource type="Texture2D" path="res://assets/menu/fase4_ast_preview.png" id="5_fase4_preview"]
 
 [node name="Menu" type="Control" unique_id=642599159]
 layout_mode = 3
@@ -301,7 +302,25 @@ theme_override_font_sizes/font_size = 14
 text = "4
 FLORESTA AST
 (Árvore Sintática)"
+icon = ExtResource("5_fase4_preview")
 autowrap_mode = 2
+expand_icon = true
+
+[node name="PhaseNumber" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 7.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.72, 0.32, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 0.9)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CardFase5" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1196646109]
 layout_mode = 2
