@@ -23,6 +23,7 @@ extends Node2D
 ## dão bônus de pontos ao avançar mas não marcam a Fase 6 como concluída
 ## no menu — isso só acontece ao terminar a fase3.
 
+
 @export var config: ConfigFase
 
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
@@ -36,6 +37,16 @@ extends Node2D
 @onready var label_fim_titulo: Label = $UI/PainelFimDeJogo/CentroFim/LabelFimTitulo
 @onready var botao_reiniciar: Button = $UI/PainelFimDeJogo/CentroFim/BotaoReiniciar
 @onready var botao_proxima_fase: Button = $UI/PainelFimDeJogo/CentroFim/BotaoProximaFase
+
+
+# ==========================================
+# VARIÁVEIS DE DEBUG (PODE APAGAR DEPOIS) e apagar a função _input  na linha 217
+# Substitua pelo caminho real dos arquivos .tres no seu projeto
+const DEBUG_PATH_FASE_1 = "res://resources/fase6_sintatico/fase1.tres"
+const DEBUG_PATH_FASE_2 = "res://resources/fase6_sintatico/fase2.tres"
+const DEBUG_PATH_FASE_3 = "res://resources/fase6_sintatico/fase3.tres"
+# ==========================================
+
 
 const PHASE_ID := 6
 
@@ -92,8 +103,11 @@ func _on_balao_estourado(simbolo: String) -> void:
 	if jogo_acabou:
 		return
 	if gerenciador.eh_a_vez_dele(simbolo):
-		# Estourou o balão certo -> erro. Devia ter deixado cair.
-		_registrar_erro("Ops! '%s' fazia parte da expressão. Devia deixar cair." % simbolo)
+		# Estourou o balão certo -> NÃO perde vida mais.
+		# O spawner já entende que o balão foi destruído e enviará outro em breve.
+		# Vamos apenas exibir um aviso inofensivo ao jogador.
+		_mostrar_mensagem("Cuidado! Você estourou o '%s'. Espere o próximo!" % simbolo)
+		_atualizar_ui()
 	else:
 		# Estourou um símbolo que não é a vez dele (lixo ou fora de ordem) -> correto.
 		GameManager.register_correct_action()
@@ -199,3 +213,37 @@ func _atualizar_ui() -> void:
 func _mostrar_mensagem(texto: String) -> void:
 	if label_mensagem:
 		label_mensagem.text = texto
+
+# ==========================================
+# FUNÇÃO DE DEBUG (PODE APAGAR DEPOIS)
+# ==========================================
+func _input(event: InputEvent) -> void:
+	# Trava de segurança: só funciona no editor, nunca na versão final compilada do jogo
+	if not OS.is_debug_build():
+		return
+
+	# Verifica se foi uma tecla pressionada e não um clique do mouse
+	if event is InputEventKey and event.pressed:
+		var caminho_config := ""
+
+		# Verifica qual número foi pressionado no teclado (acima das letras)
+		if event.keycode == KEY_1:
+			caminho_config = DEBUG_PATH_FASE_1
+		elif event.keycode == KEY_2:
+			caminho_config = DEBUG_PATH_FASE_2
+		elif event.keycode == KEY_3:
+			caminho_config = DEBUG_PATH_FASE_3
+
+		# Se um caminho válido foi selecionado, força a troca de fase
+		if caminho_config != "":
+			var proxima_config: ConfigFase = load(caminho_config)
+			
+			if proxima_config != null:
+				print("--- DEBUG ---")
+				print("Pulando para: ", caminho_config)
+				# Utiliza o mesmo sistema que o botão "Próxima fase" usa para carregar a configuração
+				Fase6Estado.definir_proxima_config(proxima_config)
+				get_tree().reload_current_scene()
+			else:
+				push_error("DEBUG: Falha ao carregar configuração. Verifique se o caminho está correto: " + caminho_config)
+# ==========================================
