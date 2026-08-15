@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://dm5njnbd5nur6"]
+
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/tutorial.gd" id="1_tut"]
+[ext_resource type="PackedScene" uid="uid://c6f1chao001" path="res://scenes/fase6_sintatico/chao.tscn" id="2_cha"]
+
+[node name="Tutorial" type="Node2D"]
+script = ExtResource("1_tut")
+
+[node name="AreaBaloes" type="Node2D" parent="."]
+position = Vector2(20, 0)
+
+[node name="CirculoDestaque" type="Node2D" parent="AreaBaloes"]
+
+[node name="Chao" parent="." instance=ExtResource("2_cha")]
+position = Vector2(576, 620)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="LabelExpressaoExemplo" type="RichTextLabel" parent="UI"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 900.0
+offset_bottom = 90.0
+theme_override_font_sizes/normal_font_size = 22
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+text = "y = 1"
+
+[node name="LabelVidaPerdida" type="Label" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = 160.0
+offset_right = 80.0
+offset_bottom = 210.0
+grow_horizontal = 2
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+text = "-1 VIDA"
+visible = false
+
+[node name="Caixa" type="PanelContainer" parent="UI"]
+anchors_preset = 12
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -220.0
+offset_right = 320.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxCaixa" type="VBoxContainer" parent="UI/Caixa"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelTexto" type="Label" parent="UI/Caixa/VBoxCaixa"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 3
+text = "Texto do passo do tutorial."
+
+[node name="LabelDicaAcao" type="Label" parent="UI/Caixa/VBoxCaixa"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.9, 0.85, 0.3, 1)
+autowrap_mode = 3
+text = "Aguardando ação..."
+
+[node name="HBoxBotoes" type="HBoxContainer" parent="UI/Caixa/VBoxCaixa"]
+layout_mode = 2
+alignment = 2
+theme_override_constants/separation = 12
+
+[node name="BotaoProximo" type="Button" parent="UI/Caixa/VBoxCaixa/HBoxBotoes"]
+layout_mode = 2
+text = "Próximo"
+
+[node name="BotaoPular" type="Button" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 44.0
+grow_horizontal = 0
+text = "Pular tutorial"

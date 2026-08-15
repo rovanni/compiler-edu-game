@@ -1,0 +1,280 @@
+extends Node2D
+## Tutorial da Fase 6 — funciona como uma "fase 0" própria, separada da
+## Main.tscn real. É acessada ANTES da fase1 sempre que o jogador entra
+## na Fase 6 pelo menu (não é um overlay dentro do jogo real).
+##
+## Totalmente scriptado, SEM RNG: cada passo spawna manualmente o único
+## balão que precisa, na velocidade normal do jogo (mesmo default de
+## balao.gd), e nunca existe mais de um balão do tutorial na tela ao
+## mesmo tempo.
+##
+## Avanço de estado: nos passos com balão (BALAO_CERTO, BALAO_ERRADO,
+## VIDA_PERDIDA) o botão "Próximo" começa ESCONDIDO e só é liberado
+## depois que o jogador realiza a ação correta pelo menos uma vez —
+## assim ele não pode pular a etapa clicando sem entender. Depois de
+## liberado, o jogador pode continuar "treinando" a mesma ação (outro
+## balão igual é spawnado a cada acerto) até decidir clicar Próximo.
+##
+## Usa sua PRÓPRIA instância de GerenciadorExpressao com uma expressão
+## de exemplo simples ("y = 1"), e a expressão REALMENTE avança quando
+## o balão certo é coletado pela primeira vez (registrar_coleta_correta),
+## para refletir de verdade a mecânica "complete a expressão inteira" —
+## não toca na expressão real da fase1, é uma instância isolada.
+##
+## Ao terminar (Concluir) ou pular, carrega a Main.tscn real da fase 6
+## com o config da fase1 (mesmo destino nos dois casos).
+
+const CAMINHO_MAIN := "res://scenes/fase6_sintatico/Main.tscn"
+
+enum Estado {
+	INTRO,         # passo 1: expressão em destaque (maior), sem balão
+	APONTAR_ALVO,  # passo 2: circula o caractere atual da expressão
+	BALAO_CERTO,   # passo 3: balão "y" cai; jogador precisa deixar cair
+	BALAO_ERRADO,  # passo 4: balão errado cai; jogador precisa clicar
+	VIDA_PERDIDA,  # só quando erra o passo 4 (deixou o errado cair)
+	FINAL,         # mensagem final, sempre passa por aqui antes de sair
+}
+
+# Velocidade normal do jogo real: o mesmo valor default de
+# balao.gd (velocidade_queda = 90.0), não a versão lenta de antes.
+const VELOCIDADE_NORMAL := 90.0
+const COR_BALAO_TUTORIAL := Color(0.55, 0.6, 0.75)
+const SIMBOLO_CERTO := "y"
+const SIMBOLO_ERRADO := "@"
+const EXPRESSAO_EXEMPLO: Array[String] = ["y", "=", "1"]
+
+const TEXTOS := {
+	Estado.INTRO: "Bem-vindo! Sua missão: montar a expressão no topo, na ordem certa, caractere por caractere.",
+	Estado.APONTAR_ALVO: "O caractere em destaque na expressão é o que você precisa capturar agora.",
+	Estado.BALAO_CERTO: "Quando o balão CERTO cair, NÃO clique — deixe cair até o chão para coletar. O objetivo é completar a expressão inteira, um caractere por vez.",
+	Estado.BALAO_ERRADO: "Balões ERRADOS: clique neles para estourar antes que cheguem ao chão!",
+	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Vamos tentar de novo. Clique neles para estourar antes que cheguem ao chão!",
+	Estado.FINAL: "Cuidado: deixar cair o errado custa uma vida. A cor do balão é só enfeite. Boa sorte!",
+}
+
+@onready var label_expressao_exemplo: RichTextLabel = $UI/LabelExpressaoExemplo
+@onready var label_vida_perdida: Label = $UI/LabelVidaPerdida
+@onready var label_texto: Label = $UI/Caixa/VBoxCaixa/LabelTexto
+@onready var label_dica_acao: Label = $UI/Caixa/VBoxCaixa/LabelDicaAcao
+@onready var botao_proximo: Button = $UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo
+@onready var botao_pular: Button = $UI/BotaoPular
+@onready var area_baloes: Node2D = $AreaBaloes
+@onready var circulo_destaque: Node2D = $AreaBaloes/CirculoDestaque
+
+var _estado: int = Estado.INTRO
+var _balao_atual: Balao = null
+var _ja_acertou_no_passo_atual := false
+var _cena_balao: PackedScene = preload("res://scenes/fase6_sintatico/balao.tscn")
+var _gerenciador_exemplo := GerenciadorExpressao.new()
+
+func _ready() -> void:
+	add_child(_gerenciador_exemplo)
+	_gerenciador_exemplo.definir_expressao(EXPRESSAO_EXEMPLO)
+
+	botao_proximo.pressed.connect(_on_botao_proximo_pressed)
+	botao_pular.pressed.connect(_on_botao_pular_pressed)
+	if circulo_destaque:
+		circulo_destaque.hide()
+	if label_vida_perdida:
+		label_vida_perdida.hide()
+
+	_ir_para(Estado.INTRO)
+
+## --- Transição central de estado ---
+## IMPORTANTE: esta função pode ser chamada de dentro de um callback de
+## física do próprio balão (estourado/chegou_ao_chao, que por sua vez
+## vêm de chao.gd::_on_area_entered, disparado durante o flush de
+## queries de física do Godot). Trocar de estado ali dentro implica
+## instanciar/mexer em CollisionShape de um novo balão NO MESMO FRAME,
+## o que o motor de física proíbe ("Can't change this state while
+## flushing queries"). Por isso os callers que vêm de sinais de balão
+## chamam esta função via call_deferred (ver _on_balao_tutorial_caiu /
+## _on_balao_tutorial_estourado).
+func _ir_para(novo_estado: int) -> void:
+	_limpar_baloes()
+	if circulo_destaque:
+		circulo_destaque.hide()
+	if label_vida_perdida:
+		label_vida_perdida.hide()
+
+	_estado = novo_estado
+	_ja_acertou_no_passo_atual = false
+	label_texto.text = TEXTOS[_estado]
+
+	match _estado:
+		Estado.INTRO:
+			_mostrar_expressao_exemplo(true)
+			_liberar_proximo(true)
+
+		Estado.APONTAR_ALVO:
+			_mostrar_expressao_exemplo(false)
+			_liberar_proximo(true)
+
+		Estado.BALAO_CERTO:
+			_mostrar_expressao_exemplo(false)
+			label_dica_acao.text = "Deixe o balão cair até o chão..."
+			_liberar_proximo(false)
+			_spawnar_balao(SIMBOLO_CERTO)
+
+		Estado.BALAO_ERRADO:
+			_mostrar_expressao_exemplo(false)
+			label_dica_acao.text = "Clique no balão para estourar!"
+			_liberar_proximo(false)
+			_spawnar_balao(SIMBOLO_ERRADO)
+
+		Estado.VIDA_PERDIDA:
+			_mostrar_expressao_exemplo(false)
+			_mostrar_enfase_vida_perdida()
+			_liberar_proximo(false)
+			# Pequena pausa visual antes de spawnar outro balão errado, para
+			# dar tempo do jogador ler a mensagem e ver a ênfase de vida.
+			await get_tree().create_timer(1.1).timeout
+			if _estado != Estado.VIDA_PERDIDA:
+				return # o jogador avançou/pulou o tutorial nesse meio tempo
+			label_dica_acao.text = "Clique no balão para estourar!"
+			_spawnar_balao(SIMBOLO_ERRADO)
+
+		Estado.FINAL:
+			_mostrar_expressao_exemplo(false)
+			_liberar_proximo(true)
+			botao_proximo.text = "Concluir"
+
+func _liberar_proximo(liberado: bool) -> void:
+	label_dica_acao.visible = not liberado
+	botao_proximo.visible = liberado
+
+## --- Expressão de exemplo (reaproveita o BBCode do GerenciadorExpressao) ---
+func _mostrar_expressao_exemplo(em_destaque_grande: bool) -> void:
+	if not label_expressao_exemplo:
+		return
+	var tamanho_base := 22
+	var tamanho_atual := 44 if em_destaque_grande else 30
+	label_expressao_exemplo.bbcode_enabled = true
+	label_expressao_exemplo.text = _gerenciador_exemplo.expressao_como_bbcode(
+		Color(0.2, 0.7, 0.3),
+		Color(1, 0.85, 0.2), # caractere atual em amarelo, tipo "circulado"
+		Color(0.6, 0.6, 0.6),
+		tamanho_base,
+		tamanho_atual
+	)
+
+## --- Spawn único e controlado (nunca mais de um balão do tutorial vivo) ---
+func _spawnar_balao(simbolo: String) -> void:
+	_limpar_baloes()
+	_balao_atual = _cena_balao.instantiate()
+	_balao_atual.simbolo = simbolo
+	_balao_atual.velocidade_queda = VELOCIDADE_NORMAL
+	_balao_atual.vidas = 1 # garante 1 clique só, mesmo que balao.gd suporte fortificados
+	_balao_atual.position = Vector2(140, -40)
+	area_baloes.add_child(_balao_atual)
+	_balao_atual.definir_cor(COR_BALAO_TUTORIAL)
+
+	if circulo_destaque:
+		circulo_destaque.show()
+		circulo_destaque.position = _balao_atual.position
+
+	_balao_atual.estourado.connect(_on_balao_tutorial_estourado)
+	_balao_atual.chegou_ao_chao.connect(_on_balao_tutorial_caiu)
+
+func _process(_delta: float) -> void:
+	if _balao_atual and is_instance_valid(_balao_atual) and circulo_destaque and circulo_destaque.visible:
+		circulo_destaque.position = _balao_atual.position
+
+## --- Reações do balão CERTO (passo 3) e ERRADO (passo 4 / VIDA_PERDIDA) ---
+## Chamado a partir do sinal `estourado` do Balao, que é emitido de
+## dentro de _on_input_event (evento de input, não de física) — aqui
+## não há flush de física em andamento, mas ainda assim usamos
+## call_deferred nos casos que re-spawnam balão, por segurança e
+## consistência com o outro handler.
+func _on_balao_tutorial_estourado(_simbolo: String) -> void:
+	if _estado == Estado.BALAO_CERTO:
+		# Estourou o certo sem querer: reforça a mensagem e spawna outro igual.
+		# (Isso pode acontecer mesmo depois de já ter acertado uma vez, se o
+		# jogador estiver treinando e errar dessa vez — não desfaz o Próximo
+		# já liberado, só reforça a instrução.)
+		label_dica_acao.text = "Esse é o caractere esperado — deixe cair, não estoure! Tente de novo."
+		call_deferred("_spawnar_balao", SIMBOLO_CERTO)
+	elif _estado == Estado.BALAO_ERRADO or _estado == Estado.VIDA_PERDIDA:
+		_registrar_acerto_e_treinar(SIMBOLO_ERRADO)
+
+## --- Reações de balão chegando ao chão (passos 3, 4 e VIDA_PERDIDA) ---
+## Chamado a partir do sinal `chegou_ao_chao`, emitido de dentro de
+## chao.gd::_on_area_entered (callback de física, durante flush de
+## queries). Trocar de estado aqui precisa ser adiado com call_deferred,
+## senão o Godot lança "Can't change this state while flushing queries"
+## ao tentarmos instanciar/configurar o próximo balão no mesmo frame.
+func _on_balao_tutorial_caiu(simbolo: String, _pos: Vector2) -> void:
+	if _estado == Estado.BALAO_CERTO:
+		# Avança a expressão de verdade (mesma mecânica do jogo real) só na
+		# PRIMEIRA vez que acerta neste passo — repetições de treino não
+		# devem avançar o índice da expressão de exemplo de novo.
+		if not _ja_acertou_no_passo_atual:
+			_gerenciador_exemplo.registrar_coleta_correta(simbolo)
+		_registrar_acerto_e_treinar(SIMBOLO_CERTO)
+	elif _estado == Estado.BALAO_ERRADO:
+		call_deferred("_ir_para", Estado.VIDA_PERDIDA)
+	elif _estado == Estado.VIDA_PERDIDA:
+		# Deixou cair de novo dentro da tela de vida perdida: já mostrou a
+		# ênfase uma vez, não repete a penalidade visual — só spawna outro
+		# balão errado para ele poder tentar de novo.
+		call_deferred("_spawnar_balao", SIMBOLO_ERRADO)
+
+## Feedback de sucesso comum aos passos com balão: mostra a mensagem de
+## "muito bem", libera o Próximo (se ainda não estava liberado) e spawna
+## outro balão do mesmo tipo para o jogador poder treinar de novo à
+## vontade, sem forçar avanço de estado — quem decide é o Próximo.
+func _registrar_acerto_e_treinar(simbolo_para_treino: String) -> void:
+	_ja_acertou_no_passo_atual = true
+	label_dica_acao.text = "Muito bem! Você pode ir para o próximo passo — ou treine de novo."
+	_liberar_proximo(true)
+	call_deferred("_spawnar_balao", simbolo_para_treino)
+
+## --- Ênfase visual de vida perdida ---
+func _mostrar_enfase_vida_perdida() -> void:
+	if not label_vida_perdida:
+		return
+	label_vida_perdida.text = "-1 VIDA"
+	label_vida_perdida.show()
+	label_vida_perdida.modulate = Color(1, 0.3, 0.3, 1)
+	label_vida_perdida.scale = Vector2(0.6, 0.6)
+	var tween := create_tween()
+	tween.tween_property(label_vida_perdida, "scale", Vector2(1.3, 1.3), 0.15)
+	tween.tween_property(label_vida_perdida, "scale", Vector2(1.0, 1.0), 0.15)
+	tween.tween_interval(0.6)
+	tween.tween_property(label_vida_perdida, "modulate:a", 0.0, 0.4)
+
+func _limpar_baloes() -> void:
+	if _balao_atual and is_instance_valid(_balao_atual):
+		_balao_atual.queue_free()
+	_balao_atual = null
+	for filho in area_baloes.get_children():
+		if filho is Balao and is_instance_valid(filho):
+			filho.queue_free()
+
+## --- Navegação via botão Próximo ---
+## Nos passos INTRO/APONTAR_ALVO/FINAL o botão já vem liberado. Nos
+## passos com balão (BALAO_CERTO/BALAO_ERRADO) e em VIDA_PERDIDA, o
+## botão só aparece depois que o jogador realiza a ação correta pelo
+## menos uma vez (ver _registrar_acerto_e_treinar) — até lá não é
+## possível pular a etapa clicando em Próximo.
+func _on_botao_proximo_pressed() -> void:
+	match _estado:
+		Estado.INTRO:
+			_ir_para(Estado.APONTAR_ALVO)
+		Estado.APONTAR_ALVO:
+			_ir_para(Estado.BALAO_CERTO)
+		Estado.BALAO_CERTO:
+			_ir_para(Estado.BALAO_ERRADO)
+		Estado.BALAO_ERRADO:
+			_ir_para(Estado.FINAL)
+		Estado.VIDA_PERDIDA:
+			_ir_para(Estado.FINAL)
+		Estado.FINAL:
+			_ir_para_fase1()
+
+func _on_botao_pular_pressed() -> void:
+	_ir_para_fase1()
+
+func _ir_para_fase1() -> void:
+	_limpar_baloes()
+	get_tree().change_scene_to_file(CAMINHO_MAIN)

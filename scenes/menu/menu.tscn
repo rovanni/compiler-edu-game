@@ -94,13 +94,13 @@ theme_override_constants/separation = 10
 
 [node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel" unique_id=431445392]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 6
+alignment = 1
 
 [node name="HBoxTitleLine1" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760380]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 8
+alignment = 1
 
 [node name="LblCompiler" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1" unique_id=1092760381]
 layout_mode = 2
@@ -121,8 +121,8 @@ text = "⚙️"
 
 [node name="HBoxTitleLine2" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760383]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 10
+alignment = 1
 
 [node name="LblCode" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2" unique_id=1092760384]
 layout_mode = 2

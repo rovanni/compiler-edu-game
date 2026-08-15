@@ -218,7 +218,7 @@ func _on_card_fase_5_pressed() -> void:
 
 func _on_card_fase_6_pressed() -> void:
 	preparar_fase(6)
-	iniciar_fase("res://scenes/fase6_sintatico/Main.tscn")
+	iniciar_fase("res://scenes/fase6_sintatico/Tutorial.tscn")
 
 # --- Helpers ---
 func iniciar_fase(caminho_cena: String) -> void:
