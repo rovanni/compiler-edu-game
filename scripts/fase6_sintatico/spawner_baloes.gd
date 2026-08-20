@@ -82,7 +82,7 @@ func _spawnar_chefe() -> void:
 	balao.position = Vector2(largura_area / 2.0, pos_y_inicial) # Centro da tela
 	balao.cor_balao = _escolher_cor()
 	
-	balao.vidas = 7 # 7 cliques para morrer
+	balao.vidas = 7 # 7 impactos para morrer
 	balao.eh_gigante = true
 	balao.velocidade_queda = 18.0 # Desce muito lentamente
 	balao.scale = Vector2(3.0, 3.0) 

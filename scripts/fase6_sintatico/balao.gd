@@ -23,7 +23,6 @@ func _ready() -> void:
 		label.text = simbolo
 	if sprite:
 		sprite.self_modulate = cor_balao
-	input_event.connect(_on_input_event)
 
 func definir_cor(cor: Color) -> void:
 	cor_balao = cor
@@ -34,12 +33,6 @@ func _process(delta: float) -> void:
 	if _ja_resolvido:
 		return
 	position.y += velocidade_queda * delta
-
-func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if _ja_resolvido:
-		return
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		estourar()
 
 func estourar() -> void:
 	if _ja_resolvido:

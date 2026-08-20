@@ -5,7 +5,8 @@ extends Node2D
 ##    (números com 2+ dígitos são quebrados em dígitos individuais).
 ## 2. Balões caem com símbolos aleatórios.
 ## 3. Se o balão é o próximo token da expressão -> jogador deve deixar cair.
-## 4. Se o balão NÃO é a vez dele (lixo ou fora de ordem) -> jogador deve estourar (clique).
+## 4. Se o balão NÃO é a vez dele (lixo ou fora de ordem) -> jogador deve
+##    alinhar o canhão e estourá-lo com projéteis.
 ## 5. Erros que tiram vida:
 ##    a) deixar cair um balão que não pertence à expressão
 ##    b) deixar cair um balão que pertence à expressão mas não é a vez dele
@@ -26,6 +27,8 @@ extends Node2D
 
 @export var config: ConfigFase
 
+const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
+
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
 @onready var spawner: SpawnerBaloes = $SpawnerBaloes
 @onready var label_expressao: RichTextLabel = $UI/LabelExpressao
@@ -37,6 +40,9 @@ extends Node2D
 @onready var label_fim_titulo: Label = $UI/PainelFimDeJogo/CentroFim/LabelFimTitulo
 @onready var botao_reiniciar: Button = $UI/PainelFimDeJogo/CentroFim/BotaoReiniciar
 @onready var botao_proxima_fase: Button = $UI/PainelFimDeJogo/CentroFim/BotaoProximaFase
+@onready var canhao: CanhaoFase6 = $Canhao
+
+var hud
 
 
 # ==========================================
@@ -55,6 +61,8 @@ const PHASE_ID := 6
 ## jogo/vitória (o GameManager também tem sua própria trava interna, esta
 ## é a trava local desta cena).
 var jogo_acabou := false
+var pausado := false
+var fase_concluida := false
 
 func _ready() -> void:
 	var config_pendente := Fase6Estado.consumir_config_pendente()
@@ -66,6 +74,8 @@ func _ready() -> void:
 		config = ConfigFase.new()
 
 	jogo_acabou = false
+	pausado = false
+	fase_concluida = false
 
 	if not GameManager.game_over.is_connected(_on_game_manager_game_over):
 		GameManager.game_over.connect(_on_game_manager_game_over)
@@ -73,6 +83,7 @@ func _ready() -> void:
 		GameManager.lives_changed.connect(_on_lives_changed)
 
 	GameManager.begin_phase(PHASE_ID)
+	_criar_hud()
 
 	gerenciador.definir_expressao(config.expressao_objetivo)
 	gerenciador.token_correto_coletado.connect(_on_token_correto_coletado)
@@ -83,12 +94,7 @@ func _ready() -> void:
 	spawner.balao_criado.connect(_on_balao_criado)
 
 	if painel_fim:
-		painel_fim.hide()
-	if botao_reiniciar:
-		botao_reiniciar.pressed.connect(_on_botao_reiniciar_pressed)
-	if botao_proxima_fase:
-		botao_proxima_fase.pressed.connect(_on_botao_proxima_fase_pressed)
-		botao_proxima_fase.hide() # só aparece ao vencer, e só se houver próxima fase
+		painel_fim.hide() # substituído pelo diálogo visual do GameHud comum
 	if label_fase:
 		label_fase.text = config.rotulo_fase
 
@@ -98,6 +104,8 @@ func _on_balao_criado(balao: Balao) -> void:
 	balao.add_to_group("baloes")
 	balao.estourado.connect(_on_balao_estourado)
 	balao.chegou_ao_chao.connect(_on_balao_chegou_ao_chao)
+	if pausado:
+		balao.set_process(false)
 
 func _on_balao_estourado(simbolo: String) -> void:
 	if jogo_acabou:
@@ -135,7 +143,9 @@ func _on_expressao_completa() -> void:
 	if jogo_acabou:
 		return
 	jogo_acabou = true
+	fase_concluida = true
 	spawner.pausar(true)
+	canhao.definir_ativo(false)
 	_remover_baloes_vivos()
 
 	var eh_ultima_sub_fase := config.proxima_fase_config_path == ""
@@ -151,7 +161,12 @@ func _on_expressao_completa() -> void:
 		GameManager.award_sub_phase_bonus()
 
 	_mostrar_mensagem("Expressão completa! Fase concluída.")
-	_mostrar_tela_fim("Fase concluída!", false)
+	var tem_proxima := config.proxima_fase_config_path != ""
+	hud.show_completion(
+		"FASE 6 CONCLUÍDA!" if not tem_proxima else "SUB-FASE CONCLUÍDA!",
+		"Você preservou os tokens esperados e eliminou os símbolos incorretos.",
+		tem_proxima
+	)
 
 func _registrar_erro(motivo: String) -> void:
 	if jogo_acabou:
@@ -169,9 +184,10 @@ func _on_game_manager_game_over(phase_id: int) -> void:
 		return
 	jogo_acabou = true
 	spawner.pausar(true)
+	canhao.definir_ativo(false)
 	_remover_baloes_vivos()
 	_mostrar_mensagem("Fim de jogo! Tente novamente.")
-	_mostrar_tela_fim("Fim de jogo!", true)
+	hud.show_game_over("Proteja o próximo token da expressão e atire apenas nos balões incorretos. Os pontos provisórios desta fase serão removidos.")
 
 ## Remove imediatamente todos os balões que ainda estão caindo, para que
 ## nenhum deles gere mais eventos (estouro/queda) após o fim de jogo.
@@ -180,19 +196,12 @@ func _remover_baloes_vivos() -> void:
 		if is_instance_valid(balao):
 			balao.queue_free()
 
-func _mostrar_tela_fim(titulo: String, derrota: bool) -> void:
-	if not painel_fim:
-		return
-	if label_fim_titulo:
-		label_fim_titulo.text = titulo
-	if botao_proxima_fase:
-		# Só mostra "Próxima fase" se venceu (não derrota) e existe uma próxima.
-		botao_proxima_fase.visible = (not derrota) and config.proxima_fase_config_path != ""
-	painel_fim.show()
-
 func _on_botao_reiniciar_pressed() -> void:
 	# Reinicia a MESMA sub-fase atual (o config já atribuído na cena
 	# continua o mesmo; Fase6Estado não é tocado aqui).
+	GameManager.rollback_to(0)
+	GameManager.reset_lives()
+	Fase6Estado.definir_proxima_config(config)
 	get_tree().reload_current_scene()
 
 func _on_botao_proxima_fase_pressed() -> void:
@@ -213,6 +222,62 @@ func _atualizar_ui() -> void:
 func _mostrar_mensagem(texto: String) -> void:
 	if label_mensagem:
 		label_mensagem.text = texto
+	if hud:
+		hud.set_feedback(texto)
+
+func _criar_hud() -> void:
+	hud = HUD_SCENE.instantiate()
+	add_child(hud)
+	hud.configure_phase("FASE 6 - ANÁLISE SINTÁTICA", config.rotulo_fase, false)
+	hud.hide_scanner_interface()
+	hud.pause_requested.connect(_pausar)
+	hud.resume_requested.connect(_retomar)
+	hud.menu_confirmed.connect(_voltar_ao_menu)
+	hud.retry_requested.connect(_on_botao_reiniciar_pressed)
+	hud.next_requested.connect(_on_botao_proxima_fase_pressed)
+	hud.replay_requested.connect(_on_botao_reiniciar_pressed)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed(&"pause"):
+		return
+	if pausado:
+		_retomar()
+	elif not jogo_acabou:
+		_pausar()
+	get_viewport().set_input_as_handled()
+
+func _pausar() -> void:
+	if pausado or jogo_acabou:
+		return
+	pausado = true
+	_definir_simulacao_ativa(false)
+	hud.show_pause()
+
+func _retomar() -> void:
+	if not pausado:
+		return
+	pausado = false
+	_definir_simulacao_ativa(true)
+	# Quando a retomada vem do Esc, não passa pelo botão "CONTINUAR" do
+	# GameHud; portanto o diálogo precisa ser fechado explicitamente aqui.
+	hud.hide_dialog()
+
+func _definir_simulacao_ativa(ativa: bool) -> void:
+	spawner.pausar(not ativa)
+	canhao.set_physics_process(ativa)
+	canhao.set_process_input(ativa)
+	canhao.set_process_unhandled_input(ativa)
+	for balao in get_tree().get_nodes_in_group("baloes"):
+		if is_instance_valid(balao):
+			balao.set_process(ativa)
+	for projetil in get_tree().get_nodes_in_group("projeteis_fase6"):
+		if is_instance_valid(projetil):
+			projetil.set_physics_process(ativa)
+
+func _voltar_ao_menu() -> void:
+	if not fase_concluida:
+		GameManager.abandon_phase()
+	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
 
 # ==========================================
 # FUNÇÃO DE DEBUG (PODE APAGAR DEPOIS)
