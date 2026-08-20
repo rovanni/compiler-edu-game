@@ -122,14 +122,14 @@ func show_objective(title: String, body_bbcode: String) -> void:
 
 
 func show_pause() -> void:
-	_show_dialog("JOGO PAUSADO", "O cronômetro e o mundo estão pausados.", [
+	_show_dialog("JOGO PAUSADO", "O mundo do jogo está pausado.", [
 		{"text": "CONTINUAR", "action": "resume"},
 		{"text": "VOLTAR AO MENU", "action": "ask_menu"},
 	])
 
 
-func show_game_over() -> void:
-	_show_dialog("SEM VIDAS", "Revise a ordem dos tokens e tente novamente. Os pontos provisórios desta fase serão removidos.", [
+func show_game_over(body_bbcode: String = "Revise a estratégia e tente novamente. Os pontos provisórios desta fase serão removidos.") -> void:
+	_show_dialog("SEM VIDAS", body_bbcode, [
 		{"text": "TENTAR NOVAMENTE", "action": "retry"},
 		{"text": "VOLTAR AO MENU", "action": "ask_menu"},
 	])
@@ -326,12 +326,19 @@ func _show_dialog(title: String, body_bbcode: String, buttons: Array[Dictionary]
 	for child in _dialog_buttons.get_children():
 		_dialog_buttons.remove_child(child)
 		child.queue_free()
+	var primeiro_botao: Button = null
 	for definition in buttons:
 		var button := _button(str(definition.get("text", "OK")), 15)
 		button.custom_minimum_size = Vector2(160, 42)
 		button.pressed.connect(_on_dialog_action.bind(str(definition.get("action", "resume"))))
 		_dialog_buttons.add_child(button)
+		if primeiro_botao == null:
+			primeiro_botao = button
 	_overlay.visible = true
+	# Todos os diálogos compartilhados podem ser operados só com teclado:
+	# Enter ativa a primeira opção e Tab/setas percorrem as demais.
+	if primeiro_botao:
+		primeiro_botao.call_deferred("grab_focus")
 
 
 func _on_dialog_action(action: String) -> void:
