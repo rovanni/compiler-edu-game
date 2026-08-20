@@ -25,12 +25,14 @@ extends Node2D
 ## com o config da fase1 (mesmo destino nos dois casos).
 
 const CAMINHO_MAIN := "res://scenes/fase6_sintatico/Main.tscn"
+const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
 
 enum Estado {
 	INTRO,         # passo 1: expressão em destaque (maior), sem balão
-	APONTAR_ALVO,  # passo 2: circula o caractere atual da expressão
-	BALAO_CERTO,   # passo 3: balão "y" cai; jogador precisa deixar cair
-	BALAO_ERRADO,  # passo 4: balão errado cai; jogador precisa clicar
+	TIRO,          # passo 2: jogador precisa disparar uma vez com Espaço
+	APONTAR_ALVO,  # passo 3: circula o caractere atual da expressão
+	BALAO_CERTO,   # passo 4: balão "y" cai; jogador precisa deixar cair
+	BALAO_ERRADO,  # passo 5: balão errado cai; jogador precisa alvejá-lo
 	VIDA_PERDIDA,  # só quando erra o passo 4 (deixou o errado cair)
 	FINAL,         # mensagem final, sempre passa por aqui antes de sair
 }
@@ -45,10 +47,11 @@ const EXPRESSAO_EXEMPLO: Array[String] = ["y", "=", "1"]
 
 const TEXTOS := {
 	Estado.INTRO: "Bem-vindo! Sua missão: montar a expressão no topo, na ordem certa, caractere por caractere.",
+	Estado.TIRO: "Este é o seu canhão. Mova-o com mouse, A/D ou setas e atire com Espaço ou M1.",
 	Estado.APONTAR_ALVO: "O caractere em destaque na expressão é o que você precisa capturar agora.",
-	Estado.BALAO_CERTO: "Quando o balão CERTO cair, NÃO clique — deixe cair até o chão para coletar. O objetivo é completar a expressão inteira, um caractere por vez.",
-	Estado.BALAO_ERRADO: "Balões ERRADOS: clique neles para estourar antes que cheguem ao chão!",
-	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Vamos tentar de novo. Clique neles para estourar antes que cheguem ao chão!",
+	Estado.BALAO_CERTO: "Quando o balão CERTO cair, não atire nele: deixe-o chegar ao chão para coletar.",
+	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e atire com Espaço ou M1.",
+	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Alinhe o canhão e use Espaço ou M1.",
 	Estado.FINAL: "Cuidado: deixar cair o errado custa uma vida. A cor do balão é só enfeite. Boa sorte!",
 }
 
@@ -60,7 +63,10 @@ const TEXTOS := {
 @onready var botao_pular: Button = $UI/BotaoPular
 @onready var area_baloes: Node2D = $AreaBaloes
 @onready var circulo_destaque: Node2D = $AreaBaloes/CirculoDestaque
+@onready var canhao: CanhaoFase6 = $Canhao
 
+var hud
+var pausado := false
 var _estado: int = Estado.INTRO
 var _balao_atual: Balao = null
 var _ja_acertou_no_passo_atual := false
@@ -68,17 +74,39 @@ var _cena_balao: PackedScene = preload("res://scenes/fase6_sintatico/balao.tscn"
 var _gerenciador_exemplo := GerenciadorExpressao.new()
 
 func _ready() -> void:
+	_criar_hud()
 	add_child(_gerenciador_exemplo)
 	_gerenciador_exemplo.definir_expressao(EXPRESSAO_EXEMPLO)
 
 	botao_proximo.pressed.connect(_on_botao_proximo_pressed)
 	botao_pular.pressed.connect(_on_botao_pular_pressed)
+	canhao.disparou.connect(_on_canhao_disparou)
 	if circulo_destaque:
 		circulo_destaque.hide()
 	if label_vida_perdida:
 		label_vida_perdida.hide()
 
 	_ir_para(Estado.INTRO)
+
+## Enter avança qualquer passo já concluído. Isso evita depender do mouse
+## para clicar no botão e mantém Espaço livre exclusivamente para disparar.
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo:
+		return
+	if event.is_action_pressed(&"pause"):
+		if pausado:
+			_retomar()
+		else:
+			_pausar()
+		get_viewport().set_input_as_handled()
+		return
+	if pausado:
+		return
+	if event.keycode not in [KEY_ENTER, KEY_KP_ENTER]:
+		return
+	if botao_proximo.visible and not botao_proximo.disabled:
+		get_viewport().set_input_as_handled()
+		_on_botao_proximo_pressed()
 
 ## --- Transição central de estado ---
 ## IMPORTANTE: esta função pode ser chamada de dentro de um callback de
@@ -92,12 +120,14 @@ func _ready() -> void:
 ## _on_balao_tutorial_estourado).
 func _ir_para(novo_estado: int) -> void:
 	_limpar_baloes()
+	canhao.limpar_projeteis()
 	if circulo_destaque:
 		circulo_destaque.hide()
 	if label_vida_perdida:
 		label_vida_perdida.hide()
 
 	_estado = novo_estado
+	canhao.definir_ativo(_estado in [Estado.TIRO, Estado.BALAO_CERTO, Estado.BALAO_ERRADO, Estado.VIDA_PERDIDA])
 	_ja_acertou_no_passo_atual = false
 	label_texto.text = TEXTOS[_estado]
 
@@ -105,6 +135,11 @@ func _ir_para(novo_estado: int) -> void:
 		Estado.INTRO:
 			_mostrar_expressao_exemplo(true)
 			_liberar_proximo(true)
+
+		Estado.TIRO:
+			_mostrar_expressao_exemplo(false)
+			label_dica_acao.text = "Pressione Espaço ou M1 (botão esquerdo do mouse) para realizar um tiro."
+			_liberar_proximo(false)
 
 		Estado.APONTAR_ALVO:
 			_mostrar_expressao_exemplo(false)
@@ -118,7 +153,7 @@ func _ir_para(novo_estado: int) -> void:
 
 		Estado.BALAO_ERRADO:
 			_mostrar_expressao_exemplo(false)
-			label_dica_acao.text = "Clique no balão para estourar!"
+			label_dica_acao.text = "Alinhe o canhão para estourar o balão!"
 			_liberar_proximo(false)
 			_spawnar_balao(SIMBOLO_ERRADO)
 
@@ -129,19 +164,23 @@ func _ir_para(novo_estado: int) -> void:
 			# Pequena pausa visual antes de spawnar outro balão errado, para
 			# dar tempo do jogador ler a mensagem e ver a ênfase de vida.
 			await get_tree().create_timer(1.1).timeout
+			while pausado:
+				await get_tree().process_frame
 			if _estado != Estado.VIDA_PERDIDA:
 				return # o jogador avançou/pulou o tutorial nesse meio tempo
-			label_dica_acao.text = "Clique no balão para estourar!"
+			label_dica_acao.text = "Alinhe o canhão para estourar o balão!"
 			_spawnar_balao(SIMBOLO_ERRADO)
 
 		Estado.FINAL:
 			_mostrar_expressao_exemplo(false)
 			_liberar_proximo(true)
-			botao_proximo.text = "Concluir"
+			botao_proximo.text = "Concluir (Enter)"
 
 func _liberar_proximo(liberado: bool) -> void:
 	label_dica_acao.visible = not liberado
 	botao_proximo.visible = liberado
+	if liberado and _estado != Estado.FINAL:
+		botao_proximo.text = "Próximo (Enter)"
 
 ## --- Expressão de exemplo (reaproveita o BBCode do GerenciadorExpressao) ---
 func _mostrar_expressao_exemplo(em_destaque_grande: bool) -> void:
@@ -164,8 +203,8 @@ func _spawnar_balao(simbolo: String) -> void:
 	_balao_atual = _cena_balao.instantiate()
 	_balao_atual.simbolo = simbolo
 	_balao_atual.velocidade_queda = VELOCIDADE_NORMAL
-	_balao_atual.vidas = 1 # garante 1 clique só, mesmo que balao.gd suporte fortificados
-	_balao_atual.position = Vector2(140, -40)
+	_balao_atual.vidas = 1 # garante um só impacto, mesmo que balao.gd suporte fortificados
+	_balao_atual.position = Vector2(300, -40)
 	area_baloes.add_child(_balao_atual)
 	_balao_atual.definir_cor(COR_BALAO_TUTORIAL)
 
@@ -181,11 +220,9 @@ func _process(_delta: float) -> void:
 		circulo_destaque.position = _balao_atual.position
 
 ## --- Reações do balão CERTO (passo 3) e ERRADO (passo 4 / VIDA_PERDIDA) ---
-## Chamado a partir do sinal `estourado` do Balao, que é emitido de
-## dentro de _on_input_event (evento de input, não de física) — aqui
-## não há flush de física em andamento, mas ainda assim usamos
-## call_deferred nos casos que re-spawnam balão, por segurança e
-## consistência com o outro handler.
+## Chamado a partir do sinal `estourado` do Balao após o impacto do projétil.
+## Usamos call_deferred nos casos que re-spawnam balão por consistência com
+## o handler de queda, que acontece durante o passo de física.
 func _on_balao_tutorial_estourado(_simbolo: String) -> void:
 	if _estado == Estado.BALAO_CERTO:
 		# Estourou o certo sem querer: reforça a mensagem e spawna outro igual.
@@ -229,6 +266,13 @@ func _registrar_acerto_e_treinar(simbolo_para_treino: String) -> void:
 	_liberar_proximo(true)
 	call_deferred("_spawnar_balao", simbolo_para_treino)
 
+func _on_canhao_disparou() -> void:
+	if _estado != Estado.TIRO or _ja_acertou_no_passo_atual:
+		return
+	_ja_acertou_no_passo_atual = true
+	label_dica_acao.text = "Muito bem! Cada toque no Espaço ou M1 dispara um projétil."
+	_liberar_proximo(true)
+
 ## --- Ênfase visual de vida perdida ---
 func _mostrar_enfase_vida_perdida() -> void:
 	if not label_vida_perdida:
@@ -260,6 +304,8 @@ func _limpar_baloes() -> void:
 func _on_botao_proximo_pressed() -> void:
 	match _estado:
 		Estado.INTRO:
+			_ir_para(Estado.TIRO)
+		Estado.TIRO:
 			_ir_para(Estado.APONTAR_ALVO)
 		Estado.APONTAR_ALVO:
 			_ir_para(Estado.BALAO_CERTO)
@@ -278,3 +324,42 @@ func _on_botao_pular_pressed() -> void:
 func _ir_para_fase1() -> void:
 	_limpar_baloes()
 	get_tree().change_scene_to_file(CAMINHO_MAIN)
+
+func _criar_hud() -> void:
+	hud = HUD_SCENE.instantiate()
+	add_child(hud)
+	hud.configure_phase("FASE 6 - TUTORIAL", "APRENDA A IDENTIFICAR E ELIMINAR SÍMBOLOS", false)
+	hud.hide_scanner_interface()
+	hud.pause_requested.connect(_pausar)
+	hud.resume_requested.connect(_retomar)
+	hud.menu_confirmed.connect(_voltar_ao_menu)
+
+func _pausar() -> void:
+	if pausado:
+		return
+	pausado = true
+	_definir_simulacao_ativa(false)
+	hud.show_pause()
+
+func _retomar() -> void:
+	if not pausado:
+		return
+	pausado = false
+	_definir_simulacao_ativa(true)
+	# Esc também deve fechar visualmente o diálogo, não apenas reativar a
+	# simulação por trás dele.
+	hud.hide_dialog()
+
+func _definir_simulacao_ativa(ativa: bool) -> void:
+	canhao.set_physics_process(ativa)
+	canhao.set_process_input(ativa)
+	canhao.set_process_unhandled_input(ativa)
+	if _balao_atual and is_instance_valid(_balao_atual):
+		_balao_atual.set_process(ativa)
+	for projetil in get_tree().get_nodes_in_group("projeteis_fase6"):
+		if is_instance_valid(projetil):
+			projetil.set_physics_process(ativa)
+
+func _voltar_ao_menu() -> void:
+	GameManager.abandon_phase()
+	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")

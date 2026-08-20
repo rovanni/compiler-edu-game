@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fase6_sintatico/tutorial.gd" id="1_tut"]
 [ext_resource type="PackedScene" uid="uid://c6f1chao001" path="res://scenes/fase6_sintatico/chao.tscn" id="2_cha"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/canhao.tscn" id="3_can"]
 
 [node name="Tutorial" type="Node2D"]
 script = ExtResource("1_tut")
@@ -14,13 +15,16 @@ position = Vector2(20, 0)
 [node name="Chao" parent="." instance=ExtResource("2_cha")]
 position = Vector2(576, 620)
 
+[node name="Canhao" parent="." instance=ExtResource("3_can")]
+position = Vector2(640, 675)
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="LabelExpressaoExemplo" type="RichTextLabel" parent="UI"]
 offset_left = 16.0
-offset_top = 12.0
+offset_top = 98.0
 offset_right = 900.0
-offset_bottom = 90.0
+offset_bottom = 166.0
 theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 fit_content = true
@@ -80,6 +84,7 @@ theme_override_constants/separation = 12
 
 [node name="BotaoProximo" type="Button" parent="UI/Caixa/VBoxCaixa/HBoxBotoes"]
 layout_mode = 2
+focus_mode = 0
 text = "Próximo"
 
 [node name="BotaoPular" type="Button" parent="UI"]
@@ -87,8 +92,9 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -160.0
-offset_top = 12.0
+offset_top = 96.0
 offset_right = -12.0
-offset_bottom = 44.0
+offset_bottom = 128.0
 grow_horizontal = 0
+focus_mode = 0
 text = "Pular tutorial"
