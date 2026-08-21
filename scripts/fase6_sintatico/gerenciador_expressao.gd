@@ -53,11 +53,17 @@ func eh_a_vez_dele(simbolo: String) -> bool:
 	return proximo_esperado() == simbolo
 
 ## Chamado quando um balão "correto" (é a vez dele) chega ao chão.
-func registrar_coleta_correta(simbolo: String) -> void:
-	token_correto_coletado.emit(simbolo, indice_atual)
+## O estado é atualizado antes dos sinais, garantindo que todo observador
+## enxergue o novo progresso. Retorna false se o caller violar a ordem.
+func registrar_coleta_correta(simbolo: String) -> bool:
+	if not eh_a_vez_dele(simbolo):
+		return false
+	var indice_coletado := indice_atual
 	indice_atual += 1
+	token_correto_coletado.emit(simbolo, indice_coletado)
 	if indice_atual >= expressao.size():
 		expressao_completa.emit()
+	return true
 
 func reiniciar() -> void:
 	indice_atual = 0
