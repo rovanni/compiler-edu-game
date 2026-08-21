@@ -30,16 +30,16 @@ const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
 enum Estado {
 	INTRO,         # passo 1: expressão em destaque (maior), sem balão
 	TIRO,          # passo 2: jogador precisa disparar uma vez com Espaço
-	APONTAR_ALVO,  # passo 3: circula o caractere atual da expressão
+	APONTAR_ALVO,  # passo 3: destaca o caractere atual da expressão
 	BALAO_CERTO,   # passo 4: balão "y" cai; jogador precisa deixar cair
 	BALAO_ERRADO,  # passo 5: balão errado cai; jogador precisa alvejá-lo
 	VIDA_PERDIDA,  # só quando erra o passo 4 (deixou o errado cair)
 	FINAL,         # mensagem final, sempre passa por aqui antes de sair
 }
 
-# Velocidade normal do jogo real: o mesmo valor default de
-# balao.gd (velocidade_queda = 90.0), não a versão lenta de antes.
-const VELOCIDADE_NORMAL := 90.0
+# Velocidade normal do jogo real: o mesmo valor default de balao.gd. A
+# queda mais lenta equilibra o controle por teclado em relação ao mouse.
+const VELOCIDADE_NORMAL := 65.0
 const COR_BALAO_TUTORIAL := Color(0.55, 0.6, 0.75)
 const SIMBOLO_CERTO := "y"
 const SIMBOLO_ERRADO := "@"
@@ -62,7 +62,6 @@ const TEXTOS := {
 @onready var botao_proximo: Button = $UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo
 @onready var botao_pular: Button = $UI/BotaoPular
 @onready var area_baloes: Node2D = $AreaBaloes
-@onready var circulo_destaque: Node2D = $AreaBaloes/CirculoDestaque
 @onready var canhao: CanhaoFase6 = $Canhao
 
 var hud
@@ -74,6 +73,7 @@ var _cena_balao: PackedScene = preload("res://scenes/fase6_sintatico/balao.tscn"
 var _gerenciador_exemplo := GerenciadorExpressao.new()
 
 func _ready() -> void:
+	Fase6Estado.iniciar_execucao()
 	_criar_hud()
 	add_child(_gerenciador_exemplo)
 	_gerenciador_exemplo.definir_expressao(EXPRESSAO_EXEMPLO)
@@ -81,8 +81,6 @@ func _ready() -> void:
 	botao_proximo.pressed.connect(_on_botao_proximo_pressed)
 	botao_pular.pressed.connect(_on_botao_pular_pressed)
 	canhao.disparou.connect(_on_canhao_disparou)
-	if circulo_destaque:
-		circulo_destaque.hide()
 	if label_vida_perdida:
 		label_vida_perdida.hide()
 
@@ -121,8 +119,6 @@ func _input(event: InputEvent) -> void:
 func _ir_para(novo_estado: int) -> void:
 	_limpar_baloes()
 	canhao.limpar_projeteis()
-	if circulo_destaque:
-		circulo_destaque.hide()
 	if label_vida_perdida:
 		label_vida_perdida.hide()
 
@@ -208,16 +204,8 @@ func _spawnar_balao(simbolo: String) -> void:
 	area_baloes.add_child(_balao_atual)
 	_balao_atual.definir_cor(COR_BALAO_TUTORIAL)
 
-	if circulo_destaque:
-		circulo_destaque.show()
-		circulo_destaque.position = _balao_atual.position
-
 	_balao_atual.estourado.connect(_on_balao_tutorial_estourado)
 	_balao_atual.chegou_ao_chao.connect(_on_balao_tutorial_caiu)
-
-func _process(_delta: float) -> void:
-	if _balao_atual and is_instance_valid(_balao_atual) and circulo_destaque and circulo_destaque.visible:
-		circulo_destaque.position = _balao_atual.position
 
 ## --- Reações do balão CERTO (passo 3) e ERRADO (passo 4 / VIDA_PERDIDA) ---
 ## Chamado a partir do sinal `estourado` do Balao após o impacto do projétil.
@@ -361,5 +349,6 @@ func _definir_simulacao_ativa(ativa: bool) -> void:
 			projetil.set_physics_process(ativa)
 
 func _voltar_ao_menu() -> void:
+	Fase6Estado.encerrar_execucao()
 	GameManager.abandon_phase()
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")

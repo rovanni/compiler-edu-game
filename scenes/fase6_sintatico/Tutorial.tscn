@@ -10,10 +10,8 @@ script = ExtResource("1_tut")
 [node name="AreaBaloes" type="Node2D" parent="."]
 position = Vector2(20, 0)
 
-[node name="CirculoDestaque" type="Node2D" parent="AreaBaloes"]
-
 [node name="Chao" parent="." instance=ExtResource("2_cha")]
-position = Vector2(576, 620)
+position = Vector2(640, 620)
 
 [node name="Canhao" parent="." instance=ExtResource("3_can")]
 position = Vector2(640, 675)

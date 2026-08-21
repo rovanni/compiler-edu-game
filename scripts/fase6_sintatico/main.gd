@@ -10,7 +10,8 @@ extends Node2D
 ## 5. Erros que tiram vida:
 ##    a) deixar cair um balão que não pertence à expressão
 ##    b) deixar cair um balão que pertence à expressão mas não é a vez dele
-##    c) estourar um balão que era o próximo token correto
+## Estourar o próximo token correto não tira vida, mas desperdiça a chance
+## de coletá-lo e obriga o jogador a aguardar outro balão igual.
 ##
 ## Esta é a ÚNICA cena da fase 6 (Main.tscn). As 3 sub-fases progressivas
 ## (dificuldade crescente) não duplicam a UI: cada uma é só um arquivo de
@@ -28,19 +29,22 @@ extends Node2D
 @export var config: ConfigFase
 
 const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
+const CAMINHO_TUTORIAL := "res://scenes/fase6_sintatico/Tutorial.tscn"
 
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
 @onready var spawner: SpawnerBaloes = $SpawnerBaloes
 @onready var label_expressao: RichTextLabel = $UI/LabelExpressao
-@onready var label_vidas: Label = $UI/LabelVidas
 @onready var label_progresso: Label = $UI/LabelProgresso
-@onready var label_fase: Label = $UI/LabelFase
 @onready var label_mensagem: Label = $UI/LabelMensagem
-@onready var painel_fim: Control = $UI/PainelFimDeJogo
-@onready var label_fim_titulo: Label = $UI/PainelFimDeJogo/CentroFim/LabelFimTitulo
-@onready var botao_reiniciar: Button = $UI/PainelFimDeJogo/CentroFim/BotaoReiniciar
-@onready var botao_proxima_fase: Button = $UI/PainelFimDeJogo/CentroFim/BotaoProximaFase
 @onready var canhao: CanhaoFase6 = $Canhao
+@onready var overlay_mecanica: Control = $UI/OverlayMecanica
+@onready var overlay_escurecer: ColorRect = $UI/OverlayMecanica/Escurecer
+@onready var alerta_exclamacoes: Label = $UI/OverlayMecanica/AlertaExclamacoes
+@onready var alerta_fundo: Label = $UI/OverlayMecanica/AlertaFundo
+@onready var overlay_painel: ColorRect = $UI/OverlayMecanica/Painel
+@onready var overlay_titulo: Label = $UI/OverlayMecanica/Painel/OverlayTitulo
+@onready var overlay_texto: Label = $UI/OverlayMecanica/Painel/OverlayTexto
+@onready var overlay_botao: Button = $UI/OverlayMecanica/Painel/OverlayBotao
 
 var hud
 
@@ -63,6 +67,11 @@ const PHASE_ID := 6
 var jogo_acabou := false
 var pausado := false
 var fase_concluida := false
+var tutorial_mecanica_ativo := false
+var _alvo_destaque: Balao = null
+var _balao_fortificado_pendente: Balao = null
+var _spawnar_chefe_ao_fechar := false
+var _tween_destaque: Tween = null
 
 func _ready() -> void:
 	var config_pendente := Fase6Estado.consumir_config_pendente()
@@ -72,6 +81,8 @@ func _ready() -> void:
 	if config == null:
 		push_warning("Main.tscn sem ConfigFase atribuído — usando valores padrão.")
 		config = ConfigFase.new()
+	if not Fase6Estado.execucao_ativa:
+		Fase6Estado.iniciar_execucao()
 
 	jogo_acabou = false
 	pausado = false
@@ -79,8 +90,6 @@ func _ready() -> void:
 
 	if not GameManager.game_over.is_connected(_on_game_manager_game_over):
 		GameManager.game_over.connect(_on_game_manager_game_over)
-	if not GameManager.lives_changed.is_connected(_on_lives_changed):
-		GameManager.lives_changed.connect(_on_lives_changed)
 
 	GameManager.begin_phase(PHASE_ID)
 	_criar_hud()
@@ -90,22 +99,29 @@ func _ready() -> void:
 	gerenciador.expressao_completa.connect(_on_expressao_completa)
 
 	spawner.aplicar_config(config)
-	spawner.iniciar(gerenciador)
 	spawner.balao_criado.connect(_on_balao_criado)
-
-	if painel_fim:
-		painel_fim.hide() # substituído pelo diálogo visual do GameHud comum
-	if label_fase:
-		label_fase.text = config.rotulo_fase
+	spawner.chefe_pronto_para_spawn.connect(_on_chefe_pronto_para_spawn)
+	spawner.iniciar(gerenciador)
+	overlay_botao.pressed.connect(_on_overlay_mecanica_confirmado)
+	overlay_mecanica.hide()
 
 	_atualizar_ui()
 
 func _on_balao_criado(balao: Balao) -> void:
 	balao.add_to_group("baloes")
 	balao.estourado.connect(_on_balao_estourado)
-	balao.chegou_ao_chao.connect(_on_balao_chegou_ao_chao)
+	balao.chegou_ao_chao.connect(_on_balao_chegou_ao_chao.bind(balao))
 	if pausado:
 		balao.set_process(false)
+	if (
+		balao.vidas > 1
+		and not balao.eh_gigante
+		and not Fase6Estado.tutorial_fortificado_visto
+		and not is_instance_valid(_balao_fortificado_pendente)
+	):
+		# O aviso não abre enquanto o balão ainda está parcialmente fora da
+		# tela. _process aguarda ele alcançar cerca de 1/4 da altura visível.
+		_balao_fortificado_pendente = balao
 
 func _on_balao_estourado(simbolo: String) -> void:
 	if jogo_acabou:
@@ -122,12 +138,18 @@ func _on_balao_estourado(simbolo: String) -> void:
 		_mostrar_mensagem("Símbolo '%s' eliminado corretamente!" % simbolo)
 		_atualizar_ui()
 
-func _on_balao_chegou_ao_chao(simbolo: String, posicao: Vector2) -> void:
+func _on_balao_chegou_ao_chao(simbolo: String, posicao: Vector2, balao: Balao) -> void:
 	if jogo_acabou:
 		return
+	if balao.eh_gigante:
+		_mostrar_mensagem("O balão gigante atravessou a defesa: todas as vidas foram perdidas!")
+		GameManager.register_fatal_mistake("O balão gigante chegou ao chão.")
+		return
 	if gerenciador.eh_a_vez_dele(simbolo):
-		gerenciador.registrar_coleta_correta(simbolo)
+		# Pontua antes de registrar a coleta porque o último token emite
+		# expressao_completa de forma síncrona e torna a fase terminal.
 		GameManager.register_correct_action()
+		gerenciador.registrar_coleta_correta(simbolo)
 		EfeitoEstouro.tocar_em(self, posicao)
 		_mostrar_mensagem("Token '%s' coletado!" % simbolo)
 		_atualizar_ui()
@@ -154,6 +176,7 @@ func _on_expressao_completa() -> void:
 		# GameManager — isso ativa o "✓" no card do menu e dá o bônus de
 		# fase completa (+ bônus "sem erros" se aplicável).
 		GameManager.complete_phase(PHASE_ID, true)
+		Fase6Estado.encerrar_execucao()
 	else:
 		# Sub-fases intermediárias (1 e 2): dão o mesmo bônus de pontos que
 		# uma fase completa, mas SEM marcar completed_phases (o carimbo
@@ -175,9 +198,6 @@ func _registrar_erro(motivo: String) -> void:
 	_mostrar_mensagem(motivo)
 	_atualizar_ui()
 	# GameManager.game_over já cobre lives == 0 via sinal (_on_game_manager_game_over).
-
-func _on_lives_changed(_current: int, _maximum: int) -> void:
-	_atualizar_ui()
 
 func _on_game_manager_game_over(phase_id: int) -> void:
 	if phase_id != PHASE_ID or jogo_acabou:
@@ -216,7 +236,6 @@ func _on_botao_proxima_fase_pressed() -> void:
 
 func _atualizar_ui() -> void:
 	label_expressao.text = "[b]Expressão:[/b] " + gerenciador.expressao_como_bbcode(Color(0.2, 0.7, 0.3), Color(0.05, 0.05, 0.05), Color(0.6, 0.6, 0.6), 22, 34)
-	label_vidas.text = "Vidas: %d" % GameManager.lives
 	label_progresso.text = "Progresso: %d/%d" % [gerenciador.indice_atual, gerenciador.expressao.size()]
 
 func _mostrar_mensagem(texto: String) -> void:
@@ -235,9 +254,11 @@ func _criar_hud() -> void:
 	hud.menu_confirmed.connect(_voltar_ao_menu)
 	hud.retry_requested.connect(_on_botao_reiniciar_pressed)
 	hud.next_requested.connect(_on_botao_proxima_fase_pressed)
-	hud.replay_requested.connect(_on_botao_reiniciar_pressed)
+	hud.replay_requested.connect(_on_replay_requested)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if tutorial_mecanica_ativo:
+		return
 	if not event.is_action_pressed(&"pause"):
 		return
 	if pausado:
@@ -275,9 +296,176 @@ func _definir_simulacao_ativa(ativa: bool) -> void:
 			projetil.set_physics_process(ativa)
 
 func _voltar_ao_menu() -> void:
+	Fase6Estado.encerrar_execucao()
 	if not fase_concluida:
 		GameManager.abandon_phase()
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
+
+func _on_replay_requested() -> void:
+	if config.proxima_fase_config_path == "":
+		GameManager.reset_lives()
+		get_tree().change_scene_to_file(CAMINHO_TUTORIAL)
+	else:
+		_on_botao_reiniciar_pressed()
+
+func _on_chefe_pronto_para_spawn() -> void:
+	if Fase6Estado.tutorial_chefe_visto:
+		_mostrar_alerta_chefe_breve()
+		return
+	Fase6Estado.tutorial_chefe_visto = true
+	_spawnar_chefe_ao_fechar = true
+	_abrir_overlay_mecanica(
+		"UM GRANDE BALÃO ESTÁ VINDO!",
+		"Ele é muito resistente e precisa de muitos disparos para estourar. Quando estoura, libera vários outros balões. Não deixe que chegue ao chão: você perderá todas as vidas!",
+		Color("ffc43d"),
+		true,
+		true
+	)
+
+func _mostrar_tutorial_fortificado(balao: Balao) -> void:
+	if not is_instance_valid(balao) or jogo_acabou:
+		return
+	_alvo_destaque = balao
+	_abrir_overlay_mecanica(
+		"NOVO: BALÃO REFORÇADO",
+		"Este balão é mais resistente. O primeiro impacto apenas o enfraquece, então continue disparando até estourá-lo!",
+		Color("ffc43d"),
+		true
+	)
+	_iniciar_pulso_destaque()
+
+func _mostrar_alerta_chefe_breve() -> void:
+	_abrir_overlay_mecanica(
+		"",
+		"",
+		Color("ffc43d"),
+		false,
+		true
+	)
+	await get_tree().create_timer(1.6, true).timeout
+	if tutorial_mecanica_ativo and not jogo_acabou:
+		_fechar_overlay_mecanica()
+		spawner.spawnar_chefe()
+
+func _abrir_overlay_mecanica(
+	titulo: String,
+	texto: String,
+	cor: Color,
+	interativo: bool,
+	alerta_chefe: bool = false
+) -> void:
+	tutorial_mecanica_ativo = true
+	_definir_simulacao_ativa(false)
+	canhao.definir_ativo(false)
+	overlay_painel.visible = interativo or not alerta_chefe
+	overlay_titulo.text = titulo
+	overlay_titulo.add_theme_color_override("font_color", cor)
+	overlay_titulo.add_theme_font_size_override("font_size", 30)
+	overlay_escurecer.color = (
+		Color(0.01, 0.02, 0.04, 0.22 if interativo else 0.08)
+		if alerta_chefe
+		else Color(0.01, 0.02, 0.04, 0.38)
+	)
+	overlay_texto.text = texto
+	overlay_botao.visible = interativo
+	alerta_exclamacoes.visible = alerta_chefe
+	alerta_fundo.visible = alerta_chefe
+	overlay_mecanica.show()
+	if alerta_chefe:
+		_animar_alerta_chefe()
+	if interativo:
+		call_deferred("_focar_botao_overlay")
+
+func _animar_alerta_chefe() -> void:
+	alerta_exclamacoes.scale = Vector2(0.88, 0.88)
+	alerta_exclamacoes.modulate.a = 0.7
+	alerta_exclamacoes.pivot_offset = alerta_exclamacoes.size * 0.5
+	var tween_exclamacoes := create_tween().set_loops(3)
+	tween_exclamacoes.tween_property(alerta_exclamacoes, "scale", Vector2(1.08, 1.08), 0.22)
+	tween_exclamacoes.parallel().tween_property(alerta_exclamacoes, "modulate:a", 1.0, 0.22)
+	tween_exclamacoes.tween_property(alerta_exclamacoes, "scale", Vector2.ONE, 0.22)
+	tween_exclamacoes.parallel().tween_property(alerta_exclamacoes, "modulate:a", 0.72, 0.22)
+
+	# "CUIDADO!" funciona como marca-d'água e pulsa devagar. Não há
+	# flashes rápidos nem mudança brusca da tela inteira.
+	alerta_fundo.modulate.a = 0.12
+	var tween_fundo := create_tween().set_loops(2)
+	tween_fundo.tween_property(alerta_fundo, "modulate:a", 0.3, 0.42)
+	tween_fundo.tween_property(alerta_fundo, "modulate:a", 0.12, 0.42)
+
+func _focar_botao_overlay() -> void:
+	if tutorial_mecanica_ativo and overlay_botao.visible and overlay_botao.is_inside_tree():
+		overlay_botao.grab_focus()
+
+func _on_overlay_mecanica_confirmado() -> void:
+	if not tutorial_mecanica_ativo:
+		return
+	var deve_spawnar_chefe := _spawnar_chefe_ao_fechar
+	_spawnar_chefe_ao_fechar = false
+	_fechar_overlay_mecanica()
+	if deve_spawnar_chefe:
+		spawner.spawnar_chefe()
+
+func _fechar_overlay_mecanica() -> void:
+	overlay_mecanica.hide()
+	alerta_exclamacoes.hide()
+	alerta_fundo.hide()
+	tutorial_mecanica_ativo = false
+	_parar_pulso_destaque()
+	_alvo_destaque = null
+	if not jogo_acabou:
+		_definir_simulacao_ativa(true)
+		canhao.definir_ativo(true)
+
+func _process(_delta: float) -> void:
+	if not tutorial_mecanica_ativo:
+		_verificar_tutorial_fortificado_pendente()
+
+func _iniciar_pulso_destaque() -> void:
+	if not is_instance_valid(_alvo_destaque):
+		return
+	_parar_pulso_destaque()
+	_alvo_destaque.definir_destaque_visual(true)
+	_tween_destaque = create_tween().set_loops()
+	_tween_destaque.tween_method(
+		_alvo_destaque.definir_intensidade_destaque,
+		-0.18,
+		0.34,
+		0.42
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_tween_destaque.tween_method(
+		_alvo_destaque.definir_intensidade_destaque,
+		0.34,
+		-0.18,
+		0.42
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _parar_pulso_destaque() -> void:
+	if _tween_destaque:
+		_tween_destaque.kill()
+		_tween_destaque = null
+	if is_instance_valid(_alvo_destaque):
+		_alvo_destaque.definir_destaque_visual(false)
+
+func _verificar_tutorial_fortificado_pendente() -> void:
+	if not is_instance_valid(_balao_fortificado_pendente):
+		_balao_fortificado_pendente = null
+		return
+	if _balao_fortificado_pendente.is_queued_for_deletion():
+		_balao_fortificado_pendente = null
+		return
+	# Se ele já foi atingido antes de ficar inteiramente visível, esperamos
+	# o próximo reforçado para apresentar a propriedade ainda intacta.
+	if _balao_fortificado_pendente.vidas < 2:
+		_balao_fortificado_pendente = null
+		return
+	var altura_tela := get_viewport_rect().size.y
+	if _balao_fortificado_pendente.global_position.y < altura_tela * 0.20:
+		return
+	var balao := _balao_fortificado_pendente
+	_balao_fortificado_pendente = null
+	Fase6Estado.tutorial_fortificado_visto = true
+	_mostrar_tutorial_fortificado(balao)
 
 # ==========================================
 # FUNÇÃO DE DEBUG (PODE APAGAR DEPOIS)
@@ -302,7 +490,7 @@ func _input(event: InputEvent) -> void:
 		# Se um caminho válido foi selecionado, força a troca de fase
 		if caminho_config != "":
 			var proxima_config: ConfigFase = load(caminho_config)
-			
+
 			if proxima_config != null:
 				print("--- DEBUG ---")
 				print("Pulando para: ", caminho_config)

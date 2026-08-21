@@ -92,6 +92,20 @@ func register_mistake(_reason: String = "erro", costs_life: bool = true) -> int:
 			game_over.emit(current_phase_id)
 	return lives
 
+## Penalidade para perigos que encerram a tentativa independentemente das
+## vidas restantes (por exemplo, deixar o chefe da Fase 6 chegar ao chão).
+func register_fatal_mistake(_reason: String = "perigo_fatal") -> int:
+	if _phase_terminal:
+		return lives
+	phase_had_mistake = true
+	_apply_penalty(MISTAKE_PENALTY)
+	_reset_combo()
+	lives = 0
+	lives_changed.emit(lives, MAX_LIVES)
+	_phase_terminal = true
+	game_over.emit(current_phase_id)
+	return lives
+
 func register_hint() -> void:
 	if _phase_terminal:
 		return

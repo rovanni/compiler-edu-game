@@ -6,6 +6,23 @@ extends Node
 ## ao avançar de fase, trocamos a config aqui antes de recarregar a cena.
 
 var config_pendente: ConfigFase = null
+var tutorial_fortificado_visto := false
+var tutorial_chefe_visto := false
+var execucao_ativa := false
+
+## Uma execucao compreende tutorial + sub-fases 1, 2 e 3. Os avisos ficam
+## memorizados entre reloads, mas voltam a aparecer em uma nova partida.
+func iniciar_execucao() -> void:
+	execucao_ativa = true
+	config_pendente = null
+	tutorial_fortificado_visto = false
+	tutorial_chefe_visto = false
+
+func encerrar_execucao() -> void:
+	execucao_ativa = false
+	config_pendente = null
+	tutorial_fortificado_visto = false
+	tutorial_chefe_visto = false
 
 ## Chamado por main.gd ao clicar em "Próxima fase".
 func definir_proxima_config(config: ConfigFase) -> void:
