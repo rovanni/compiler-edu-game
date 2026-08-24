@@ -2,56 +2,33 @@ extends Area2D
 
 signal entered
 
-const STONE_DARK := Color("14283a")
-const STONE := Color("405d75")
-const STONE_LIGHT := Color("7894a9")
-const CYAN := Color("31d7ff")
-const BLUE := Color("2857e8")
-const GOLD := Color("ffc43d")
+const ARCANE_PORTAL_TEXTURE := preload("res://assets/fase2_scanner/portal_fase2_fundo_suave.png")
 
 var enabled := false
-var _pulse := 0.0
+var portal_sprite: Sprite2D
+
+func set_label(value: String) -> void:
+	# Mantido para compatibilidade com o controlador da fase; a arte já contém
+	# toda a arte do portal e não recebe placas ou desenhos adicionais.
+	pass
 
 func _ready() -> void:
+	portal_sprite = Sprite2D.new()
+	portal_sprite.texture = ARCANE_PORTAL_TEXTURE
+	# A base da arte fica nivelada com o chão do portal.
+	portal_sprite.position = Vector2(0, -57)
+	portal_sprite.scale = Vector2(0.2, 0.2)
+	portal_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	portal_sprite.z_index = 0
+	add_child(portal_sprite)
 	queue_redraw()
-
-func _process(delta: float) -> void:
-	if enabled:
-		_pulse += delta * 3.0
-		queue_redraw()
 
 func set_enabled(value: bool) -> void:
 	enabled = value
-	queue_redraw()
 
 func _draw() -> void:
-	# Placa e pedestal mantêm a silhueta legível sem formar um retângulo maciço.
-	draw_rect(Rect2(-43, -112, 86, 25), STONE_DARK, true)
-	draw_rect(Rect2(-43, -112, 86, 25), STONE_LIGHT, false, 3.0)
-	draw_string(ThemeDB.fallback_font, Vector2(-25, -94), "SAÍDA", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, GOLD)
-	draw_rect(Rect2(-56, 11, 112, 15), STONE_DARK, true)
-	draw_rect(Rect2(-56, 11, 112, 15), STONE_LIGHT, false, 3.0)
-	draw_rect(Rect2(-52, -61, 18, 74), STONE, true)
-	draw_rect(Rect2(34, -61, 18, 74), STONE, true)
-	draw_line(Vector2(-43, -61), Vector2(-43, 12), STONE_LIGHT, 3.0)
-	draw_line(Vector2(43, -61), Vector2(43, 12), STONE_LIGHT, 3.0)
-	draw_arc(Vector2(0, -59), 43, PI, TAU, 32, STONE, 18.0)
-	draw_arc(Vector2(0, -59), 52, PI, TAU, 32, STONE_LIGHT, 3.0)
-	draw_set_transform(Vector2(0, -28), 0.0, Vector2(1.0, 1.28))
-	if enabled:
-		var radius := 29.0 + sin(_pulse) * 2.0
-		draw_circle(Vector2.ZERO, radius + 5.0, Color(0.02, 0.08, 0.16, 0.92))
-		draw_circle(Vector2.ZERO, radius, Color(0.05, 0.58, 0.95, 0.72))
-		draw_arc(Vector2.ZERO, radius - 7.0, 0.0, TAU, 36, CYAN, 3.5)
-		draw_arc(Vector2.ZERO, radius - 15.0, _pulse, _pulse + PI * 1.65, 28, BLUE, 4.5)
-		draw_circle(Vector2(cos(_pulse) * 8.0, sin(_pulse) * 8.0), 4.0, Color.WHITE)
-	else:
-		draw_circle(Vector2.ZERO, 34.0, Color("071523"))
-		draw_arc(Vector2.ZERO, 27.0, PI * 0.15, PI * 0.85, 20, Color("64788a"), 5.0)
-		draw_rect(Rect2(-18, -3, 36, 26), Color("182b3d"), true)
-		draw_rect(Rect2(-18, -3, 36, 26), STONE_LIGHT, false, 2.0)
-		draw_circle(Vector2(0, 8), 4.0, GOLD)
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	# The visual portal is supplied by ARCANE_PORTAL_TEXTURE; collision remains this Area2D.
+	pass
 
 func _on_body_entered(body: Node2D) -> void:
 	if enabled and body.is_in_group(&"player"):

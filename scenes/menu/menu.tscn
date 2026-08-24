@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://ckuirlc62xbqn" path="res://assets/menu/01.png" id="4_037ec"]
 [ext_resource type="Texture2D" path="res://assets/menu/fase4_ast_preview.png" id="5_fase4_preview"]
+[ext_resource type="Texture2D" path="res://assets/fase2_scanner/vale_scanner_background.png" id="6_fase2_preview"]
 
 [node name="Menu" type="Control" unique_id=642599159]
 layout_mode = 3
@@ -277,10 +278,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "2
-VALE DO SCANNER
-(Scanner)"
-autowrap_mode = 2
+
+[node name="PreviewFase2" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_fase2_preview")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="CardFase3" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=1606507251]
 layout_mode = 2

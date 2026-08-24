@@ -131,6 +131,18 @@ func complete_phase(phase_id: int, flawless: bool) -> int:
 	return bonus
 
 
+func register_time_bonus(amount: int) -> int:
+	if _phase_terminal:
+		return 0
+	var awarded := maxi(amount, 0)
+	if awarded == 0:
+		return 0
+	score += awarded
+	_phase_positive_points += awarded
+	score_changed.emit(score, awarded)
+	return awarded
+
+
 func abandon_phase() -> void:
 	rollback_to(0)
 	current_phase_id = 0

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bsbkt050e2645"]
+
+[ext_resource type="Script" uid="uid://tcwn33bna7uh" path="res://scripts/fase2_scanner/bridge_slot.gd" id="1_slot"]
+[ext_resource type="Texture2D" uid="uid://bb2mf0mitmiim" path="res://assets/fase2_scanner/bridge/bridge_activated_texture.png" id="2_visual"]
+
+[sub_resource type="RectangleShape2D" id="BridgeCollisionShape"]
+size = Vector2(1331, 2)
+
+[node name="BridgeSlot" type="Node2D" unique_id=1175103930]
+script = ExtResource("1_slot")
+
+[node name="Visual" type="Sprite2D" parent="." unique_id=1805440038]
+scale = Vector2(0.15, 0.075)
+texture = ExtResource("2_visual")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=499740164]
+position = Vector2(-12, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2032105996]
+position = Vector2(68.5, 18)
+shape = SubResource("BridgeCollisionShape")
+disabled = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=819149109]
+disabled = true

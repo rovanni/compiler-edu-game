@@ -11,7 +11,7 @@ static func challenges() -> Array[Dictionary]:
 			_token("x", TokenKind.IDENTIFIER, "Nome utilizado para identificar uma variável.", Vector2(330, 264)),
 			_token("=", TokenKind.OPERATOR, "Operador que atribui um valor à variável.", Vector2(1150, 293)),
 			_token("10", TokenKind.NUMBER, "Valor numérico inteiro encontrado no código.", Vector2(835, 322)),
-			_token(";", TokenKind.SYMBOL, "Símbolo que indica o final da instrução.", Vector2(1080, 540)),
+			_token(";", TokenKind.SYMBOL, "Símbolo que indica o final da instrução.", Vector2(1035, 540)),
 		]},
 		{"id": 2, "title": "SCANNER EM AÇÃO", "source": "if (x > 10) return x;", "time_limit": 180.0,
 		"hint": "Leia o código da esquerda para a direita. Depois de if vem o símbolo que abre a condição.", "tokens": [

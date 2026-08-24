@@ -40,6 +40,8 @@ var _overlay: ColorRect
 var _dialog_title: Label
 var _dialog_body: RichTextLabel
 var _dialog_buttons: HBoxContainer
+var _area_title_label: Label
+var _bridge_order_label: Label
 
 
 func _ready() -> void:
@@ -61,31 +63,46 @@ func configure_phase(title: String, subtitle: String, show_timer: bool = false) 
 
 func configure_scanner(code_bbcode: String, slot_count: int, progress_text: String) -> void:
 	_scanner_root.visible = true
-	_footer_root.visible = true
 	_code_label.text = code_bbcode
 	set_progress(progress_text)
-	_objective_summary.text = "O Scanner separou os tokens.\nColete %d na ordem do código." % slot_count
-	_clear_slots()
-	var slot_width := 60.0 if slot_count <= 5 else 47.0
-	_slots.add_theme_constant_override("separation", 8 if slot_count <= 5 else 5)
-	for index in slot_count:
-		var slot := Label.new()
-		slot.custom_minimum_size = Vector2(slot_width, 32)
-		slot.text = str(index + 1)
-		slot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		slot.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		slot.add_theme_font_size_override("font_size", 15)
-		slot.add_theme_color_override("font_color", MUTED)
-		slot.add_theme_stylebox_override("normal", _style(Color("0b1c2b"), BORDER, 2, 5))
-		_slots.add_child(slot)
+	_objective_summary.text = "Pegue os blocos e leve-os\naté a estação final. (%d)" % slot_count
+	set_bridge_order([], 0)
+
+
+func set_bridge_order(tokens: Array, delivered_count: int) -> void:
+	if not is_instance_valid(_bridge_order_label):
+		return
+	if tokens.is_empty():
+		_bridge_order_label.text = "A ordem dos blocos aparecerá aqui."
+		return
+	var items: Array[String] = []
+	for index in tokens.size():
+		var marker := "✓" if index < delivered_count else ("→" if index == delivered_count else "•")
+		items.append("%s %d. %s" % [marker, index + 1, str(tokens[index].get("lexeme", "?"))])
+	_bridge_order_label.text = "\n".join(items)
 
 
 func hide_scanner_interface() -> void:
 	_scanner_root.visible = false
-	_footer_root.visible = false
+
+
+func show_area_title(title: String) -> void:
+	if not is_instance_valid(_area_title_label):
+		return
+	_area_title_label.text = title
+	_area_title_label.visible = true
+	_area_title_label.modulate = Color(1, 1, 1, 0)
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(_area_title_label, "modulate:a", 1.0, 0.45)
+	tween.tween_interval(1.8)
+	tween.tween_property(_area_title_label, "modulate:a", 0.0, 0.9)
+	tween.tween_callback(_hide_area_title)
 
 
 func set_slot(index: int, lexeme: String, kind_short: String, color: Color) -> void:
+	if not is_instance_valid(_slots):
+		return
 	if index < 0 or index >= _slots.get_child_count():
 		return
 	var slot := _slots.get_child(index) as Label
@@ -105,7 +122,8 @@ func set_progress(text: String) -> void:
 func set_timer(seconds: float) -> void:
 	var total := maxi(int(ceil(seconds)), 0)
 	_timer_label.text = "%02d:%02d" % [total / 60, total % 60]
-	_timer_label.add_theme_color_override("font_color", RED if total <= 10 else TEXT)
+	# Na Fase 2 o relógio mede o tempo decorrido; não é uma contagem regressiva.
+	_timer_label.add_theme_color_override("font_color", TEXT)
 
 
 func set_feedback(text: String, color: Color = TEXT) -> void:
@@ -163,6 +181,12 @@ func _build_interface() -> void:
 	_build_scanner_row()
 	_build_footer()
 	_build_dialog()
+	_area_title_label = _label("", 42, GOLD)
+	_area_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_area_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_set_anchors(_area_title_label, 0.5, 0.5, 0.5, 0.5, Rect2(-360, -38, 720, 76))
+	_area_title_label.visible = false
+	_root.add_child(_area_title_label)
 
 
 func _build_top_bar() -> void:
@@ -222,32 +246,21 @@ func _build_scanner_row() -> void:
 	_scanner_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_scanner_root)
 
-	var objective_panel := _panel(_scanner_root, "ObjectivePanel", 0.0, 0.0, 0.0, 0.0, Rect2(12, 92, 250, 92))
+	var objective_panel := _panel(_scanner_root, "ObjectivePanel", 0.0, 0.0, 0.0, 0.0, Rect2(12, 92, 200, 76))
 	var objective_box := VBoxContainer.new()
 	objective_panel.add_child(objective_box)
-	var objective_heading := _label("OBJETIVO", 16, GOLD)
-	_objective_summary = _label("Colete os tokens na ordem do código.", 13, TEXT)
+	var objective_heading := _label("OBJETIVO", 13, GOLD)
+	_objective_summary = _label("Colete os blocos e leve-os até a ponte.", 11, TEXT)
 	_objective_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	objective_box.add_child(objective_heading)
 	objective_box.add_child(_objective_summary)
 
-	var order_panel := _panel(_scanner_root, "OrderPanel", 0.0, 0.0, 0.0, 0.0, Rect2(272, 92, 596, 92))
-	var order_box := VBoxContainer.new()
-	order_box.add_theme_constant_override("separation", 4)
-	order_panel.add_child(order_box)
-	var order_heading := _label("ORDEM CORRETA", 16, GOLD)
-	order_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	order_box.add_child(order_heading)
-	_slots = HBoxContainer.new()
-	_slots.alignment = BoxContainer.ALIGNMENT_CENTER
-	order_box.add_child(_slots)
-
-	var code_panel := _panel(_scanner_root, "CodePanel", 1.0, 0.0, 1.0, 0.0, Rect2(-400, 92, 388, 92))
+	var code_panel := _panel(_scanner_root, "CodePanel", 0.5, 1.0, 0.5, 1.0, Rect2(-170, -78, 340, 64))
 	_code_label = RichTextLabel.new()
 	_code_label.bbcode_enabled = true
 	_code_label.fit_content = false
 	_code_label.scroll_active = false
-	_code_label.add_theme_font_size_override("normal_font_size", 19)
+	_code_label.add_theme_font_size_override("normal_font_size", 14)
 	_code_label.add_theme_color_override("default_color", TEXT)
 	code_panel.add_child(_code_label)
 	_scanner_root.visible = false
@@ -291,6 +304,14 @@ func _build_footer() -> void:
 	_progress_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	progress_panel.add_child(_progress_label)
 	_footer_root.visible = false
+	var bridge_order_panel := _panel(_root, "BridgeOrder", 0.0, 1.0, 0.0, 1.0, Rect2(8, -184, 190, 174))
+	var bridge_order_box := VBoxContainer.new()
+	bridge_order_box.add_theme_constant_override("separation", 4)
+	bridge_order_panel.add_child(bridge_order_box)
+	var bridge_order_heading := _label("ORDEM DA PONTE", 18, GOLD)
+	_bridge_order_label = _label("A ordem dos blocos aparecerá aqui.", 17, TEXT)
+	bridge_order_box.add_child(bridge_order_heading)
+	bridge_order_box.add_child(_bridge_order_label)
 
 
 func _build_dialog() -> void:
@@ -366,9 +387,15 @@ func _on_combo_changed(streak: int, bonus: int) -> void:
 
 
 func _clear_slots() -> void:
+	if not is_instance_valid(_slots):
+		return
 	for child in _slots.get_children():
 		_slots.remove_child(child)
 		child.queue_free()
+
+
+func _hide_area_title() -> void:
+	_area_title_label.visible = false
 
 
 func _panel(parent: Control, node_name: String, left: float, top: float, right: float, bottom: float, rect: Rect2) -> PanelContainer:

@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/common/player.gd" id="1_player"]
 [ext_resource type="Texture2D" path="res://assets/fase1_tokens/Player2.png" id="2_walk"]
 [ext_resource type="Texture2D" path="res://assets/fase1_tokens/Player1.png" id="3_idle"]
 [ext_resource type="Texture2D" path="res://assets/fase1_tokens/Player3.png" id="4_jump"]
+[ext_resource type="Texture2D" path="res://assets/fase2_scanner/player_carry_pose_game.png" id="5_carry_pose"]
+[ext_resource type="Texture2D" path="res://assets/fase2_scanner/player_carry_walk_game.png" id="6_carry_walk"]
+[ext_resource type="Texture2D" path="res://assets/fase2_scanner/player_carry_jump_game.png" id="7_carry_jump"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_player"]
 animations = [{
@@ -17,6 +20,12 @@ animations = [{
 "loop": false, "name": &"pular", "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_carry"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("6_carry_walk")}, {"duration": 1.0, "texture": ExtResource("5_carry_pose")}],
+"loop": true, "name": &"andar_carregando", "speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="PlayerShape"]
 size = Vector2(38, 76)
 
@@ -28,6 +37,28 @@ position = Vector2(4, -18)
 scale = Vector2(0.105, 0.105)
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"
+
+[node name="CarryPose" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("5_carry_pose")
+texture_filter = 1
+
+[node name="CarryWalk" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_carry")
+animation = &"andar_carregando"
+
+[node name="CarryJump" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("7_carry_jump")
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
