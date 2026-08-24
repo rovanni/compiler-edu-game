@@ -96,13 +96,13 @@ theme_override_constants/separation = 10
 
 [node name="HeaderContainer" type="VBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel" unique_id=431445392]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 6
+alignment = 1
 
 [node name="HBoxTitleLine1" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760380]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 8
+alignment = 1
 
 [node name="LblCompiler" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine1" unique_id=1092760381]
 layout_mode = 2
@@ -123,8 +123,8 @@ text = "⚙️"
 
 [node name="HBoxTitleLine2" type="HBoxContainer" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer" unique_id=1092760383]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 10
+alignment = 1
 
 [node name="LblCode" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/HBoxTitleLine2" unique_id=1092760384]
 layout_mode = 2
@@ -272,6 +272,25 @@ icon = ExtResource("4_037ec")
 autowrap_mode = 2
 expand_icon = true
 
+[node name="PhaseNumber" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase1" unique_id=2114461104]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = 62.0
+offset_bottom = 60.0
+grow_horizontal = 2
+scale = Vector2(0.6900183, 1.2225513)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 0.9)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "1 - CAÇA AOS TOKENS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CardFase2" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=2001405712]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -308,26 +327,30 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "4
-FLORESTA AST
+text = "4 - FLORESTA AST
 (Árvore Sintática)"
 icon = ExtResource("5_fase4_preview")
 autowrap_mode = 2
+clip_text = true
 expand_icon = true
 
-[node name="PhaseNumber" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4"]
+[node name="PhaseNumber" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4" unique_id=1295156214]
 layout_mode = 1
-offset_left = 10.0
-offset_top = 7.0
-offset_right = 42.0
-offset_bottom = 42.0
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.72, 0.32, 1, 1)
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 17.0
+offset_right = 20.0
+offset_bottom = 62.0
+grow_horizontal = 2
+scale = Vector2(0.8255269, 1.1175728)
+theme_override_colors/font_color = Color(0.9965046, 0.99620444, 0.99816054, 1)
 theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 0.9)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
-text = "4"
+text = "4 - FLORESTA AST
+(Árvore Sintática)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
