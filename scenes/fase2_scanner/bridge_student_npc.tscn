@@ -63,5 +63,5 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 12
-text = "Ei você, por favor me ajude, preciso que construa essa ponte para eu conseguir pegar presença."
+text = "Ei, você não é daqui né? você é de outro mundo, vou te ajudar a voltar para a casa, mas para isso você precisa coletar os tokens e coloca-los em ordem correta para construir a ponte."
 autowrap_mode = 2

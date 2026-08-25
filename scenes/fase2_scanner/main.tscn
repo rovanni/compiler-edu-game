@@ -163,14 +163,14 @@ position = Vector2(487, 218)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/BridgeLeftTopBody" unique_id=1959347831]
 position = Vector2(-6, 42.59375)
 scale = Vector2(1, 0.5208333)
-polygon = PackedVector2Array(-481, 14.219971, -298, 14.219971, 110, 14.219971, 739, 18.059998, 745, 29.580017, -68, 21.899963, -319, 33.419983, -483, 27.659973)
+polygon = PackedVector2Array(-481, 14.219971, -298, 14.219971, 110, 14.219971, 735.67365, 18.033623, 740, 19.97998, 745, 29.580017, -68, 21.899963, -319, 33.419983, -483, 27.659973)
 one_way_collision = true
 
 [node name="BridgeRightSurfaceBody" type="StaticBody2D" parent="Platforms" unique_id=1108310817]
 position = Vector2(2000, 260)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/BridgeRightSurfaceBody" unique_id=1465048877]
-polygon = PackedVector2Array(-481, 24, 306, 19, 553, 19, 556, 18, 555, 19, 552, 17, 547, 16, 481, 12, 289, 10, 157, 10, -49, 11, -208, 11, -469.82098, 11.047928, -476, 10, -481, 11)
+polygon = PackedVector2Array(-481, 24, 306, 19, 553, 19, 556, 18, 555, 19, 552, 17, 547, 16, 481, 12, 289, 10, 157, 10, -49, 11, -208, 11, -470, 14, -476, 14, -481, 13)
 disabled = true
 
 [node name="BridgeGateBody" type="StaticBody2D" parent="Platforms" unique_id=1687558459]
@@ -187,8 +187,36 @@ polygon = PackedVector2Array(-21, -307, 19, -306, 21, -81, 178, -73, 19, -73, 16
 script = ExtResource("7_progress")
 
 [node name="BridgeSlot01" parent="BridgeSlots/BridgeProgress" unique_id=59990228 instance=ExtResource("8_slot")]
+position = Vector2(1225.7, 265)
+scale = Vector2(0.2, 0.2)
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot02" parent="BridgeSlots/BridgeProgress" unique_id=1043166966 instance=ExtResource("8_slot")]
+position = Vector2(1290.85, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 1
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot03" parent="BridgeSlots/BridgeProgress" unique_id=932001317 instance=ExtResource("8_slot")]
 position = Vector2(1356, 265)
 scale = Vector2(0.2, 0.2)
+slot_index = 2
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot04" parent="BridgeSlots/BridgeProgress" unique_id=944789618 instance=ExtResource("8_slot")]
+position = Vector2(1421.15, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 3
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot05" parent="BridgeSlots/BridgeProgress" unique_id=2014618881 instance=ExtResource("8_slot")]
+position = Vector2(1486.3, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 4
 slot_size = Vector2(90, 28)
 art_scale = Vector2(0.75, 1)
 

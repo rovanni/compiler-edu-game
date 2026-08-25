@@ -36,6 +36,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	if Input.is_action_just_pressed(&"jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		SoundManager.play_jump()
 	if Input.is_action_just_pressed(&"interact"):
 		_toggle_block()
 	if Input.is_action_just_pressed(&"drop_down") and is_on_floor():
@@ -43,6 +44,8 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis(&"move_left", &"move_right")
 	if direction != 0.0:
 		velocity.x = direction * SPEED
+		if is_on_floor():
+			SoundManager.play_footstep()
 		sprite.flip_h = direction < 0.0
 		carry_pose.flip_h = direction < 0.0
 		carry_walk.flip_h = direction < 0.0
@@ -95,6 +98,7 @@ func _toggle_block() -> void:
 	if nearest:
 		nearest.pick_up(self)
 		held_block = nearest
+		SoundManager.play_lift()
 		_set_carry_animation(true)
 
 

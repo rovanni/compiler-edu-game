@@ -6,6 +6,7 @@ const ARCANE_PORTAL_TEXTURE := preload("res://assets/fase2_scanner/portal_fase2_
 
 var enabled := false
 var portal_sprite: Sprite2D
+var portal_particles: CPUParticles2D
 
 func set_label(value: String) -> void:
 	# Mantido para compatibilidade com o controlador da fase; a arte já contém
@@ -21,6 +22,26 @@ func _ready() -> void:
 	portal_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	portal_sprite.z_index = 0
 	add_child(portal_sprite)
+	portal_particles = CPUParticles2D.new()
+	portal_particles.name = "PortalParticles"
+	portal_particles.position = Vector2(0, -78)
+	portal_particles.z_index = 1
+	portal_particles.amount = 42
+	portal_particles.lifetime = 1.6
+	portal_particles.preprocess = 1.0
+	portal_particles.randomness = 0.35
+	portal_particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	portal_particles.emission_rect_extents = Vector2(58, 68)
+	portal_particles.direction = Vector2(0, -1)
+	portal_particles.spread = 55.0
+	portal_particles.gravity = Vector2(0, -12)
+	portal_particles.initial_velocity_min = 8.0
+	portal_particles.initial_velocity_max = 28.0
+	portal_particles.scale_amount_min = 0.8
+	portal_particles.scale_amount_max = 1.8
+	portal_particles.color = Color(0.78, 0.22, 1.0, 0.82)
+	portal_particles.emitting = true
+	add_child(portal_particles)
 	queue_redraw()
 
 func set_enabled(value: bool) -> void:

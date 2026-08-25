@@ -133,6 +133,7 @@ func _spawn_challenge_blocks(tokens: Array) -> void:
 		block.configure(tokens[index], destination, index, tokens.size() > 5)
 		block.set_start_position(starts[index])
 		block.placed.connect(_on_block_placed)
+		block.wrong_placement.connect(_on_wrong_block_placed)
 		spawned_blocks.append(block)
 
 func _block_start_positions(tokens: Array) -> Array[Vector2]:
@@ -165,6 +166,7 @@ func _start_challenge() -> void:
 	player.set_controls_enabled(false)
 	if challenge_index == 0:
 		hud.show_area_title("VALE DO SCANNER")
+	SoundManager.play_portal()
 	await player.play_exit_animation()
 	player.set_controls_enabled(true)
 
@@ -172,6 +174,9 @@ func _on_block_placed(block) -> void:
 	if state != PhaseState.PLAYING:
 		return
 	placed_blocks += 1
+	SoundManager.play_confirmation()
+	if bridge_progress and bridge_progress.has_method("activate_slot"):
+		bridge_progress.activate_slot(placed_blocks - 1)
 	var kind := int(block.token_data["kind"])
 	var awarded := GameManager.register_correct_action()
 	hud.set_progress(_progress_text())
@@ -184,14 +189,19 @@ func _on_block_placed(block) -> void:
 		alignment_rack.configure(_bridge_destinations(), [next_token])
 		hud.set_feedback("Bloco alinhado: %s. Próximo: %s. (+%d)" % [block.token_data["lexeme"], next_token["lexeme"], awarded], Color("73e6a2"))
 		return
-	if bridge_progress and bridge_progress.has_method("activate_slot"):
-		bridge_progress.activate_slot(0)
 	hud.set_feedback("Todos os blocos foram entregues! A ponte está pronta.", Color("ffc43d"))
+
+func _on_wrong_block_placed(_block) -> void:
+	if state != PhaseState.PLAYING or invulnerable:
+		return
+	SoundManager.play_error()
+	_on_hazard_body_entered(player)
 
 func _on_hazard_body_entered(body: Node2D) -> void:
 	if body != player or invulnerable: return
 	if state != PhaseState.PLAYING and state != PhaseState.PORTAL_READY: return
 	var remaining := GameManager.register_mistake("perigo", true)
+	SoundManager.play_hurt()
 	if remaining > 0:
 		state = PhaseState.PLAYING
 		portal.set_enabled(false)
@@ -214,6 +224,7 @@ func _on_portal_entered() -> void:
 	if state != PhaseState.PORTAL_READY or not bridge_complete: return
 	state = PhaseState.TRANSITION
 	player.set_controls_enabled(false)
+	SoundManager.play_portal()
 	_complete_phase()
 
 func _complete_phase() -> void:

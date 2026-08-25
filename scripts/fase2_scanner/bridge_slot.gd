@@ -19,6 +19,7 @@ extends Node2D
 @onready var collision_shape: CollisionShape2D = $StaticBody2D/CollisionShape2D
 
 func _ready() -> void:
+	_configure_region()
 	visual.scale = art_scale
 	_refresh()
 
@@ -39,6 +40,7 @@ func _refresh() -> void:
 			collision_shape.disabled = true
 		return
 	if visual:
+		_configure_region()
 		visual.visible = active
 	if collision:
 		# Esta é a colisão editável da própria ponte; fica ativa apenas após
@@ -47,3 +49,10 @@ func _refresh() -> void:
 	if collision_shape:
 		# Forma sólida de segurança: garante uma faixa caminhável contínua.
 		collision_shape.disabled = not active
+
+func _configure_region() -> void:
+	if visual == null or visual.texture == null:
+		return
+	var texture_size := visual.texture.get_size()
+	visual.region_enabled = true
+	visual.region_rect = Rect2(texture_size.x * slot_index / 5.0, 0.0, texture_size.x / 5.0, texture_size.y)

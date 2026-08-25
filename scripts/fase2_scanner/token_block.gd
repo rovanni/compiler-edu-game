@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 signal placed(block: RigidBody2D)
+signal wrong_placement(block: RigidBody2D)
 
 var token_data: Dictionary = {}
 var target_position := Vector2.ZERO
@@ -90,6 +91,8 @@ func drop(world_parent: Node2D, drop_position: Vector2) -> void:
 	# vertical maior permite entregar sem exigir que o bloco atravesse a ponte.
 	if placement_enabled and drop_position.distance_to(target_position) <= SLOT_SNAP_RADIUS:
 		_snap_into_slot()
+	elif not placement_enabled and drop_position.distance_to(target_position) <= SLOT_SNAP_RADIUS:
+		wrong_placement.emit(self)
 
 func _snap_into_slot() -> void:
 	if is_placed:
