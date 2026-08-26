@@ -41,6 +41,7 @@ var _dialog_title: Label
 var _dialog_body: RichTextLabel
 var _dialog_buttons: HBoxContainer
 var _area_title_label: Label
+var _bridge_order_panel: PanelContainer
 var _bridge_order_label: Label
 
 
@@ -63,6 +64,8 @@ func configure_phase(title: String, subtitle: String, show_timer: bool = false) 
 
 func configure_scanner(code_bbcode: String, slot_count: int, progress_text: String) -> void:
 	_scanner_root.visible = true
+	_bridge_order_panel.visible = true
+
 	_code_label.text = code_bbcode
 	set_progress(progress_text)
 	_objective_summary.text = "Pegue os blocos e leve-os\naté a estação final. (%d)" % slot_count
@@ -84,6 +87,7 @@ func set_bridge_order(tokens: Array, delivered_count: int) -> void:
 
 func hide_scanner_interface() -> void:
 	_scanner_root.visible = false
+	_bridge_order_panel.visible = false
 
 
 func show_area_title(title: String) -> void:
@@ -304,15 +308,16 @@ func _build_footer() -> void:
 	_progress_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	progress_panel.add_child(_progress_label)
 	_footer_root.visible = false
-	var bridge_order_panel := _panel(_root, "BridgeOrder", 0.0, 1.0, 0.0, 1.0, Rect2(8, -184, 190, 174))
+	_bridge_order_panel = _panel(_root, "BridgeOrder", 0.0, 1.0, 0.0, 1.0, Rect2(8, -184, 190, 174))
+
 	var bridge_order_box := VBoxContainer.new()
 	bridge_order_box.add_theme_constant_override("separation", 4)
-	bridge_order_panel.add_child(bridge_order_box)
+	_bridge_order_panel.add_child(bridge_order_box)
 	var bridge_order_heading := _label("ORDEM DA PONTE", 18, GOLD)
 	_bridge_order_label = _label("A ordem dos blocos aparecerá aqui.", 17, TEXT)
 	bridge_order_box.add_child(bridge_order_heading)
 	bridge_order_box.add_child(_bridge_order_label)
-
+	_bridge_order_panel.visible = false
 
 func _build_dialog() -> void:
 	_overlay = ColorRect.new()
