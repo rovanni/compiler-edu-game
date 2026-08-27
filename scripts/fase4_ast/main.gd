@@ -5,6 +5,7 @@ enum PhaseState { INTRO, PLAYING, PAUSED, PORTAL_READY, RESETTING, GAME_OVER, CO
 const NODE_SCENE := preload("res://scenes/fase4_ast/no_ast.tscn")
 const PLATFORM_SCRIPT := preload("res://scripts/fase4_ast/ast_platform.gd")
 const PORTAL_SCRIPT := preload("res://scripts/fase4_ast/ast_portal.gd")
+const AMBIENCE_TARGET_VOLUME_DB := -20.0
 
 const SLOT_ORDER := ["root", "left", "right", "left_left", "left_right", "right_left", "right_right"]
 const SLOT_POSITIONS := {
@@ -82,11 +83,13 @@ const CHALLENGES := [
 @onready var nodes_root: Node2D = $Nodes
 @onready var player = $Jogador
 @onready var hud = $HUD
+@onready var ambience_player: AudioStreamPlayer = $ForestAmbience
 
 var session := AstSession.new()
 var active_nodes: Dictionary = {}
 var active_slots: Dictionary = {}
 var portal
+var entry_portal
 var challenge_index := 0
 var phase_checkpoint := 0
 var time_remaining := 180.0
@@ -96,6 +99,7 @@ var interaction_locked := false
 
 
 func _ready() -> void:
+	_start_ambience()
 	if GameManager.current_phase_id != 4:
 		if GameManager.session_active:
 			GameManager.begin_phase(4)
@@ -108,6 +112,18 @@ func _ready() -> void:
 	GameManager.game_over.connect(_on_game_over)
 	challenge_index = randi() % CHALLENGES.size()
 	_start_challenge(challenge_index)
+
+
+func _start_ambience() -> void:
+	var looped_stream := ambience_player.stream.duplicate()
+	if looped_stream is AudioStreamWAV:
+		looped_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		looped_stream.loop_begin = 0
+		looped_stream.loop_end = int(round(looped_stream.get_length() * float(looped_stream.mix_rate)))
+	ambience_player.stream = looped_stream
+	ambience_player.volume_db = -36.0
+	ambience_player.play()
+	create_tween().tween_property(ambience_player, "volume_db", AMBIENCE_TARGET_VOLUME_DB, 1.4)
 
 
 func _process(delta: float) -> void:
@@ -163,10 +179,10 @@ func _draw_branch_segment(from: Vector2, to: Vector2) -> void:
 func _build_world() -> void:
 	var platform_specs := [
 		{"position": Vector2(115, 585), "size": Vector2(230, 30), "one_way": false},
-		{"position": Vector2(320, 537), "size": Vector2(150, 18), "one_way": true},
-		{"position": Vector2(500, 537), "size": Vector2(150, 18), "one_way": true},
-		{"position": Vector2(780, 537), "size": Vector2(150, 18), "one_way": true},
-		{"position": Vector2(960, 537), "size": Vector2(150, 18), "one_way": true},
+		{"position": Vector2(320, 537), "size": Vector2(138, 18), "one_way": true},
+		{"position": Vector2(500, 537), "size": Vector2(138, 18), "one_way": true},
+		{"position": Vector2(780, 537), "size": Vector2(138, 18), "one_way": true},
+		{"position": Vector2(960, 537), "size": Vector2(138, 18), "one_way": true},
 		{"position": Vector2(420, 382), "size": Vector2(190, 20), "one_way": true},
 		{"position": Vector2(840, 382), "size": Vector2(190, 20), "one_way": true},
 		{"position": Vector2(640, 226), "size": Vector2(190, 20), "one_way": true},
@@ -181,7 +197,14 @@ func _build_world() -> void:
 	_create_boundary(Vector2(-20, 360), Vector2(40, 720))
 	_create_boundary(Vector2(1300, 360), Vector2(40, 720))
 
+	entry_portal = PORTAL_SCRIPT.new()
+	entry_portal.name = "EntryPortal"
+	entry_portal.position = Vector2(105, 500)
+	add_child(entry_portal)
+	entry_portal.set_enabled(true)
+
 	portal = PORTAL_SCRIPT.new()
+	portal.name = "ExitPortal"
 	portal.position = Vector2(1170, 500)
 	portal.entered.connect(_on_portal_entered)
 	add_child(portal)
@@ -218,6 +241,7 @@ func _start_challenge(index: int) -> void:
 	interaction_locked = false
 	player.set_controls_enabled(false)
 	player.respawn()
+	entry_portal.set_enabled(true)
 	portal.set_enabled(false)
 
 	for old_node in nodes_root.get_children():
@@ -254,6 +278,9 @@ func _begin_playing() -> void:
 	if state != PhaseState.INTRO:
 		return
 	state = PhaseState.PLAYING
+	SoundManager.play_portal()
+	player.set_controls_enabled(false)
+	await player.play_portal_exit_animation()
 	player.set_controls_enabled(true)
 
 
@@ -272,6 +299,7 @@ func _try_place_current_token() -> void:
 		return
 
 	target.mark_filled(placed_token, _token_color(placed_token))
+	SoundManager.play_confirmation()
 	var awarded := GameManager.register_correct_action()
 	hud.set_progress(session.progress(), session.total())
 	hud.show_feedback("Correto! '%s' ocupa esse nó. +%d pontos" % [placed_token, awarded], Color("7ce5a5"))
@@ -303,6 +331,7 @@ func _nearest_available_node():
 func _handle_wrong_node(target) -> void:
 	interaction_locked = true
 	target.flash_error()
+	SoundManager.play_error()
 	var remaining := GameManager.register_mistake("no_ast_incorreto", true)
 	var expected := session.expected_for(target.slot_id)
 	hud.show_feedback("Esse nó não recebe '%s'. Reavalie a precedência e a posição dos filhos." % session.current_token, Color("ff7b83"))
@@ -346,6 +375,7 @@ func _handle_timeout() -> void:
 		return
 	state = PhaseState.RESETTING
 	player.set_controls_enabled(false)
+	SoundManager.play_error()
 	GameManager.rollback_to(phase_checkpoint)
 	var remaining := GameManager.register_mistake("tempo_esgotado", true)
 	if remaining <= 0:
@@ -358,6 +388,7 @@ func _handle_timeout() -> void:
 func _on_player_fell() -> void:
 	if state != PhaseState.PLAYING and state != PhaseState.PORTAL_READY:
 		return
+	SoundManager.play_hurt()
 	var remaining := GameManager.register_mistake("queda", true)
 	if remaining > 0:
 		player.respawn()
@@ -369,6 +400,7 @@ func _on_portal_entered() -> void:
 		return
 	state = PhaseState.COMPLETE
 	player.set_controls_enabled(false)
+	SoundManager.play_portal()
 	var bonus := GameManager.complete_phase(4, not GameManager.phase_had_mistake)
 	hud.show_completion(_current_challenge()["expression"], bonus)
 

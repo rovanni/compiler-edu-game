@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://totq6arc7xch" path="res://assets/fase1_tokens/reino_tokens_background.png" id="4_r8yej"]
-[ext_resource type="Texture2D" uid="uid://cwuc47f18an6b" path="res://assets/menu/fase4_ast_preview.png" id="5_fase4_preview"]
+[ext_resource type="Texture2D" uid="uid://ut2hdcaykm4n" path="res://assets/menu/fase4_ast_card.png" id="5_fase4_preview"]
 [ext_resource type="Texture2D" uid="uid://chl4sjdwgm526" path="res://assets/fase2_scanner/vale_scanner_background.png" id="6_fase2_preview"]
 
 [node name="Menu" type="Control"]
@@ -315,32 +315,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "4 - FLORESTA AST
-(Árvore Sintática)"
-icon = ExtResource("5_fase4_preview")
-autowrap_mode = 2
-clip_text = true
-expand_icon = true
 
-[node name="PhaseNumber" type="Label" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4"]
+[node name="PreviewFase4" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = 20.0
-offset_top = 17.0
-offset_right = 20.0
-offset_bottom = 62.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-scale = Vector2(0.8255269, 1.1175728)
-theme_override_colors/font_color = Color(0.9965046, 0.99620444, 0.99816054, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 0.9)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
-text = "4 - FLORESTA AST
-(Árvore Sintática)"
-horizontal_alignment = 1
-vertical_alignment = 1
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_fase4_preview")
+expand_mode = 1
 
 [node name="CardFase5" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
 layout_mode = 2

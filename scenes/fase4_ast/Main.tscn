@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://fase4_main"]
+[gd_scene load_steps=6 format=3 uid="uid://fase4_main"]
 
 [ext_resource type="Script" uid="uid://9ef1vx6nnolp" path="res://scripts/fase4_ast/main.gd" id="1_main4"]
 [ext_resource type="PackedScene" uid="uid://fase4_jogador" path="res://scenes/fase4_ast/jogador.tscn" id="2_main4"]
 [ext_resource type="PackedScene" uid="uid://fase4_hud" path="res://scenes/fase4_ast/hud.tscn" id="3_main4"]
 [ext_resource type="Texture2D" path="res://assets/fase4_ast/forest_ast_background.png" id="4_background"]
+[ext_resource type="AudioStream" path="res://assets/audio/phase4_forest_at_night.wav" id="5_ambience"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main4")
@@ -23,3 +24,7 @@ z_index = -1
 position = Vector2(105, 520)
 
 [node name="HUD" parent="." instance=ExtResource("3_main4")]
+
+[node name="ForestAmbience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ambience")
+volume_db = -20.0
