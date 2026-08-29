@@ -684,7 +684,9 @@ Os nomes dos integrantes e respectivas funções serão registrados na documenta
 
 # 📄 Licença
 
-A licença do projeto será definida pela equipe responsável pelo projeto.
+O código do projeto é distribuído sob a licença MIT, conforme o arquivo
+`LICENSE`. Assets de terceiros mantêm suas próprias licenças e atribuições,
+registradas em `docs/creditos_assets.md`.
 
 ---
 
