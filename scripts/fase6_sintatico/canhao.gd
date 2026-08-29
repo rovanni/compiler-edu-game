@@ -5,7 +5,10 @@ signal disparou
 
 @export var cena_projetil: PackedScene
 @export var velocidade_horizontal: float = 520.0
-@export var margem_horizontal: float = 34.0
+@export var margem_horizontal: float = 52.0
+@export var altura_boca: float = 94.0
+
+@onready var som_tiro: AudioStreamPlayer = $Tiro
 
 var ativo := true
 var _controle_por_mouse := true
@@ -66,5 +69,7 @@ func _disparar() -> void:
 
 	var projetil := cena_projetil.instantiate()
 	get_parent().add_child(projetil)
-	projetil.global_position = global_position + Vector2(0.0, -48.0)
+	projetil.global_position = global_position + Vector2(0.0, -altura_boca)
+	som_tiro.pitch_scale = randf_range(0.94, 1.06)
+	som_tiro.play()
 	disparou.emit()

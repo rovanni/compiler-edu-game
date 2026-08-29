@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sov7tcyb6tr5"
-path="res://.godot/imported/estouro_2.svg-77fb78527c09bc21566105f9b9008a86.ctex"
+uid="uid://chteyxirsuu5t"
+path="res://.godot/imported/piso_castelo.png-2509d607750a671e26ef846dbc2fd504.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase6_sintatico/estouro_2.svg"
-dest_files=["res://.godot/imported/estouro_2.svg-77fb78527c09bc21566105f9b9008a86.ctex"]
+source_file="res://assets/fase6_sintatico/piso_castelo.png"
+dest_files=["res://.godot/imported/piso_castelo.png-2509d607750a671e26ef846dbc2fd504.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

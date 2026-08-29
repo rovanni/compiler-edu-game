@@ -26,12 +26,17 @@ func _ready() -> void:
 	if label:
 		label.text = simbolo
 	if sprite:
-		sprite.self_modulate = cor_balao
+		_atualizar_cor_visual()
 
 func definir_cor(cor: Color) -> void:
 	cor_balao = cor
 	if sprite:
-		sprite.self_modulate = cor_balao
+		_atualizar_cor_visual()
+
+func _atualizar_cor_visual() -> void:
+	# Mantém a variedade da paleta sem sacrificar o contraste do balão.
+	# A cor é decorativa; o símbolo textual continua sendo a pista principal.
+	sprite.self_modulate = cor_balao.lerp(Color.WHITE, 0.42)
 
 ## Aplica um filtro somente durante o mini tutorial. A textura original não
 ## é modificada e qualquer material futuro do asset é restaurado ao sair.

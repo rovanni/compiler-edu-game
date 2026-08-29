@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vhw52b08t5k1"
-path="res://.godot/imported/estouro_3.svg-00d6468d1470d5c94537635e948fdb8e.ctex"
+uid="uid://bx6cgqtdrppoj"
+path="res://.godot/imported/canhao.png-c4bd2ab6207f617a14061d818e56373c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase6_sintatico/estouro_3.svg"
-dest_files=["res://.godot/imported/estouro_3.svg-00d6468d1470d5c94537635e948fdb8e.ctex"]
+source_file="res://assets/fase6_sintatico/canhao.png"
+dest_files=["res://.godot/imported/canhao.png-c4bd2ab6207f617a14061d818e56373c.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

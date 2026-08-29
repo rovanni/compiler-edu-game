@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biyx0mx6re8w1"
-path="res://.godot/imported/balao.svg-52f11787fec633ff8c916f154b211962.ctex"
+uid="uid://jmeyqytgjlr6"
+path="res://.godot/imported/balao.png-294743db6bb88607d1969261e309e4fc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase6_sintatico/balao.svg"
-dest_files=["res://.godot/imported/balao.svg-52f11787fec633ff8c916f154b211962.ctex"]
+source_file="res://assets/fase6_sintatico/balao.png"
+dest_files=["res://.godot/imported/balao.png-294743db6bb88607d1969261e309e4fc.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

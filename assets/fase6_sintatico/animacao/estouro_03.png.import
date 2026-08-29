@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjb3kimd3c5xo"
-path="res://.godot/imported/estouro_1.svg-ad9b8cab5b820e797f27261c746b8e21.ctex"
+uid="uid://cvd4m32gt6rwv"
+path="res://.godot/imported/estouro_03.png-1a6abfd6132c36a1dc5ff5055bd40949.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase6_sintatico/estouro_1.svg"
-dest_files=["res://.godot/imported/estouro_1.svg-ad9b8cab5b820e797f27261c746b8e21.ctex"]
+source_file="res://assets/fase6_sintatico/animacao/estouro_03.png"
+dest_files=["res://.godot/imported/estouro_03.png-1a6abfd6132c36a1dc5ff5055bd40949.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
