@@ -27,14 +27,15 @@ extends Node2D
 
 
 @export var config: ConfigFase
+@export_range(0.0, 600.0, 5.0) var tempo_retorno_inatividade: float = 120.0
 
 const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
 const CAMINHO_TUTORIAL := "res://scenes/fase6_sintatico/Tutorial.tscn"
 
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
 @onready var spawner: SpawnerBaloes = $SpawnerBaloes
-@onready var label_expressao: RichTextLabel = $UI/LabelExpressao
-@onready var label_progresso: Label = $UI/LabelProgresso
+@onready var label_expressao: RichTextLabel = $UI/PainelObjetivo/VBox/LabelExpressao
+@onready var label_progresso: Label = $UI/PainelObjetivo/VBox/LabelProgresso
 @onready var label_mensagem: Label = $UI/LabelMensagem
 @onready var canhao: CanhaoFase6 = $Canhao
 @onready var overlay_mecanica: Control = $UI/OverlayMecanica
@@ -46,19 +47,13 @@ const CAMINHO_TUTORIAL := "res://scenes/fase6_sintatico/Tutorial.tscn"
 @onready var overlay_texto: Label = $UI/OverlayMecanica/Painel/OverlayTexto
 @onready var overlay_botao: Button = $UI/OverlayMecanica/Painel/OverlayBotao
 
-var hud
-
-
-# ==========================================
-# VARIÁVEIS DE DEBUG (PODE APAGAR DEPOIS) e apagar a função _input  na linha 217
-# Substitua pelo caminho real dos arquivos .tres no seu projeto
-const DEBUG_PATH_FASE_1 = "res://resources/fase6_sintatico/fase1.tres"
-const DEBUG_PATH_FASE_2 = "res://resources/fase6_sintatico/fase2.tres"
-const DEBUG_PATH_FASE_3 = "res://resources/fase6_sintatico/fase3.tres"
-# ==========================================
-
-
 const PHASE_ID := 6
+const COR_SUCESSO := Color("72e6a1")
+const COR_ALERTA := Color("ffc43d")
+const COR_ERRO := Color("ff6b6b")
+const COR_NEUTRA := Color("e8f2fa")
+
+var hud
 
 ## Trava geral: quando true, nenhum evento de balão (estouro/queda) altera
 ## mais vidas, progresso ou spawns. Evita processar eventos após o fim de
@@ -72,6 +67,8 @@ var _alvo_destaque: Balao = null
 var _balao_fortificado_pendente: Balao = null
 var _spawnar_chefe_ao_fechar := false
 var _tween_destaque: Tween = null
+var _tempo_sem_entrada := 0.0
+var _retorno_inatividade_em_andamento := false
 
 func _ready() -> void:
 	var config_pendente := Fase6Estado.consumir_config_pendente()
@@ -130,19 +127,19 @@ func _on_balao_estourado(simbolo: String) -> void:
 		# Estourou o balão certo -> NÃO perde vida mais.
 		# O spawner já entende que o balão foi destruído e enviará outro em breve.
 		# Vamos apenas exibir um aviso inofensivo ao jogador.
-		_mostrar_mensagem("Cuidado! Você estourou o '%s'. Espere o próximo!" % simbolo)
+		_mostrar_mensagem("Proteja o símbolo '%s': espere o próximo balão!" % simbolo, COR_ALERTA)
 		_atualizar_ui()
 	else:
 		# Estourou um símbolo que não é a vez dele (lixo ou fora de ordem) -> correto.
 		GameManager.register_correct_action()
-		_mostrar_mensagem("Símbolo '%s' eliminado corretamente!" % simbolo)
+		_mostrar_mensagem("Boa defesa! Símbolo '%s' eliminado." % simbolo, COR_SUCESSO)
 		_atualizar_ui()
 
 func _on_balao_chegou_ao_chao(simbolo: String, posicao: Vector2, balao: Balao) -> void:
 	if jogo_acabou:
 		return
 	if balao.eh_gigante:
-		_mostrar_mensagem("O balão gigante atravessou a defesa: todas as vidas foram perdidas!")
+		_mostrar_mensagem("O balão gigante atravessou a defesa!", COR_ERRO)
 		GameManager.register_fatal_mistake("O balão gigante chegou ao chão.")
 		return
 	if gerenciador.eh_a_vez_dele(simbolo):
@@ -151,7 +148,7 @@ func _on_balao_chegou_ao_chao(simbolo: String, posicao: Vector2, balao: Balao) -
 		GameManager.register_correct_action()
 		gerenciador.registrar_coleta_correta(simbolo)
 		EfeitoEstouro.tocar_em(self, posicao)
-		_mostrar_mensagem("Token '%s' coletado!" % simbolo)
+		_mostrar_mensagem("Token '%s' preservado na ordem correta!" % simbolo, COR_SUCESSO)
 		_atualizar_ui()
 	elif gerenciador.pertence_a_expressao(simbolo):
 		_registrar_erro("'%s' pertence à expressão, mas não era a vez dele." % simbolo)
@@ -183,11 +180,16 @@ func _on_expressao_completa() -> void:
 		# "✓ Fase 6 concluída" só deve aparecer ao vencer a fase3).
 		GameManager.award_sub_phase_bonus()
 
-	_mostrar_mensagem("Expressão completa! Fase concluída.")
+	_mostrar_mensagem("Expressão completa! Análise sintática concluída.", COR_SUCESSO)
 	var tem_proxima := config.proxima_fase_config_path != ""
+	var texto_conclusao := (
+		"Você preservou os tokens esperados e eliminou os símbolos incorretos."
+		if tem_proxima
+		else "Você atuou como um analisador sintático: conferiu a ordem dos símbolos e protegeu a estrutura do código. Essa lógica faz parte do trabalho com compiladores, linguagens e desenvolvimento de jogos."
+	)
 	hud.show_completion(
 		"FASE 6 CONCLUÍDA!" if not tem_proxima else "SUB-FASE CONCLUÍDA!",
-		"Você preservou os tokens esperados e eliminou os símbolos incorretos.",
+		texto_conclusao,
 		tem_proxima
 	)
 
@@ -195,7 +197,7 @@ func _registrar_erro(motivo: String) -> void:
 	if jogo_acabou:
 		return
 	GameManager.register_mistake(motivo)
-	_mostrar_mensagem(motivo)
+	_mostrar_mensagem(motivo, COR_ERRO)
 	_atualizar_ui()
 	# GameManager.game_over já cobre lives == 0 via sinal (_on_game_manager_game_over).
 
@@ -206,7 +208,7 @@ func _on_game_manager_game_over(phase_id: int) -> void:
 	spawner.pausar(true)
 	canhao.definir_ativo(false)
 	_remover_baloes_vivos()
-	_mostrar_mensagem("Fim de jogo! Tente novamente.")
+	_mostrar_mensagem("Defesa rompida. Observe o próximo símbolo e tente novamente.", COR_ERRO)
 	hud.show_game_over("Proteja o próximo token da expressão e atire apenas nos balões incorretos. Os pontos provisórios desta fase serão removidos.")
 
 ## Remove imediatamente todos os balões que ainda estão caindo, para que
@@ -235,19 +237,32 @@ func _on_botao_proxima_fase_pressed() -> void:
 	get_tree().reload_current_scene()
 
 func _atualizar_ui() -> void:
-	label_expressao.text = "[b]Expressão:[/b] " + gerenciador.expressao_como_bbcode(Color(0.2, 0.7, 0.3), Color(0.05, 0.05, 0.05), Color(0.6, 0.6, 0.6), 22, 34)
-	label_progresso.text = "Progresso: %d/%d" % [gerenciador.indice_atual, gerenciador.expressao.size()]
+	label_expressao.text = "[color=#d8e9f5][b]Expressão:[/b][/color] " + gerenciador.expressao_como_bbcode(
+		Color("72e6a1"),
+		Color("ffc43d"),
+		Color("9aabba"),
+		22,
+		32
+	)
+	var proximo := gerenciador.proximo_esperado()
+	label_progresso.text = "Próximo símbolo: %s   •   Progresso: %d/%d" % [
+		proximo if proximo != "" else "✓",
+		gerenciador.indice_atual,
+		gerenciador.expressao.size(),
+	]
 
-func _mostrar_mensagem(texto: String) -> void:
+func _mostrar_mensagem(texto: String, cor: Color = COR_NEUTRA) -> void:
 	if label_mensagem:
 		label_mensagem.text = texto
+		label_mensagem.add_theme_color_override("font_color", cor)
 	if hud:
-		hud.set_feedback(texto)
+		hud.set_feedback(texto, cor)
 
 func _criar_hud() -> void:
 	hud = HUD_SCENE.instantiate()
 	add_child(hud)
 	hud.configure_phase("FASE 6 - ANÁLISE SINTÁTICA", config.rotulo_fase, false)
+	hud.configure_phase6_compact_layout()
 	hud.hide_scanner_interface()
 	hud.pause_requested.connect(_pausar)
 	hud.resume_requested.connect(_retomar)
@@ -266,6 +281,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif not jogo_acabou:
 		_pausar()
 	get_viewport().set_input_as_handled()
+
+func _input(event: InputEvent) -> void:
+	if (
+		(event is InputEventKey and event.pressed)
+		or (event is InputEventMouseButton and event.pressed)
+		or (event is InputEventMouseMotion and event.relative.length_squared() > 4.0)
+	):
+		_tempo_sem_entrada = 0.0
 
 func _pausar() -> void:
 	if pausado or jogo_acabou:
@@ -417,7 +440,13 @@ func _fechar_overlay_mecanica() -> void:
 		_definir_simulacao_ativa(true)
 		canhao.definir_ativo(true)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if tempo_retorno_inatividade > 0.0 and not _retorno_inatividade_em_andamento:
+		_tempo_sem_entrada += delta
+		if _tempo_sem_entrada >= tempo_retorno_inatividade:
+			_retorno_inatividade_em_andamento = true
+			_voltar_ao_menu()
+			return
 	if not tutorial_mecanica_ativo:
 		_verificar_tutorial_fortificado_pendente()
 
@@ -466,37 +495,3 @@ func _verificar_tutorial_fortificado_pendente() -> void:
 	_balao_fortificado_pendente = null
 	Fase6Estado.tutorial_fortificado_visto = true
 	_mostrar_tutorial_fortificado(balao)
-
-# ==========================================
-# FUNÇÃO DE DEBUG (PODE APAGAR DEPOIS)
-# ==========================================
-func _input(event: InputEvent) -> void:
-	# Trava de segurança: só funciona no editor, nunca na versão final compilada do jogo
-	if not OS.is_debug_build():
-		return
-
-	# Verifica se foi uma tecla pressionada e não um clique do mouse
-	if event is InputEventKey and event.pressed:
-		var caminho_config := ""
-
-		# Verifica qual número foi pressionado no teclado (acima das letras)
-		if event.keycode == KEY_1:
-			caminho_config = DEBUG_PATH_FASE_1
-		elif event.keycode == KEY_2:
-			caminho_config = DEBUG_PATH_FASE_2
-		elif event.keycode == KEY_3:
-			caminho_config = DEBUG_PATH_FASE_3
-
-		# Se um caminho válido foi selecionado, força a troca de fase
-		if caminho_config != "":
-			var proxima_config: ConfigFase = load(caminho_config)
-
-			if proxima_config != null:
-				print("--- DEBUG ---")
-				print("Pulando para: ", caminho_config)
-				# Utiliza o mesmo sistema que o botão "Próxima fase" usa para carregar a configuração
-				Fase6Estado.definir_proxima_config(proxima_config)
-				get_tree().reload_current_scene()
-			else:
-				push_error("DEBUG: Falha ao carregar configuração. Verifique se o caminho está correto: " + caminho_config)
-# ==========================================

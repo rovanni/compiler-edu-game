@@ -27,8 +27,12 @@ var _score_label: Label
 var _combo_label: Label
 var _title_label: Label
 var _subtitle_label: Label
+var _lives_panel: PanelContainer
+var _points_panel: PanelContainer
+var _title_panel: PanelContainer
 var _timer_panel: PanelContainer
 var _timer_label: Label
+var _menu_button: Button
 var _scanner_root: Control
 var _objective_summary: Label
 var _code_label: RichTextLabel
@@ -57,6 +61,23 @@ func configure_phase(title: String, subtitle: String, show_timer: bool = false) 
 	_title_label.text = title
 	_subtitle_label.text = subtitle
 	_timer_panel.visible = show_timer
+
+
+## Layout compacto usado somente pela Fase 6. Distribui o HUD de forma
+## simétrica sem reduzir a área jogável. Painéis decorativos deixam o clique
+## chegar ao canhão; apenas botões continuam consumindo eventos do mouse.
+func configure_phase6_compact_layout() -> void:
+	_set_anchors(_title_panel, 0.0, 0.0, 0.0, 0.0, Rect2(370, 10, 540, 64))
+	_set_anchors(_lives_panel, 0.0, 0.0, 0.0, 0.0, Rect2(12, 10, 190, 64))
+	_set_anchors(_points_panel, 0.0, 0.0, 0.0, 0.0, Rect2(212, 10, 140, 64))
+	_set_anchors(_menu_button, 0.0, 0.0, 0.0, 0.0, Rect2(1178, 10, 90, 64))
+	_title_label.add_theme_font_size_override("font_size", 25)
+	_subtitle_label.add_theme_font_size_override("font_size", 12)
+	_menu_button.text = "⚙\nMENU"
+	_timer_panel.hide()
+	for child in _root.get_children():
+		if child != _overlay:
+			_habilitar_clique_atraves(child)
 
 
 func configure_scanner(code_bbcode: String, slot_count: int, progress_text: String) -> void:
@@ -166,10 +187,10 @@ func _build_interface() -> void:
 
 
 func _build_top_bar() -> void:
-	var lives_panel := _panel(_root, "LivesPanel", 0.0, 0.0, 0.0, 0.0, Rect2(12, 10, 208, 72))
+	_lives_panel = _panel(_root, "LivesPanel", 0.0, 0.0, 0.0, 0.0, Rect2(12, 10, 208, 72))
 	var lives_box := VBoxContainer.new()
 	lives_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	lives_panel.add_child(lives_box)
+	_lives_panel.add_child(lives_box)
 	_hearts_label = _label("♥  ♥  ♥", 24, RED)
 	_hearts_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_lives_label = _label("VIDAS × 3", 15, TEXT)
@@ -177,10 +198,10 @@ func _build_top_bar() -> void:
 	lives_box.add_child(_hearts_label)
 	lives_box.add_child(_lives_label)
 
-	var points_panel := _panel(_root, "PointsPanel", 0.0, 0.0, 0.0, 0.0, Rect2(230, 10, 132, 72))
+	_points_panel = _panel(_root, "PointsPanel", 0.0, 0.0, 0.0, 0.0, Rect2(230, 10, 132, 72))
 	var points_box := VBoxContainer.new()
 	points_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	points_panel.add_child(points_box)
+	_points_panel.add_child(points_box)
 	_score_label = _label("★  0", 20, GOLD)
 	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_combo_label = _label("", 12, Color("7dd3fc"))
@@ -188,10 +209,10 @@ func _build_top_bar() -> void:
 	points_box.add_child(_score_label)
 	points_box.add_child(_combo_label)
 
-	var title_panel := _panel(_root, "TitlePanel", 0.0, 0.0, 0.0, 0.0, Rect2(372, 10, 530, 72))
+	_title_panel = _panel(_root, "TitlePanel", 0.0, 0.0, 0.0, 0.0, Rect2(372, 10, 530, 72))
 	var title_box := VBoxContainer.new()
 	title_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	title_panel.add_child(title_box)
+	_title_panel.add_child(title_box)
 	_title_label = _label("FASE 2 - SCANNER", 28, GOLD)
 	_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_subtitle_label = _label("ORGANIZE OS TOKENS NA ORDEM CORRETA", 14, TEXT)
@@ -210,10 +231,10 @@ func _build_top_bar() -> void:
 	timer_box.add_child(timer_heading)
 	timer_box.add_child(_timer_label)
 
-	var menu_button := _button("⚙\nMENU", 16)
-	_set_anchors(menu_button, 1.0, 0.0, 1.0, 0.0, Rect2(-102, 10, 90, 72))
-	menu_button.pressed.connect(func() -> void: pause_requested.emit())
-	_root.add_child(menu_button)
+	_menu_button = _button("⚙\nMENU", 16)
+	_set_anchors(_menu_button, 1.0, 0.0, 1.0, 0.0, Rect2(-102, 10, 90, 72))
+	_menu_button.pressed.connect(func() -> void: pause_requested.emit())
+	_root.add_child(_menu_button)
 
 
 func _build_scanner_row() -> void:
@@ -407,6 +428,17 @@ func _set_anchors(control: Control, left: float, top: float, right: float, botto
 	control.offset_top = rect.position.y
 	control.offset_right = rect.position.x + rect.size.x
 	control.offset_bottom = rect.position.y + rect.size.y
+
+
+func _habilitar_clique_atraves(node: Node) -> void:
+	if node is Control:
+		node.mouse_filter = (
+			Control.MOUSE_FILTER_STOP
+			if node is BaseButton
+			else Control.MOUSE_FILTER_IGNORE
+		)
+	for child in node.get_children():
+		_habilitar_clique_atraves(child)
 
 
 func _label(text: String, font_size: int, color: Color) -> Label:

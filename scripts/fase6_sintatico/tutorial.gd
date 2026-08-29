@@ -45,14 +45,16 @@ const SIMBOLO_CERTO := "y"
 const SIMBOLO_ERRADO := "@"
 const EXPRESSAO_EXEMPLO: Array[String] = ["y", "=", "1"]
 
+@export_range(0.0, 600.0, 5.0) var tempo_retorno_inatividade: float = 120.0
+
 const TEXTOS := {
 	Estado.INTRO: "Bem-vindo! Sua missão: montar a expressão no topo, na ordem certa, caractere por caractere.",
-	Estado.TIRO: "Este é o seu canhão. Mova-o com mouse, A/D ou setas e atire com Espaço ou M1.",
+	Estado.TIRO: "Este é o seu canhão. Mova-o com o mouse, A/D ou setas. Clique ou pressione Espaço para atirar.",
 	Estado.APONTAR_ALVO: "O caractere em destaque na expressão é o que você precisa capturar agora.",
 	Estado.BALAO_CERTO: "Quando o balão CERTO cair, não atire nele: deixe-o chegar ao chão para coletar.",
-	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e atire com Espaço ou M1.",
-	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Alinhe o canhão e use Espaço ou M1.",
-	Estado.FINAL: "Cuidado: deixar cair o errado custa uma vida. A cor do balão é só enfeite. Boa sorte!",
+	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e clique ou pressione Espaço.",
+	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Alinhe o canhão e tente eliminá-lo.",
+	Estado.FINAL: "Você treinou uma tarefa de análise sintática: conferir símbolos e sua ordem. Essa lógica é usada na construção de compiladores e linguagens de programação!",
 }
 
 @onready var label_expressao_exemplo: RichTextLabel = $UI/LabelExpressaoExemplo
@@ -71,6 +73,8 @@ var _balao_atual: Balao = null
 var _ja_acertou_no_passo_atual := false
 var _cena_balao: PackedScene = preload("res://scenes/fase6_sintatico/balao.tscn")
 var _gerenciador_exemplo := GerenciadorExpressao.new()
+var _tempo_sem_entrada := 0.0
+var _retorno_inatividade_em_andamento := false
 
 func _ready() -> void:
 	Fase6Estado.iniciar_execucao()
@@ -89,6 +93,12 @@ func _ready() -> void:
 ## Enter avança qualquer passo já concluído. Isso evita depender do mouse
 ## para clicar no botão e mantém Espaço livre exclusivamente para disparar.
 func _input(event: InputEvent) -> void:
+	if (
+		(event is InputEventKey and event.pressed)
+		or (event is InputEventMouseButton and event.pressed)
+		or (event is InputEventMouseMotion and event.relative.length_squared() > 4.0)
+	):
+		_tempo_sem_entrada = 0.0
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	if event.is_action_pressed(&"pause"):
@@ -105,6 +115,14 @@ func _input(event: InputEvent) -> void:
 	if botao_proximo.visible and not botao_proximo.disabled:
 		get_viewport().set_input_as_handled()
 		_on_botao_proximo_pressed()
+
+func _process(delta: float) -> void:
+	if tempo_retorno_inatividade <= 0.0 or _retorno_inatividade_em_andamento:
+		return
+	_tempo_sem_entrada += delta
+	if _tempo_sem_entrada >= tempo_retorno_inatividade:
+		_retorno_inatividade_em_andamento = true
+		_voltar_ao_menu()
 
 ## --- Transição central de estado ---
 ## IMPORTANTE: esta função pode ser chamada de dentro de um callback de
@@ -134,7 +152,7 @@ func _ir_para(novo_estado: int) -> void:
 
 		Estado.TIRO:
 			_mostrar_expressao_exemplo(false)
-			label_dica_acao.text = "Pressione Espaço ou M1 (botão esquerdo do mouse) para realizar um tiro."
+			label_dica_acao.text = "Clique com o botão esquerdo ou pressione Espaço para realizar um tiro."
 			_liberar_proximo(false)
 
 		Estado.APONTAR_ALVO:
@@ -200,7 +218,7 @@ func _spawnar_balao(simbolo: String) -> void:
 	_balao_atual.simbolo = simbolo
 	_balao_atual.velocidade_queda = VELOCIDADE_NORMAL
 	_balao_atual.vidas = 1 # garante um só impacto, mesmo que balao.gd suporte fortificados
-	_balao_atual.position = Vector2(300, -40)
+	_balao_atual.position = Vector2(300, -95)
 	area_baloes.add_child(_balao_atual)
 	_balao_atual.definir_cor(COR_BALAO_TUTORIAL)
 
@@ -258,7 +276,7 @@ func _on_canhao_disparou() -> void:
 	if _estado != Estado.TIRO or _ja_acertou_no_passo_atual:
 		return
 	_ja_acertou_no_passo_atual = true
-	label_dica_acao.text = "Muito bem! Cada toque no Espaço ou M1 dispara um projétil."
+	label_dica_acao.text = "Muito bem! Cada clique ou toque no Espaço dispara um projétil."
 	_liberar_proximo(true)
 
 ## --- Ênfase visual de vida perdida ---
@@ -317,6 +335,7 @@ func _criar_hud() -> void:
 	hud = HUD_SCENE.instantiate()
 	add_child(hud)
 	hud.configure_phase("FASE 6 - TUTORIAL", "APRENDA A IDENTIFICAR E ELIMINAR SÍMBOLOS", false)
+	hud.configure_phase6_compact_layout()
 	hud.hide_scanner_interface()
 	hud.pause_requested.connect(_pausar)
 	hud.resume_requested.connect(_retomar)

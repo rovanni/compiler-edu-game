@@ -1,98 +1,160 @@
-[gd_scene format=3 uid="uid://dm5njnbd5nur6"]
+[gd_scene load_steps=8 format=3 uid="uid://dm5njnbd5nur6"]
 
 [ext_resource type="Script" path="res://scripts/fase6_sintatico/tutorial.gd" id="1_tut"]
-[ext_resource type="PackedScene" uid="uid://c6f1chao001" path="res://scenes/fase6_sintatico/chao.tscn" id="2_cha"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/cenario.tscn" id="2_cenario"]
 [ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/canhao.tscn" id="3_can"]
+[ext_resource type="FontFile" path="res://fonts/BalooThambi2-Bold.ttf" id="4_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleTutorial"]
+bg_color = Color(0.025, 0.075, 0.12, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.25, 0.7, 0.92, 0.86)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 20.0
+content_margin_top = 16.0
+content_margin_right = 20.0
+content_margin_bottom = 16.0
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 7
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBotao"]
+bg_color = Color(0.06, 0.2, 0.31, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.77, 0.24, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StylePular"]
+bg_color = Color(0.025, 0.075, 0.12, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.57, 0.68, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
 
 [node name="Tutorial" type="Node2D"]
 script = ExtResource("1_tut")
 
+[node name="Cenario" parent="." instance=ExtResource("2_cenario")]
+
 [node name="AreaBaloes" type="Node2D" parent="."]
 position = Vector2(20, 0)
 
-[node name="Chao" parent="." instance=ExtResource("2_cha")]
-position = Vector2(640, 620)
-
 [node name="Canhao" parent="." instance=ExtResource("3_can")]
-position = Vector2(640, 675)
+position = Vector2(640, 660)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="LabelExpressaoExemplo" type="RichTextLabel" parent="UI"]
 offset_left = 16.0
 offset_top = 98.0
-offset_right = 900.0
-offset_bottom = 166.0
-theme_override_font_sizes/normal_font_size = 22
+offset_right = 660.0
+offset_bottom = 174.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.95, 0.98, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-fit_content = true
+fit_content = false
 scroll_active = false
 horizontal_alignment = 1
 text = "y = 1"
 
 [node name="LabelVidaPerdida" type="Label" parent="UI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -80.0
-offset_top = 160.0
-offset_right = 80.0
-offset_bottom = 210.0
-grow_horizontal = 2
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 36
+offset_left = 180.0
+offset_top = 220.0
+offset_right = 460.0
+offset_bottom = 290.0
+mouse_filter = 2
 theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.01, 0.01, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 44
 text = "-1 VIDA"
+horizontal_alignment = 1
 visible = false
 
 [node name="Caixa" type="PanelContainer" parent="UI"]
-anchors_preset = 12
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -320.0
-offset_top = -220.0
-offset_right = 320.0
-offset_bottom = -40.0
-grow_horizontal = 2
-grow_vertical = 0
+offset_left = 690.0
+offset_top = 300.0
+offset_right = 1256.0
+offset_bottom = 570.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleTutorial")
 
 [node name="VBoxCaixa" type="VBoxContainer" parent="UI/Caixa"]
 layout_mode = 2
-theme_override_constants/separation = 12
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Titulo" type="Label" parent="UI/Caixa/VBoxCaixa"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.77, 0.24, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 24
+text = "COMO DEFENDER A EXPRESSÃO"
+horizontal_alignment = 1
 
 [node name="LabelTexto" type="Label" parent="UI/Caixa/VBoxCaixa"]
 layout_mode = 2
+mouse_filter = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.95, 0.98, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 20
 autowrap_mode = 3
 text = "Texto do passo do tutorial."
+vertical_alignment = 1
 
 [node name="LabelDicaAcao" type="Label" parent="UI/Caixa/VBoxCaixa"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.9, 0.85, 0.3, 1)
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 17
 autowrap_mode = 3
 text = "Aguardando ação..."
 
 [node name="HBoxBotoes" type="HBoxContainer" parent="UI/Caixa/VBoxCaixa"]
 layout_mode = 2
+mouse_filter = 2
 alignment = 2
 theme_override_constants/separation = 12
 
 [node name="BotaoProximo" type="Button" parent="UI/Caixa/VBoxCaixa/HBoxBotoes"]
+custom_minimum_size = Vector2(190, 44)
 layout_mode = 2
-focus_mode = 0
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBotao")
 text = "Próximo"
 
 [node name="BotaoPular" type="Button" parent="UI"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -160.0
+offset_left = 1058.0
 offset_top = 96.0
-offset_right = -12.0
-offset_bottom = 128.0
-grow_horizontal = 0
-focus_mode = 0
+offset_right = 1268.0
+offset_bottom = 142.0
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StylePular")
 text = "Pular tutorial"

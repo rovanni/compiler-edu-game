@@ -16,8 +16,9 @@ const CHANCE_FILHO_FORTIFICADO := 0.4
 @export var cena_balao: PackedScene
 @export var intervalo_spawn: float = 1.4
 @export var largura_area: float = 0.0
-@export var margem_direita: float = 60.0
-@export var pos_y_inicial: float = -40.0
+@export var margem_esquerda: float = 45.0
+@export var margem_direita: float = 45.0
+@export var pos_y_inicial: float = -95.0
 
 @export var digitos_lixo: Array[String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 @export var simbolos_lixo: Array[String] = ["@", "#", "$", "%", "&", "?", ";", "*", "/", "-"]
@@ -104,7 +105,7 @@ func spawnar_chefe() -> void:
 		simbolo_chefe = _escolher_lixo()
 		
 	balao.simbolo = simbolo_chefe
-	balao.position = Vector2(largura_area / 2.0, pos_y_inicial) # Centro da tela
+	balao.position = Vector2((margem_esquerda + largura_area) / 2.0, pos_y_inicial)
 	balao.cor_balao = _escolher_cor()
 	
 	balao.vidas = VIDAS_CHEFE
@@ -143,7 +144,7 @@ func _on_balao_gigante_destruido(pos_origem: Vector2) -> void:
 		var offset_x := _rng.randf_range(-180.0, 180.0)
 		var offset_y := _rng.randf_range(-150.0, 20.0)
 		
-		var pos_final_x := clampf(pos_origem_local.x + offset_x, 0.0, largura_area)
+		var pos_final_x := clampf(pos_origem_local.x + offset_x, margem_esquerda, largura_area)
 		filho.position = Vector2(pos_final_x, pos_origem_local.y + offset_y)
 		
 		filho.cor_balao = _escolher_cor()
@@ -179,7 +180,7 @@ func _spawnar() -> void:
 
 	var balao: Balao = cena_balao.instantiate()
 	balao.simbolo = simbolo
-	balao.position = Vector2(_rng.randf_range(0, largura_area), pos_y_inicial)
+	balao.position = Vector2(_rng.randf_range(margem_esquerda, largura_area), pos_y_inicial)
 	balao.cor_balao = _escolher_cor()
 	
 	if not eh_alvo:
