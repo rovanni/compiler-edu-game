@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fase2_scanner/bridge_student_npc.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/fase2_scanner/npc_professor_transparent.png" id="2_texture"]
+[ext_resource type="FontFile" path="res://fonts/Friend Bestie.otf" id="3_font"]
+
+[sub_resource type="RectangleShape2D" id="InteractionShape"]
+size = Vector2(150, 140)
+
+[sub_resource type="StyleBoxFlat" id="BubbleStyle"]
+bg_color = Color(0.0313726, 0.0941176, 0.152941, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.372549, 0.470588, 0.564706, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[node name="BridgeStudentNPC" type="Area2D"]
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -44)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_texture")
+texture_filter = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -55)
+shape = SubResource("InteractionShape")
+
+[node name="SpeechBubble" type="PanelContainer" parent="."]
+offset_left = -300.0
+offset_top = -170.0
+offset_right = -10.0
+offset_bottom = -90.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("BubbleStyle")
+
+[node name="Dialogue" type="VBoxContainer" parent="SpeechBubble"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="SpeechBubble/Dialogue"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.768627, 0.239216, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "CHAVES PRESENCINHA"
+
+[node name="Message" type="Label" parent="SpeechBubble/Dialogue"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.956863, 0.968627, 0.984314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 12
+text = "Ei, você não é daqui né? você é de outro mundo, vou te ajudar a voltar para a casa, mas para isso você precisa coletar os tokens e coloca-los em ordem correta para construir a ponte."
+autowrap_mode = 2

@@ -211,6 +211,7 @@ func _on_card_fase_3_pressed() -> void:
 	exibir_mensagem_em_breve("Caverna do Parser")
 
 func _on_card_fase_4_pressed() -> void:
+	preparar_fase(4)
 	iniciar_fase("res://scenes/fase4_ast/Main.tscn")
 
 func _on_card_fase_5_pressed() -> void:
