@@ -5,6 +5,8 @@ const SpawnerBaloesScript := preload("res://scripts/fase6_sintatico/spawner_balo
 const ConfigFaseScript := preload("res://scripts/fase6_sintatico/config_fase.gd")
 const GameManagerScript := preload("res://scripts/autoload/game_manager.gd")
 const BALAO_SCENE := preload("res://scenes/fase6_sintatico/balao.tscn")
+const CANHAO_SCENE := preload("res://scenes/fase6_sintatico/canhao.tscn")
+const EFEITO_SCENE := preload("res://scenes/fase6_sintatico/efeito_estouro.tscn")
 
 var failures := 0
 
@@ -16,10 +18,12 @@ func _executar() -> void:
 	await _test_gatilho_do_chefe()
 	_test_penalidade_fatal()
 	_test_material_de_destaque()
+	_test_integracao_dos_assets()
+	_test_layout_e_cliques_da_fase6()
 	await process_frame
 
 	if failures == 0:
-		print("PASS: expressão, gatilho do chefe, penalidade fatal e destaque da Fase 6")
+		print("PASS: lógica, chefe, penalidade, destaque e assets finais da Fase 6")
 		quit(0)
 	else:
 		push_error("FAIL: %d teste(s) da Fase 6 falharam" % failures)
@@ -107,7 +111,53 @@ func _test_material_de_destaque() -> void:
 	balao.definir_intensidade_destaque(0.3)
 	balao.definir_destaque_visual(false)
 	_expect(balao.sprite.material == material_original, "destaque deve restaurar o material original")
-	balao.queue_free()
+	balao.free()
+
+func _test_integracao_dos_assets() -> void:
+	var balao = BALAO_SCENE.instantiate()
+	var sprite_balao: Sprite2D = balao.get_node("Sprite2D")
+	var label_balao: Label = balao.get_node("Label")
+	_expect(sprite_balao.texture != null, "o balão final deve possuir textura")
+	_expect(label_balao.get_theme_font("font") != null, "o símbolo deve possuir fonte legível")
+	balao.free()
+
+	var canhao = CANHAO_SCENE.instantiate()
+	_expect(canhao.get_node("Sprite2D").texture != null, "o canhão final deve possuir textura")
+	_expect(canhao.get_node("Tiro").stream != null, "o disparo deve possuir efeito sonoro")
+	canhao.free()
+
+	var efeito = EFEITO_SCENE.instantiate()
+	var som_estouro: AudioStreamPlayer = efeito.get_node("Som")
+	_expect(som_estouro.stream != null, "o estouro deve possuir efeito sonoro")
+	_expect(AudioServer.get_bus_index(&"SFX") >= 0, "o bus SFX deve existir")
+	efeito.free()
+
+func _test_layout_e_cliques_da_fase6() -> void:
+	var hud_scene: PackedScene = load("res://scenes/common/game_hud.tscn")
+	var main_scene: PackedScene = load("res://scenes/fase6_sintatico/Main.tscn")
+	var tutorial_scene: PackedScene = load("res://scenes/fase6_sintatico/Tutorial.tscn")
+	var hud = hud_scene.instantiate()
+	root.add_child(hud)
+	_expect(hud._lives_panel.position.x == 12.0, "o HUD padrão das outras fases não deve mudar")
+	_expect(hud._lives_panel.size.x == 208.0, "o HUD padrão deve preservar seu tamanho original")
+	hud.configure_phase6_compact_layout()
+	_expect(hud._lives_panel.size.x == 190.0, "a Fase 6 deve usar um HUD compacto")
+	_expect(hud._lives_panel.mouse_filter == Control.MOUSE_FILTER_IGNORE, "painéis laterais devem deixar o clique atravessar")
+	_expect(hud._menu_button.mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Menu deve consumir o clique")
+	hud.free()
+
+	var main = main_scene.instantiate()
+	_expect(main.get_node("Canhao").position.x == 640.0, "a gameplay deve permanecer centralizada na tela")
+	_expect(main.get_node("UI/PainelObjetivo").mouse_filter == Control.MOUSE_FILTER_IGNORE, "o painel de objetivo deve permitir disparos")
+	_expect(main.get_node("UI/PainelControles").mouse_filter == Control.MOUSE_FILTER_IGNORE, "o painel de controles deve permitir disparos")
+	main.free()
+
+	var tutorial = tutorial_scene.instantiate()
+	_expect(tutorial.get_node("Canhao").position.x == 640.0, "o tutorial deve permanecer centralizado na tela")
+	_expect(tutorial.get_node("UI/Caixa").mouse_filter == Control.MOUSE_FILTER_IGNORE, "a fala do tutorial deve permitir disparos")
+	_expect(tutorial.get_node("UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo").mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Próximo deve consumir o clique")
+	tutorial._gerenciador_exemplo.free()
+	tutorial.free()
 
 func _expect(condition: bool, message: String) -> void:
 	if condition:
