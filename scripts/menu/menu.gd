@@ -203,7 +203,7 @@ func _on_card_fase_2_pressed() -> void:
 	exibir_mensagem_em_breve("Vale do Scanner")
 
 func _on_card_fase_3_pressed() -> void:
-	exibir_mensagem_em_breve("Caverna do Parser")
+	iniciar_fase("res://scenes/fase3_parser/main_room.tscn")
 
 func _on_card_fase_4_pressed() -> void:
 	iniciar_fase("res://scenes/fase4_ast/Main.tscn")
