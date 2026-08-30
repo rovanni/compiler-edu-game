@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://b0evh37g5yqf1"]
+
+[ext_resource type="Texture2D" uid="uid://nytg553mqb5e" path="res://assets/fase5_erroLexico/MonstroInvalidoDerrotado.png" id="1_52jjl"]
+[ext_resource type="Texture2D" uid="uid://ch6yub6utlr53" path="res://assets/fase5_erroLexico/MonstroInvalido.png" id="1_oriqs"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_1qh0c"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8m7dx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_oriqs")
+}],
+"loop": 1,
+"name": &"vivo",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3uhx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_52jjl")
+}],
+"loop": 1,
+"name": &"morto",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_utjk5"]
+size = Vector2(51, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8m7dx"]
+size = Vector2(51, 8)
+
+[node name="MonstroInvalido" type="CharacterBody2D" unique_id=1778544104]
+z_index = 2
+collision_layer = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=177679645]
+position = Vector2(977.99994, 622)
+scale = Vector2(0.086206906, 0.060573805)
+sprite_frames = SubResource("SpriteFrames_8m7dx")
+animation = &"vivo"
+
+[node name="AnimatedSprite2D_morto" type="AnimatedSprite2D" parent="." unique_id=1911881777]
+position = Vector2(980.00006, 628)
+scale = Vector2(0.51470584, 0.3910888)
+sprite_frames = SubResource("SpriteFrames_h3uhx")
+animation = &"morto"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1256405161]
+position = Vector2(978, 623)
+shape = SubResource("RectangleShape2D_utjk5")
+
+[node name="Label" type="Label" parent="." unique_id=1146238843]
+offset_left = 958.0
+offset_top = 564.0
+offset_right = 998.0
+offset_bottom = 590.0
+theme_override_colors/font_color = Color(0.9882353, 0.21176471, 0.14509805, 1)
+theme_override_fonts/font = ExtResource("2_1qh0c")
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="." unique_id=796184618]
+collision_layer = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=781691847]
+position = Vector2(977, 596)
+shape = SubResource("RectangleShape2D_8m7dx")

@@ -219,7 +219,8 @@ func _on_card_fase_4_pressed() -> void:
 	iniciar_fase("res://scenes/fase4_ast/Main.tscn")
 
 func _on_card_fase_5_pressed() -> void:
-	exibir_mensagem_em_breve("Castelo dos Erros Léxicos")
+	preparar_fase(5)
+	iniciar_fase("res://scenes/fase5_erroLexico/introducao.tscn")
 
 func _on_card_fase_6_pressed() -> void:
 	exibir_mensagem_em_breve("Fortaleza dos Erros Sintáticos")
