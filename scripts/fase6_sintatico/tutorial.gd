@@ -44,16 +44,15 @@ const COR_BALAO_TUTORIAL := Color(0.55, 0.6, 0.75)
 const SIMBOLO_CERTO := "y"
 const SIMBOLO_ERRADO := "@"
 const EXPRESSAO_EXEMPLO: Array[String] = ["y", "=", "1"]
-const TECLA_PULAR_TUTORIAL := KEY_P
 
 @export_range(0.0, 600.0, 5.0) var tempo_retorno_inatividade: float = 120.0
 
 const TEXTOS := {
 	Estado.INTRO: "Bem-vindo! Sua missão: montar a expressão no topo, na ordem certa, caractere por caractere.",
-	Estado.TIRO: "Este é o seu canhão. Mova-o com o mouse, arraste o dedo ou use A/D e setas. Clique, toque ou pressione Espaço para atirar.",
+	Estado.TIRO: "Este é o seu canhão. Mova-o com o mouse, A/D ou setas. Clique ou pressione Espaço para atirar.",
 	Estado.APONTAR_ALVO: "O caractere em destaque na expressão é o que você precisa capturar agora.",
 	Estado.BALAO_CERTO: "Quando o balão CERTO cair, não atire nele: deixe-o chegar ao chão para coletar.",
-	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e clique, toque ou pressione Espaço.",
+	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e clique ou pressione Espaço.",
 	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Alinhe o canhão e tente eliminá-lo.",
 	Estado.FINAL: "Você treinou uma tarefa de análise sintática: conferir símbolos e sua ordem. Essa lógica é usada na construção de compiladores e linguagens de programação!",
 }
@@ -98,8 +97,6 @@ func _input(event: InputEvent) -> void:
 		(event is InputEventKey and event.pressed)
 		or (event is InputEventMouseButton and event.pressed)
 		or (event is InputEventMouseMotion and event.relative.length_squared() > 4.0)
-		or (event is InputEventScreenTouch and event.pressed)
-		or (event is InputEventScreenDrag and event.relative.length_squared() > 4.0)
 	):
 		_tempo_sem_entrada = 0.0
 	if not event is InputEventKey or not event.pressed or event.echo:
@@ -112,10 +109,6 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if pausado:
-		return
-	if _eh_atalho_pular(event):
-		get_viewport().set_input_as_handled()
-		_on_botao_pular_pressed()
 		return
 	if event.keycode not in [KEY_ENTER, KEY_KP_ENTER]:
 		return
@@ -159,7 +152,7 @@ func _ir_para(novo_estado: int) -> void:
 
 		Estado.TIRO:
 			_mostrar_expressao_exemplo(false)
-			label_dica_acao.text = "Clique, toque na tela ou pressione Espaço para realizar um tiro."
+			label_dica_acao.text = "Clique com o botão esquerdo ou pressione Espaço para realizar um tiro."
 			_liberar_proximo(false)
 
 		Estado.APONTAR_ALVO:
@@ -283,16 +276,8 @@ func _on_canhao_disparou() -> void:
 	if _estado != Estado.TIRO or _ja_acertou_no_passo_atual:
 		return
 	_ja_acertou_no_passo_atual = true
-	label_dica_acao.text = "Muito bem! Cada clique, toque na tela ou Espaço dispara um projétil."
+	label_dica_acao.text = "Muito bem! Cada clique ou toque no Espaço dispara um projétil."
 	_liberar_proximo(true)
-
-func _eh_atalho_pular(event: InputEvent) -> bool:
-	return (
-		event is InputEventKey
-		and event.pressed
-		and not event.echo
-		and event.keycode == TECLA_PULAR_TUTORIAL
-	)
 
 ## --- Ênfase visual de vida perdida ---
 func _mostrar_enfase_vida_perdida() -> void:

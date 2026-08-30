@@ -140,7 +140,7 @@ mouse_filter = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
 theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 18
-text = "Mouse, arraste ou A/D/setas: mover   •   Clique, toque ou Espaço: atirar   •   Proteja o símbolo destacado"
+text = "Mova com o mouse, A/D ou setas   •   Clique ou Espaço: atirar   •   Proteja o símbolo destacado e estoure os demais"
 horizontal_alignment = 1
 vertical_alignment = 1
 

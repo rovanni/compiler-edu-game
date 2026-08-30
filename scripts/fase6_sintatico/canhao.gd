@@ -13,14 +13,6 @@ signal disparou
 var ativo := true
 var _controle_por_mouse := true
 var _mouse_x := 0.0
-var _ultimo_toque_ms := -1000
-var _toque_em_andamento := false
-var _toque_jogo_ativo := false
-var _toque_arrastou := false
-var _toque_inicio := Vector2.ZERO
-
-const JANELA_CLIQUE_EMULADO_MS := 120
-const LIMIAR_ARRASTE_TOUCH := 12.0
 
 func _ready() -> void:
 	_mouse_x = get_viewport_rect().size.x * 0.5
@@ -28,51 +20,22 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		_definir_posicao_ponteiro(event.position.x)
-	elif event is InputEventScreenDrag:
-		_definir_posicao_ponteiro(event.position.x)
-		if _toque_jogo_ativo and event.position.distance_to(_toque_inicio) >= LIMIAR_ARRASTE_TOUCH:
-			_toque_arrastou = true
-	elif event is InputEventScreenTouch:
-		_definir_posicao_ponteiro(event.position.x)
-		if event.pressed:
-			_toque_em_andamento = true
-			_toque_arrastou = false
-			_toque_inicio = event.position
-		else:
-			# Se um botão consumir a soltura, _unhandled_input não será chamado.
-			# A limpeza adiada evita deixar o canhão preso no modo touch.
-			call_deferred("_limpar_toque_consumido")
+		_mouse_x = event.position.x
+		_controle_por_mouse = true
 	elif event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode in [KEY_A, KEY_D, KEY_LEFT, KEY_RIGHT]:
 			_controle_por_mouse = false
 		elif event.keycode == KEY_SPACE:
 			_disparar()
 
-## Clique e toque são tratados como input não consumido para que botões da
-## interface (Próximo, Pular etc.) tenham prioridade e não provoquem tiros.
+## O clique é tratado como input não consumido para que botões da interface
+## (Próximo, Reiniciar etc.) tenham prioridade e não provoquem tiros juntos.
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			_toque_jogo_ativo = true
-			return
-		var deve_disparar := _toque_jogo_ativo and not _toque_arrastou
-		_toque_em_andamento = false
-		_toque_jogo_ativo = false
-		_ultimo_toque_ms = Time.get_ticks_msec()
-		if deve_disparar:
-			_definir_posicao_ponteiro(event.position.x)
-			_aplicar_posicao_ponteiro()
-			_disparar()
-	elif (
+	if (
 		event is InputEventMouseButton
 		and event.button_index == MOUSE_BUTTON_LEFT
 		and event.pressed
 	):
-		# Alguns totens emulam um clique de mouse logo depois do toque nativo.
-		# Ignorá-lo impede que um único dedo gere dois projéteis.
-		if _toque_em_andamento or Time.get_ticks_msec() - _ultimo_toque_ms <= JANELA_CLIQUE_EMULADO_MS:
-			return
 		_disparar()
 
 func _physics_process(delta: float) -> void:
@@ -84,25 +47,10 @@ func _physics_process(delta: float) -> void:
 		_controle_por_mouse = false
 		position.x += direcao * velocidade_horizontal * delta
 	elif _controle_por_mouse:
-		_aplicar_posicao_ponteiro()
+		position.x = _mouse_x
 
 	var largura := get_viewport_rect().size.x
 	position.x = clampf(position.x, margem_horizontal, largura - margem_horizontal)
-
-func _definir_posicao_ponteiro(posicao_x: float) -> void:
-	_mouse_x = posicao_x
-	_controle_por_mouse = true
-
-func _aplicar_posicao_ponteiro() -> void:
-	var largura := get_viewport_rect().size.x
-	position.x = clampf(_mouse_x, margem_horizontal, largura - margem_horizontal)
-
-func _limpar_toque_consumido() -> void:
-	if not _toque_em_andamento:
-		return
-	_toque_em_andamento = false
-	_toque_jogo_ativo = false
-	_toque_arrastou = false
 
 func definir_ativo(valor: bool) -> void:
 	ativo = valor

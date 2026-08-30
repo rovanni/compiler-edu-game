@@ -287,8 +287,6 @@ func _input(event: InputEvent) -> void:
 		(event is InputEventKey and event.pressed)
 		or (event is InputEventMouseButton and event.pressed)
 		or (event is InputEventMouseMotion and event.relative.length_squared() > 4.0)
-		or (event is InputEventScreenTouch and event.pressed)
-		or (event is InputEventScreenDrag and event.relative.length_squared() > 4.0)
 	):
 		_tempo_sem_entrada = 0.0
 
