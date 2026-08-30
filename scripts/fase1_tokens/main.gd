@@ -1,167 +1,182 @@
-extends Node2D
-
-const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
-
-var tokens_coletados := 0
-var total_tokens := 0
-var phase_checkpoint := 0
-var paused := false
-var completed := false
-var portal_ativo := false
-var hud
-
-func _ready() -> void:
-	if GameManager.current_phase_id != 1:
-		if GameManager.session_active:
-			GameManager.begin_phase(1)
-		else:
-			GameManager.start_new_session(1)
-
-	phase_checkpoint = GameManager.create_checkpoint()
-
-	$Jogador.set_spawn($Jogador.global_position)
-	$Jogador.fell_out.connect(_on_espinho_atingido)
+extends Node2D 
+ 
+const HUD_SCENE := preload("res://scenes/common/game_hud.tscn") 
+ 
+var tokens_coletados := 0 
+var total_tokens := 0 
+var phase_checkpoint := 0 
+var paused := false 
+var completed := false 
+var portal_ativo := false 
+var hud 
+ 
+func _ready() -> void: 
+	if GameManager.current_phase_id != 1: 
+		if GameManager.session_active: 
+			GameManager.begin_phase(1) 
+		else: 
+			GameManager.start_new_session(1) 
+ 
+	phase_checkpoint = GameManager.create_checkpoint() 
+ 
+	$Jogador.set_spawn($Jogador.global_position) 
+	$Jogador.fell_out.connect(_on_espinho_atingido) 
+	 
+	$Portal.visible = false 
+	$Portal.modulate.a = 0.0
+	$Portal.set_enabled(false) 
+	$Portal.entered.connect(_on_portal_entered) 
+ 
+	total_tokens = $Tokens.get_child_count() 
+ 
+	for token in $Tokens.get_children(): 
+		token.coletado.connect(_on_token_coletado) 
+ 
+	$Espinho2.atingido.connect(_on_espinho_atingido) 
+	$Espinho.atingido.connect(_on_espinho_atingido) 
+ 
+	GameManager.game_over.connect(_on_game_over) 
+ 
+	criar_hud() 
+	mostrar_inicio_fase() 
+ 
+func _unhandled_input(event: InputEvent) -> void: 
+	if event.is_action_pressed(&"pause"): 
+		if paused: 
+			_retomar() 
+		elif not completed: 
+			_pausar() 
+		get_viewport().set_input_as_handled() 
+ 
+func _on_token_coletado() -> void: 
+	if paused or completed: 
+		return 
+ 
+	tokens_coletados += 1 
+	var awarded := GameManager.register_correct_action() 
+ 
+	SoundManager.play_confirmation() 
+	hud.set_feedback("Token coletado! +%d pontos" % awarded,Color("73e6a2")) 
+ 
+	if tokens_coletados == total_tokens: 
+		ativar_portal() 
+ 
+func _on_espinho_atingido() -> void: 
+	if paused or completed: 
+		return 
+	var remaining := GameManager.register_mistake("perigo", true) 
+	SoundManager.play_hurt() 
+	if remaining > 0: 
+		$Jogador.respawn() 
+		hud.set_feedback("Cuidado! Você perdeu uma vida.",Color("ff7b7b")) 
+ 
+func resetar_tokens() -> void: 
+	tokens_coletados = 0 
+	for token in $Tokens.get_children(): 
+		token.resetar() 
+	portal_ativo = false 
+	$Portal.set_enabled(false) 
+	$Portal.visible = false 
+	$Portal.modulate.a = 0.0
+ 
+func vencer() -> void: 
+	if completed: 
+		return 
+ 
+	completed = true 
+	$Jogador.set_controls_enabled(false) 
+ 
+	var bonus := GameManager.complete_phase(1,not GameManager.phase_had_mistake) 
+ 
+	hud.show_completion( 
+		"FASE 1 CONCLUÍDA!", 
+		"Todos os tokens foram coletados. +%d pontos de conclusão.\n\nAgora siga para o Vale do Scanner e organize os tokens na ordem do código." % bonus, 
+		true 
+	) 
+ 
+func criar_hud() -> void: 
+	hud = HUD_SCENE.instantiate() 
+	add_child(hud) 
+	hud.configure_phase("FASE 1 - REINO DOS TOKENS","COLETE OS TOKENS E EVITE OS ESPINHOS",false) 
+	hud.hide_scanner_interface() 
+ 
+	hud.pause_requested.connect(_pausar) 
+	hud.resume_requested.connect(_retomar) 
+	hud.menu_confirmed.connect(_voltar_menu) 
+	hud.retry_requested.connect(_tentar_novamente) 
+	hud.next_requested.connect(_ir_para_fase_2) 
+ 
+func _pausar() -> void: 
+	if paused or completed: 
+		return 
+	paused = true 
+	$Jogador.set_controls_enabled(false) 
+ 
+	hud.show_pause() 
+ 
+ 
+func _retomar() -> void: 
+	if not paused: 
+		return 
+	paused = false 
+	$Jogador.set_controls_enabled(true) 
+ 
+func _on_game_over(phase_id: int) -> void: 
+	if phase_id != 1: 
+		return 
+	paused = true 
+	$Jogador.set_controls_enabled(false) 
+	resetar_tokens() 
+	hud.show_game_over() 
+ 
+func _tentar_novamente() -> void: 
+	GameManager.rollback_to(phase_checkpoint) 
+	GameManager.reset_lives() 
+	GameManager.begin_phase(1) 
+ 
+	get_tree().reload_current_scene() 
+ 
+func _ir_para_fase_2() -> void: 
+	GameManager.begin_phase(2) 
+	get_tree().change_scene_to_file("res://scenes/fase2_scanner/main.tscn") 
+ 
+func _voltar_menu() -> void: 
+	if not completed: 
+		GameManager.abandon_phase() 
+ 
+	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn") 
+	 
+func ativar_portal() -> void: 
+	if portal_ativo: 
+		return 
+	portal_ativo = true 
 	
-	$Portal.visible = false
-	$Portal.set_enabled(false)
-	$Portal.entered.connect(_on_portal_entered)
-
-	total_tokens = $Tokens.get_child_count()
-
-	for token in $Tokens.get_children():
-		token.coletado.connect(_on_token_coletado)
-
-	$Espinho2.atingido.connect(_on_espinho_atingido)
-	$Espinho.atingido.connect(_on_espinho_atingido)
-
-	GameManager.game_over.connect(_on_game_over)
-
-	criar_hud()
-	mostrar_inicio_fase()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"pause"):
-		if paused:
-			_retomar()
-		elif not completed:
-			_pausar()
-		get_viewport().set_input_as_handled()
-
-func _on_token_coletado() -> void:
-	if paused or completed:
-		return
-
-	tokens_coletados += 1
-	var awarded := GameManager.register_correct_action()
-
-	SoundManager.play_confirmation()
-	hud.set_feedback("Token coletado! +%d pontos" % awarded,Color("73e6a2"))
-
-	if tokens_coletados == total_tokens:
-		ativar_portal()
-
-func _on_espinho_atingido() -> void:
-	if paused or completed:
-		return
-	var remaining := GameManager.register_mistake("perigo", true)
-	SoundManager.play_hurt()
-	if remaining > 0:
-		$Jogador.respawn()
-		hud.set_feedback("Cuidado! Você perdeu uma vida.",Color("ff7b7b"))
-
-func resetar_tokens() -> void:
-	tokens_coletados = 0
-	for token in $Tokens.get_children():
-		token.resetar()
-	portal_ativo = false
-	$Portal.set_enabled(false)
-	$Portal.visible = false
-
-func vencer() -> void:
-	if completed:
-		return
-
-	completed = true
-	$Jogador.set_controls_enabled(false)
-
-	var bonus := GameManager.complete_phase(1,not GameManager.phase_had_mistake)
-
-	hud.show_completion(
-		"FASE 1 CONCLUÍDA!",
-		"Todos os tokens foram coletados. +%d pontos de conclusão.\n\nAgora siga para o Vale do Scanner e organize os tokens na ordem do código." % bonus,
-		true
-	)
-
-func criar_hud() -> void:
-	hud = HUD_SCENE.instantiate()
-	add_child(hud)
-	hud.configure_phase("FASE 1 - REINO DOS TOKENS","COLETE OS TOKENS E EVITE OS ESPINHOS",false)
-	hud.hide_scanner_interface()
-
-	hud.pause_requested.connect(_pausar)
-	hud.resume_requested.connect(_retomar)
-	hud.menu_confirmed.connect(_voltar_menu)
-	hud.retry_requested.connect(_tentar_novamente)
-	hud.next_requested.connect(_ir_para_fase_2)
-
-func _pausar() -> void:
-	if paused or completed:
-		return
-	paused = true
-	$Jogador.set_controls_enabled(false)
-
-	hud.show_pause()
-
-
-func _retomar() -> void:
-	if not paused:
-		return
-	paused = false
-	$Jogador.set_controls_enabled(true)
-
-func _on_game_over(phase_id: int) -> void:
-	if phase_id != 1:
-		return
-	paused = true
-	$Jogador.set_controls_enabled(false)
-	resetar_tokens()
-	hud.show_game_over()
-
-func _tentar_novamente() -> void:
-	GameManager.rollback_to(phase_checkpoint)
-	GameManager.reset_lives()
-	GameManager.begin_phase(1)
-
-	get_tree().reload_current_scene()
-
-func _ir_para_fase_2() -> void:
-	GameManager.begin_phase(2)
-	get_tree().change_scene_to_file("res://scenes/fase2_scanner/main.tscn")
-
-func _voltar_menu() -> void:
-	if not completed:
-		GameManager.abandon_phase()
-
-	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
-	
-func ativar_portal() -> void:
-	if portal_ativo:
-		return
-	portal_ativo = true
 	$Portal.visible = true
-	$Portal.set_enabled(true)
-	hud.set_feedback(
-		"Todos os tokens foram coletados! Entre no portal para concluir a fase.",
-		Color("ffc43d")
-	)
-
-func _on_portal_entered() -> void:
-	if not portal_ativo or paused or completed:
-		return
+	$Portal.modulate.a = 0.0
 	$Portal.set_enabled(false)
-	SoundManager.play_portal()
-	vencer()
 	
-func mostrar_inicio_fase() -> void:
-	hud.show_area_title("REINO DOS TOKENS")
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property($Portal,"modulate:a",1.0,1.0)
+	tween.finished.connect(_on_portal_fade_finished)
+	
+	hud.set_feedback( 
+		"Todos os tokens foram coletados! Entre no portal para concluir a fase.", 
+		Color("ffc43d") 
+	) 
+
+func _on_portal_fade_finished() -> void:
+	if portal_ativo:
+		$Portal.set_enabled(true)
+ 
+func _on_portal_entered() -> void: 
+	if not portal_ativo or paused or completed: 
+		return 
+	$Portal.set_enabled(false) 
+	SoundManager.play_portal() 
+	vencer() 
+	 
+func mostrar_inicio_fase() -> void: 
+	hud.show_area_title("REINO DOS TOKENS") 
 	SoundManager.play_portal()
