@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8n8q6l8m4k82"]
+[gd_scene load_steps=8 format=3 uid="uid://c8n8q6l8m4k82"]
 
 [ext_resource type="Script" uid="uid://cn7bwn5hyjgyg" path="res://scripts/menu/menu.gd" id="1_menu"]
 [ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_font"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://totq6arc7xch" path="res://assets/fase1_tokens/reino_tokens_background.png" id="4_r8yej"]
 [ext_resource type="Texture2D" uid="uid://ut2hdcaykm4n" path="res://assets/menu/fase4_ast_card.png" id="5_fase4_preview"]
 [ext_resource type="Texture2D" uid="uid://chl4sjdwgm526" path="res://assets/fase2_scanner/vale_scanner_background.png" id="6_fase2_preview"]
+[ext_resource type="Texture2D" path="res://assets/menu/capafase6.png" id="7_fase6_preview"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -348,6 +349,17 @@ text = "6
 FORTALEZA SINTÁTICA
 (Erros Sintáticos)"
 autowrap_mode = 2
+
+[node name="PreviewFase6" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_fase6_preview")
+expand_mode = 1
 
 [node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot"]
 custom_minimum_size = Vector2(0, 26)

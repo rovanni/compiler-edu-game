@@ -19,6 +19,7 @@ func _executar() -> void:
 	_test_penalidade_fatal()
 	_test_material_de_destaque()
 	_test_integracao_dos_assets()
+	await _test_entrada_touch_do_canhao()
 	await _test_combo_quebrado_ao_estourar_simbolo_certo()
 	_test_layout_e_cliques_da_fase6()
 	await process_frame
@@ -133,6 +134,54 @@ func _test_integracao_dos_assets() -> void:
 	_expect(AudioServer.get_bus_index(&"SFX") >= 0, "o bus SFX deve existir")
 	efeito.free()
 
+func _test_entrada_touch_do_canhao() -> void:
+	var canhao = CANHAO_SCENE.instantiate()
+	root.add_child(canhao)
+	await process_frame
+
+	var inicio_arraste := InputEventScreenTouch.new()
+	inicio_arraste.position = Vector2(280.0, 400.0)
+	inicio_arraste.pressed = true
+	canhao._input(inicio_arraste)
+	canhao._unhandled_input(inicio_arraste)
+	var arraste := InputEventScreenDrag.new()
+	arraste.position = Vector2(360.0, 400.0)
+	arraste.relative = Vector2(80.0, 0.0)
+	canhao._input(arraste)
+	canhao._physics_process(0.0)
+	_expect(is_equal_approx(canhao.position.x, 360.0), "arrastar o dedo deve mover o canhão")
+
+	var disparos := [0]
+	canhao.disparou.connect(func() -> void: disparos[0] += 1)
+	var fim_arraste := InputEventScreenTouch.new()
+	fim_arraste.position = Vector2(360.0, 400.0)
+	fim_arraste.pressed = false
+	canhao._input(fim_arraste)
+	canhao._unhandled_input(fim_arraste)
+	_expect(disparos[0] == 0, "arrastar o dedo não deve disparar")
+
+	var toque := InputEventScreenTouch.new()
+	toque.position = Vector2(420.0, 400.0)
+	toque.pressed = true
+	canhao._input(toque)
+	canhao._unhandled_input(toque)
+	var fim_toque := InputEventScreenTouch.new()
+	fim_toque.position = toque.position
+	fim_toque.pressed = false
+	canhao._input(fim_toque)
+	canhao._unhandled_input(fim_toque)
+	_expect(disparos[0] == 1, "um toque não consumido pela interface deve disparar")
+	_expect(is_equal_approx(canhao.position.x, 420.0), "o toque deve alinhar o canhão antes do disparo")
+
+	var clique_emulado := InputEventMouseButton.new()
+	clique_emulado.button_index = MOUSE_BUTTON_LEFT
+	clique_emulado.pressed = true
+	canhao._unhandled_input(clique_emulado)
+	_expect(disparos[0] == 1, "o clique emulado após o toque não deve duplicar o disparo")
+	canhao.limpar_projeteis()
+	canhao.queue_free()
+	await process_frame
+
 func _test_combo_quebrado_ao_estourar_simbolo_certo() -> void:
 	var manager = root.get_node("GameManager")
 	manager.start_new_session(6)
@@ -195,6 +244,11 @@ func _test_layout_e_cliques_da_fase6() -> void:
 	_expect(tutorial.get_node("Canhao").position.x == 640.0, "o tutorial deve permanecer centralizado na tela")
 	_expect(tutorial.get_node("UI/Caixa").mouse_filter == Control.MOUSE_FILTER_IGNORE, "a fala do tutorial deve permitir disparos")
 	_expect(tutorial.get_node("UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo").mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Próximo deve consumir o clique")
+	_expect(tutorial.get_node("UI/BotaoPular").text.contains("(P)"), "o tutorial deve informar a tecla de pular")
+	var tecla_p := InputEventKey.new()
+	tecla_p.keycode = KEY_P
+	tecla_p.pressed = true
+	_expect(tutorial._eh_atalho_pular(tecla_p), "a tecla P deve ser reconhecida como atalho para pular o tutorial")
 	tutorial._gerenciador_exemplo.free()
 	tutorial.free()
 
