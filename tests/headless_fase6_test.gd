@@ -19,6 +19,7 @@ func _executar() -> void:
 	_test_penalidade_fatal()
 	_test_material_de_destaque()
 	_test_integracao_dos_assets()
+	await _test_combo_quebrado_ao_estourar_simbolo_certo()
 	_test_layout_e_cliques_da_fase6()
 	await process_frame
 
@@ -131,6 +132,44 @@ func _test_integracao_dos_assets() -> void:
 	_expect(som_estouro.stream != null, "o estouro deve possuir efeito sonoro")
 	_expect(AudioServer.get_bus_index(&"SFX") >= 0, "o bus SFX deve existir")
 	efeito.free()
+
+func _test_combo_quebrado_ao_estourar_simbolo_certo() -> void:
+	var manager = root.get_node("GameManager")
+	manager.start_new_session(6)
+	var main_scene: PackedScene = load("res://scenes/fase6_sintatico/Main.tscn")
+	var main = main_scene.instantiate()
+	root.add_child(main)
+	await process_frame
+	main.spawner.pausar(true)
+
+	manager.register_correct_action()
+	manager.register_correct_action()
+	manager.register_correct_action()
+	var pontos_antes: int = manager.score
+	var vidas_antes: int = manager.lives
+	main._on_balao_estourado(main.gerenciador.proximo_esperado())
+
+	_expect(manager.combo == 0, "estourar o símbolo que deveria cair deve quebrar o combo")
+	_expect(manager.score == pontos_antes, "quebrar o combo ao estourar o símbolo certo não deve retirar pontos")
+	_expect(manager.lives == vidas_antes, "estourar o símbolo certo não deve retirar vida")
+	_expect(main.hud._combo_label.text == "PONTOS", "o HUD deve ocultar o combo interrompido")
+
+	manager.register_correct_action()
+	manager.register_correct_action()
+	manager.register_correct_action()
+	var balao_errado = BALAO_SCENE.instantiate()
+	balao_errado.simbolo = "@"
+	root.add_child(balao_errado)
+	main._on_balao_chegou_ao_chao(balao_errado.simbolo, Vector2.ZERO, balao_errado)
+	_expect(manager.combo == 0, "deixar um balão errado cair deve zerar o combo")
+	_expect(main.hud._combo_label.text == "PONTOS", "o HUD deve ocultar o combo após a queda errada")
+	manager.register_correct_action()
+	_expect(main.hud._combo_label.text == "PONTOS", "um kill ainda não deve exibir combo")
+	manager.register_correct_action()
+	_expect(main.hud._combo_label.text.begins_with("COMBO 2"), "o combo deve reaparecer no segundo kill, não após quatro")
+	balao_errado.queue_free()
+	main.queue_free()
+	await process_frame
 
 func _test_layout_e_cliques_da_fase6() -> void:
 	var hud_scene: PackedScene = load("res://scenes/common/game_hud.tscn")

@@ -124,9 +124,9 @@ func _on_balao_estourado(simbolo: String) -> void:
 	if jogo_acabou:
 		return
 	if gerenciador.eh_a_vez_dele(simbolo):
-		# Estourou o balão certo -> NÃO perde vida mais.
+		# Estourou o balão que devia cair -> quebra o combo, mas não perde vida nem pontos.
 		# O spawner já entende que o balão foi destruído e enviará outro em breve.
-		# Vamos apenas exibir um aviso inofensivo ao jogador.
+		GameManager.break_combo()
 		_mostrar_mensagem("Proteja o símbolo '%s': espere o próximo balão!" % simbolo, COR_ALERTA)
 		_atualizar_ui()
 	else:
