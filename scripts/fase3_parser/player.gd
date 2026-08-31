@@ -20,6 +20,7 @@ signal player_died
 signal player_took_damage(new_lives)
 
 func _ready() -> void:
+	add_to_group("player")
 	can_move = true
 	if current_lives <= 0:
 		current_lives = max_lives

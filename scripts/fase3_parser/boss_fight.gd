@@ -35,6 +35,7 @@ var boss_health: int = 3
 var expected_sequence: Array = []
 var current_sequence: Array = []
 var is_fight_active: bool = true
+var is_evaluating_sequence: bool = false
 
 const CODES_LEVEL_3_PLATES: Array = [
 	["x", "=", "10"],
@@ -276,6 +277,8 @@ func _ready() -> void:
 		exit_portal.body_entered.connect(_on_exit_portal_entered)
 		_setup_exit_portal_animation()
 		
+	_generate_new_puzzle()
+		
 	# Inicia automaticamente animações decorativas/cenário (como chamas)
 	_start_ambient_animations(self)
 
@@ -313,8 +316,6 @@ func _setup_exit_portal_animation() -> void:
 			color_rect.visible = false
 		if not anim_sprite.is_playing():
 			anim_sprite.play()
-			
-	_generate_new_puzzle()
 
 func _generate_new_puzzle() -> void:
 	if not is_fight_active: return
@@ -371,7 +372,7 @@ func _generate_new_puzzle() -> void:
 			desc_label.text = "Monte o código na ordem correta!"
 
 func _on_plate_pressed(plate_value: String) -> void:
-	if not is_fight_active: return
+	if not is_fight_active or is_evaluating_sequence: return
 	
 	current_sequence.append(plate_value)
 	
@@ -386,6 +387,7 @@ func _on_plate_pressed(plate_value: String) -> void:
 		_check_sequence()
 
 func _check_sequence() -> void:
+	is_evaluating_sequence = true
 	var is_correct = true
 	for i in range(expected_sequence.size()):
 		if current_sequence[i] != expected_sequence[i]:
@@ -448,6 +450,7 @@ func _check_sequence() -> void:
 			_spawn_projectile(boss_body.global_position, player, true)
 			await get_tree().create_timer(1.5).timeout
 		
+	is_evaluating_sequence = false
 	if is_fight_active:
 		_generate_new_puzzle()
 
