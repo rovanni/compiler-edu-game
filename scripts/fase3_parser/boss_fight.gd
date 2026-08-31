@@ -113,6 +113,7 @@ func _update_ghost_scale(_anim_name: String = "") -> void:
 
 func _ready() -> void:
 	_init_hearts_ui()
+	_setup_health_bar_style()
 	if arena_boss_name != "":
 		current_boss_name = arena_boss_name
 	if arena_boss_id != "":
