@@ -208,7 +208,8 @@ func _on_card_fase_2_pressed() -> void:
 	iniciar_fase("res://scenes/fase2_scanner/main.tscn")
 
 func _on_card_fase_3_pressed() -> void:
-	exibir_mensagem_em_breve("res://scenes/fase3_parser/main_room.tscn")
+	preparar_fase(3)
+	iniciar_fase("res://scenes/fase3_parser/main_room.tscn")
 
 func _on_card_fase_4_pressed() -> void:
 	preparar_fase(4)
@@ -241,8 +242,12 @@ func atualizar_estado_da_sessao() -> void:
 	status.text = "PONTOS %d • VIDAS %d" % [GameManager.score, GameManager.lives]
 
 	var card_fase_2: Button = $MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase2
-	if GameManager.is_phase_completed(2):
+	if card_fase_2 and GameManager.is_phase_completed(2):
 		card_fase_2.text = "✓ 2\nVALE DO SCANNER\n(CONCLUÍDA)"
+
+	var card_fase_3: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3")
+	if card_fase_3 and GameManager.is_phase_completed(3):
+		card_fase_3.text = "✓ 3\nCAVERNA PARSER\n(CONCLUÍDA)"
 
 	var card_fase_6: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
 	if card_fase_6 and GameManager.is_phase_completed(6):

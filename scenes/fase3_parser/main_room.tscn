@@ -1,0 +1,512 @@
+[gd_scene load_steps=40 format=3 uid="uid://c6n4y53xj8g4h"]
+
+[ext_resource type="Script" uid="uid://bguocbsg0socx" path="res://scripts/fase3_parser/main_room.gd" id="1_main_room_script"]
+[ext_resource type="Texture2D" uid="uid://pxvyj6a85pou" path="res://assets/fase3_parser/backgrouds/main_background.png" id="2_background_texture"]
+[ext_resource type="PackedScene" uid="uid://bbktwctese3kx" path="res://scenes/fase3_parser/player.tscn" id="3_player_scene"]
+[ext_resource type="Texture2D" uid="uid://c2gqs7ajof7me" path="res://assets/fase3_parser/sprites/torch.png" id="3_wijoy"]
+[ext_resource type="PackedScene" uid="uid://d4k31b4x78g22" path="res://scenes/fase3_parser/boss_entrance.tscn" id="4_boss_entrance_scene"]
+[ext_resource type="Texture2D" uid="uid://b4fjjdsourfnm" path="res://assets/fase3_parser/sprites/big-green-fire.png" id="5_green_fire"]
+[ext_resource type="Texture2D" uid="uid://0a4xm5hsrp7x" path="res://assets/fase3_parser/sprites/big-blue-fire.png" id="6_purple_fire"]
+[ext_resource type="Texture2D" uid="uid://dlc4y0ojordkv" path="res://assets/fase3_parser/sprites/big-red-fire.png" id="7_red_fire"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_horizontal"]
+size = Vector2(1350, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_vertical"]
+size = Vector2(40, 1350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8e3e"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j57px"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v07cb"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_leulb"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_711on"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4ss6"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76gi6"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d30da"]
+atlas = ExtResource("5_green_fire")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_green_fire"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8e3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j57px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v07cb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_leulb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_711on")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4ss6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76gi6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d30da")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0jgo"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4mxu"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jtcau"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fgcm"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_seb13"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2n23v"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwr8m"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gahgj"]
+atlas = ExtResource("6_purple_fire")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_purple_fire"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0jgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4mxu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jtcau")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6fgcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_seb13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2n23v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwr8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gahgj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sc0k2"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ki6q"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkkyh"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ndq7e"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7vcp"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qob6i"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvg1f"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_224rw"]
+atlas = ExtResource("7_red_fire")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_red_fire"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sc0k2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ki6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkkyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ndq7e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7vcp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qob6i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvg1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_224rw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.05, 0.05, 0.08, 0.75)
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt"]
+bg_color = Color(0.08, 0.08, 0.12, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.4, 0.1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MainRoom" type="Node2D"]
+script = ExtResource("1_main_room_script")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(627, 627)
+texture = ExtResource("2_background_texture")
+
+[node name="Boundaries" type="Node2D" parent="."]
+
+[node name="TopWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(627, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/TopWall"]
+shape = SubResource("RectangleShape2D_wall_horizontal")
+
+[node name="BottomWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(627, 1274)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/BottomWall"]
+shape = SubResource("RectangleShape2D_wall_horizontal")
+
+[node name="LeftWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(-20, 627)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/LeftWall"]
+shape = SubResource("RectangleShape2D_wall_vertical")
+
+[node name="RightWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(1274, 627)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/RightWall"]
+shape = SubResource("RectangleShape2D_wall_vertical")
+
+[node name="BossDisplays" type="Node2D" parent="."]
+position = Vector2(-1, -1)
+
+[node name="Boss1" type="Node2D" parent="BossDisplays"]
+position = Vector2(354, 378)
+
+[node name="Label" type="Label" parent="BossDisplays/Boss1"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = 32.0
+offset_right = 80.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "GOSMA"
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="BossDisplays/Boss1"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_wijoy")
+
+[node name="FlameAnim" type="AnimatedSprite2D" parent="BossDisplays/Boss1"]
+position = Vector2(0, -40)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_green_fire")
+autoplay = "default"
+
+[node name="Boss2" type="Node2D" parent="BossDisplays"]
+position = Vector2(891, 378)
+
+[node name="Label" type="Label" parent="BossDisplays/Boss2"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = 36.0
+offset_right = 80.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "FANTASMA"
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="BossDisplays/Boss2"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_wijoy")
+
+[node name="FlameAnim" type="AnimatedSprite2D" parent="BossDisplays/Boss2"]
+position = Vector2(0, -42)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_purple_fire")
+autoplay = "default"
+frame = 7
+frame_progress = 0.69051
+
+[node name="BossFinal" type="Node2D" parent="BossDisplays"]
+position = Vector2(627, 210)
+
+[node name="Label" type="Label" parent="BossDisplays/BossFinal"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -102.0
+offset_top = 39.0
+offset_right = 102.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "★ REI PARSER (BOSS FINAL) ★"
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="BossDisplays/BossFinal"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_wijoy")
+
+[node name="FlameAnim" type="AnimatedSprite2D" parent="BossDisplays/BossFinal"]
+position = Vector2(0, -42)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_red_fire")
+autoplay = "default"
+
+[node name="BossEntrances" type="Node2D" parent="."]
+
+[node name="EntranceBoss1" parent="BossEntrances" instance=ExtResource("4_boss_entrance_scene")]
+position = Vector2(353, 486)
+boss_name = "Gosma"
+boss_id = "boss_gosma_green"
+accent_color = Color(0.2, 0.75, 0.35, 0.8)
+bg_path = "res://assets/fase3_parser/backgrouds/green_boss_bg.png"
+arena_scene_path = "res://scenes/fase3_parser/boss_gosma.tscn"
+
+[node name="EntranceBoss2" parent="BossEntrances" instance=ExtResource("4_boss_entrance_scene")]
+position = Vector2(891, 486)
+boss_name = "Fantasma"
+boss_id = "boss_fantasma_blue"
+accent_color = Color(0.15, 0.55, 0.95, 0.8)
+bg_path = "res://assets/fase3_parser/backgrouds/blue_boss_bg.png"
+arena_scene_path = "res://scenes/fase3_parser/boss_fantasma.tscn"
+
+[node name="EntranceBossFinal" parent="BossEntrances" instance=ExtResource("4_boss_entrance_scene")]
+position = Vector2(627, 340)
+boss_name = "Rei Parser"
+boss_id = "boss_final_parser"
+is_final_boss = true
+accent_color = Color(0.95, 0.1, 0.25, 0.85)
+bg_path = "res://assets/fase3_parser/backgrouds/final_boss_background.png"
+arena_scene_path = "res://scenes/fase3_parser/boss_final.tscn"
+
+[node name="Player" parent="." instance=ExtResource("3_player_scene")]
+position = Vector2(627, 750)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+
+[node name="HeaderPanel" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="BtnVoltarMenu" type="Button" parent="CanvasLayer/UI/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -14.0
+offset_right = 100.0
+offset_bottom = 14.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+text = "⬅ MENU"
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/UI/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 115.0
+offset_top = -11.0
+offset_right = 480.0
+offset_bottom = 11.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "A CAVERNA DE LAVA DO PARSER — SALA PRINCIPAL"
+
+[node name="ControlsLabel" type="Label" parent="CanvasLayer/UI/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -11.0
+offset_right = -20.0
+offset_bottom = 11.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+text = "Controles: [W, A, S, D / Setas] Mover | [E / Enter] Interagir | [ESC] Menu"
+horizontal_alignment = 2
+
+[node name="HintButton" type="Button" parent="CanvasLayer/UI/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -14.0
+offset_right = 75.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+text = "Ativar Dica: OFF"
+
+[node name="PromptPanel" type="PanelContainer" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -80.0
+offset_right = 260.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_prompt")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI/PromptPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="PromptLabel" type="Label" parent="CanvasLayer/UI/PromptPanel/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Pressione 'E' para entrar na fase do chefão"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(459, 761)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(0, 1, -16, 45, 3, 69, 57, 82, 95, 54, 107, 24, 77, -25, 60, 11, 25, -8)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(-313, -57)
+polygon = PackedVector2Array(0, 6, 27, 11, 40, -28, 56, 20, 72, 11, 95, 25, 109, -28, 120, 19, 132, 4, 153, 61, 128, 67, 88, 53, 19, 70, 48, 91, 70, 93, 83, 138, 177, 135, 183, 180, 215, 202, 251, 231, 273, 272, 296, 275, 307, 371, 273, 389, 241, 386, -23, 46)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(-12, 335)
+polygon = PackedVector2Array(-1, 9, 14, 24, 27, -13, 36, 20, 63, 39, 85, 25, 65, -1, 94, -20, 129, -55, 150, -38, 175, -54, 198, -43, 254, 11, 298, -24, 277, -43, 308, -62, 323, -51, 358, -61, 355, -131, 371, -162, 397, -158, 393, -199, 409, -222, 437, -225, 437, -250, 478, -295, 511, -300, 517, -330, 552, -330, 558, -366, 640, -360, 670, -389, 651, -407, 708, -459, 694, -477, 677, -462, 636, -535, 642, -623, 526, -631, 523, -661, 399, -666, 399, -704, 396, -745, 356, -688, 330, -691, 347, -754, 317, -777, 323, -825, 244, -868, 244, -819, 121, -824, 100, -837, 107, -783, 69, -784, -24, -799, -30, -856, -99, -884, -143, -887, -150, -850, -166, -847, -183, -803, -184, -770, -134, -715, -144, -695, -164, -698, -164, -631, -212, -631, -310, -619, -320, -563, -389, -493, -386, -420, -401, -404, -349, -358, -326, -354, -344, -322, -426, -390, -417, -515, -341, -578, -336, -658, -181, -648, -235, -726, -244, -830, -203, -834, -199, -879, -172, -887, -166, -928, -7, -891, -4, -833, 71, -824, 75, -875, 116, -878, 115, -951, 239, -969, 263, -901, 380, -846, 378, -778, 491, -786, 495, -707, 529, -701, 555, -670, 699, -645, 681, -534, 754, -456, 686, -389, 649, -322, 574, -320, 381, -60, 268, 37, 141, -8, 56, 85, -42, 5, -1, -16)
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(511, -143)
+polygon = PackedVector2Array(-4, 1, -2, 78, 77, 78, 78, 0)
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(-160, -476)
+polygon = PackedVector2Array(0, 6, -3, 77, 76, 77, 77, 0)
