@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cx600q8y3m6y6"]
+[gd_scene format=3 uid="uid://cx600q8y3m6y6"]
 
 [ext_resource type="Script" path="res://scripts/fase3_parser/outro_cutscene.gd" id="1_script"]
 [ext_resource type="VideoStream" path="res://assets/fase3_parser/cutscenes/outro.ogv" id="2_video"]

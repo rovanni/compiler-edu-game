@@ -1,4 +1,4 @@
-[gd_scene load_steps=0 format=3 uid="uid://6hektp0wpcx5"]
+[gd_scene format=3 uid="uid://6hektp0wpcx5"]
 
 [ext_resource type="Script" uid="uid://bosjeh0bw5fja" path="res://scripts/fase3_parser/boss_fight.gd" id="1_boss_fight_script"]
 [ext_resource type="PackedScene" uid="uid://bbktwctese3kx" path="res://scenes/fase3_parser/player.tscn" id="2_player_scene"]

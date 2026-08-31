@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c6n4y53xj8g4h"]
+[gd_scene format=3 uid="uid://c6n4y53xj8g4h"]
 
 [ext_resource type="Script" uid="uid://bguocbsg0socx" path="res://scripts/fase3_parser/main_room.gd" id="1_main_room_script"]
 [ext_resource type="Texture2D" uid="uid://pxvyj6a85pou" path="res://assets/fase3_parser/backgrouds/main_background.png" id="2_background_texture"]

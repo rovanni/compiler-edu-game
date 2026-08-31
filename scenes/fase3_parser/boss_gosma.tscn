@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://csn80cyfcigg3"]
+[gd_scene format=3 uid="uid://csn80cyfcigg3"]
 
 [ext_resource type="Script" uid="uid://bosjeh0bw5fja" path="res://scripts/fase3_parser/boss_fight.gd" id="1_boss_fight_script"]
 [ext_resource type="Texture2D" uid="uid://1t5voadqkqew" path="res://assets/fase3_parser/backgrouds/green_boss_bg.png" id="2_green_bg"]
