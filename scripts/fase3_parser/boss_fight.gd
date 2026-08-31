@@ -180,6 +180,25 @@ func _ready() -> void:
 	# Inicia automaticamente animações decorativas/cenário (como chamas)
 	_start_ambient_animations(self)
 
+func _setup_health_bar_style() -> void:
+	if not health_bar:
+		return
+	
+	var bg_style := StyleBoxFlat.new()
+	bg_style.bg_color = Color("#112410", 0.85) # Fundo escuro com tom verde musgo
+	bg_style.border_color = Color("#071406", 0.9) # Borda escura profunda
+	bg_style.set_border_width_all(2)
+	bg_style.set_corner_radius_all(6)
+
+	var fill_style := StyleBoxFlat.new()
+	fill_style.bg_color = Color("#4cd137") # Verde gosma / slime vibrante
+	fill_style.border_color = Color("#8cf858") # Borda verde ácido / brilho
+	fill_style.set_border_width_all(1)
+	fill_style.set_corner_radius_all(6)
+
+	health_bar.add_theme_stylebox_override("background", bg_style)
+	health_bar.add_theme_stylebox_override("fill", fill_style)
+
 func _setup_exit_portal_animation() -> void:
 	if not exit_portal:
 		return
@@ -353,7 +372,8 @@ func boss_take_damage() -> void:
 	
 	boss_health -= 1
 	if health_bar:
-		health_bar.value = boss_health
+		var tween = create_tween()
+		tween.tween_property(health_bar, "value", float(boss_health), 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
 	if boss_health <= 0:
 		is_fight_active = false
