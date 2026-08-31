@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://c6f1efeito01"]
+
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_01.png" id="1_e1"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_02.png" id="2_e2"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_03.png" id="3_e3"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_04.png" id="4_e4"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_05.png" id="5_e5"]
+[ext_resource type="Script" uid="uid://cltuokg5i1nbk" path="res://scripts/fase6_sintatico/efeito_estouro.gd" id="4_script"]
+[ext_resource type="AudioStream" path="res://assets/fase6_sintatico/audio/estouro_balao.mp3" id="6_som"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_estouro"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_e1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_e2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_e4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_e5")
+}],
+"loop": 0,
+"name": &"estourar",
+"speed": 14.0
+}]
+
+[node name="EfeitoEstouro" type="Node2D" unique_id=745840438]
+z_index = 30
+script = ExtResource("4_script")
+
+[node name="Animacao" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.42, 0.42)
+sprite_frames = SubResource("SpriteFrames_estouro")
+animation = &"estourar"
+autoplay = "estourar"
+
+[node name="Som" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_som")
+volume_db = -5.0
+bus = &"SFX"

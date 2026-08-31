@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/castelo.png" id="1_castelo"]
+[ext_resource type="PackedScene" uid="uid://c6f1chao001" path="res://scenes/fase6_sintatico/chao.tscn" id="2_chao"]
+
+[node name="CenarioFase6" type="Node2D"]
+
+[node name="Ceu" type="Polygon2D" parent="."]
+z_index = -30
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 620, 0, 620)
+color = Color(0.035, 0.09, 0.15, 1)
+
+[node name="Castelo" type="Sprite2D" parent="."]
+z_index = -20
+position = Vector2(640, 381)
+scale = Vector2(0.833333, 0.8)
+texture = ExtResource("1_castelo")
+self_modulate = Color(0.72, 0.78, 0.86, 1)
+
+[node name="ContrasteDoJogo" type="Polygon2D" parent="."]
+z_index = -10
+polygon = PackedVector2Array(0, 84, 1280, 84, 1280, 620, 0, 620)
+color = Color(0.01, 0.035, 0.065, 0.18)
+
+[node name="Chao" parent="." instance=ExtResource("2_chao")]
+position = Vector2(640, 620)

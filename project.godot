@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Fase6Estado="*res://scripts/fase6_sintatico/fase6_estado.gd"
 GameManager="*res://scripts/autoload/game_manager.gd"
 SoundManager="*res://scripts/autoload/sound_manager.gd"
 Global="*uid://2054mpe2ghlh"

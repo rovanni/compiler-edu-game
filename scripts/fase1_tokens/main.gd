@@ -21,7 +21,7 @@ func _ready() -> void:
 
 	$Jogador.set_spawn($Jogador.global_position)
 	$Jogador.fell_out.connect(_on_espinho_atingido)
-	
+
 	$Portal.visible = false
 	$Portal.set_enabled(false)
 	$Portal.entered.connect(_on_portal_entered)
@@ -143,7 +143,7 @@ func _voltar_menu() -> void:
 		GameManager.abandon_phase()
 
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
-	
+
 func ativar_portal() -> void:
 	if portal_ativo:
 		return
@@ -161,7 +161,7 @@ func _on_portal_entered() -> void:
 	$Portal.set_enabled(false)
 	SoundManager.play_portal()
 	vencer()
-	
+
 func mostrar_inicio_fase() -> void:
 	hud.show_area_title("REINO DOS TOKENS")
 	SoundManager.play_portal()

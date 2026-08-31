@@ -1,0 +1,277 @@
+[gd_scene load_steps=12 format=3 uid="uid://c6f1main001"]
+
+[ext_resource type="Script" uid="uid://220muiw56nr4" path="res://scripts/fase6_sintatico/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://rjrni3bnx126" path="res://scripts/fase6_sintatico/gerenciador_expressao.gd" id="2_ger"]
+[ext_resource type="Script" uid="uid://7kdbixtraymx" path="res://scripts/fase6_sintatico/spawner_baloes.gd" id="3_spa"]
+[ext_resource type="PackedScene" uid="uid://c6f1balao001" path="res://scenes/fase6_sintatico/balao.tscn" id="4_balao"]
+[ext_resource type="Resource" path="res://resources/fase6_sintatico/fase1.tres" id="5_config"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/cenario.tscn" id="6_cenario"]
+[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/canhao.tscn" id="7_canhao"]
+[ext_resource type="FontFile" path="res://fonts/BalooThambi2-Bold.ttf" id="8_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleObjetivo"]
+bg_color = Color(0.025, 0.075, 0.12, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.7, 0.92, 0.78)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleControles"]
+bg_color = Color(0.025, 0.075, 0.12, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.7, 0.92, 0.7)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBotao"]
+bg_color = Color(0.06, 0.2, 0.31, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.77, 0.24, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Main" type="Node2D" unique_id=326718271]
+script = ExtResource("1_main")
+config = ExtResource("5_config")
+
+[node name="Cenario" parent="." instance=ExtResource("6_cenario")]
+
+[node name="GerenciadorExpressao" type="Node" parent="." unique_id=257824786]
+script = ExtResource("2_ger")
+
+[node name="SpawnerBaloes" type="Node2D" parent="." unique_id=1787895029]
+position = Vector2(20, 0)
+script = ExtResource("3_spa")
+cena_balao = ExtResource("4_balao")
+
+[node name="Canhao" parent="." instance=ExtResource("7_canhao")]
+position = Vector2(640, 660)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2062564688]
+
+[node name="PainelObjetivo" type="PanelContainer" parent="UI"]
+offset_left = 12.0
+offset_top = 88.0
+offset_right = 612.0
+offset_bottom = 178.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleObjetivo")
+
+[node name="VBox" type="VBoxContainer" parent="UI/PainelObjetivo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="LabelExpressao" type="RichTextLabel" parent="UI/PainelObjetivo/VBox" unique_id=1213400901]
+custom_minimum_size = Vector2(564, 46)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.95, 0.98, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/normal_font = ExtResource("8_font")
+theme_override_font_sizes/normal_font_size = 22
+bbcode_enabled = true
+text = "Expressão: "
+fit_content = false
+scroll_active = false
+
+[node name="LabelProgresso" type="Label" parent="UI/PainelObjetivo/VBox" unique_id=68649177]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.78, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+text = "Próximo símbolo: x   •   Progresso: 0/0"
+
+[node name="LabelMensagem" type="Label" parent="UI" unique_id=613313213]
+offset_left = 190.0
+offset_top = 548.0
+offset_right = 1090.0
+offset_bottom = 590.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.03, 0.06, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 23
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PainelControles" type="PanelContainer" parent="UI"]
+offset_left = 12.0
+offset_top = 662.0
+offset_right = 1268.0
+offset_bottom = 708.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleControles")
+
+[node name="LabelControles" type="Label" parent="UI/PainelControles"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+text = "Mova com o mouse, A/D ou setas   •   Clique ou Espaço: atirar   •   Proteja o símbolo destacado e estoure os demais"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OverlayMecanica" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Escurecer" type="ColorRect" parent="UI/OverlayMecanica"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.02, 0.04, 0.72)
+
+[node name="AlertaFundo" type="Label" parent="UI/OverlayMecanica"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -105.0
+offset_right = 520.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.02, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 96
+text = "CUIDADO!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertaExclamacoes" type="Label" parent="UI/OverlayMecanica"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 400.0
+offset_top = 88.0
+offset_right = -400.0
+offset_bottom = 190.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.16, 0.14, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.02, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 82
+text = "!  !  !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Painel" type="ColorRect" parent="UI/OverlayMecanica"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = 80.0
+offset_right = 390.0
+offset_bottom = 290.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.035, 0.095, 0.15, 0.98)
+
+[node name="OverlayTitulo" type="Label" parent="UI/OverlayMecanica/Painel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = -24.0
+offset_bottom = 62.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 30
+text = "NOVA MECÂNICA"
+horizontal_alignment = 1
+
+[node name="OverlayTexto" type="Label" parent="UI/OverlayMecanica/Painel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 70.0
+offset_right = -32.0
+offset_bottom = -62.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 20
+text = "Explicação breve da nova mecânica."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="OverlayBotao" type="Button" parent="UI/OverlayMecanica/Painel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -54.0
+offset_right = 110.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBotao")
+text = "ENTENDI"
