@@ -1,4 +1,4 @@
-﻿# 📑 Documento de Engenharia de Software – Fase 3: A Caverna do Parser
+# 📑 Documento de Engenharia de Software – Fase 3: A Caverna do Parser
 
 > **Grupo:** 3  
 > **Fase:** A Caverna do Parser (Análise Sintática)  
@@ -15,6 +15,10 @@ A **Caverna do Parser** é uma fase de exploração top-down e combate estratég
 Esta fase ensina os fundamentos da **Análise Sintática (Parsing)**:
 - Ordem e precedência de símbolos e palavras-chave em uma linguagem de programação.
 - Validação de regras gramaticais e estruturas de controle (`if`, `while`, declaração de variáveis `var x = 10`, etc.).
+- Categorias de sentenças sintáticas por dificuldade:
+  - **4 Placas (Boss Gosma)**: Declarações (`var`, `let`, `const`, tipos), condicionais e laços básicos (`if`, `while`), chamadas de função (`print`, `draw`, `play`), retornos e métodos de objetos.
+  - **5 Placas (Boss Fantasma)**: Declarações terminadas com `;`, condicionais relacionais (`==`, `!=`, `<`, `>`), laços controlados, operações aritméticas e manipulações de estruturas do compilador (`parser.next_token()`, `stack.push(val)`).
+  - **6 Placas (Boss Rei Parser)**: Estruturas completas com corpos de bloco, condicionais lógicas compostas, laços `for/while`, manipulação de nós na AST (`ast.add_child(node)`), consumo de tokens (`parser.consume(TOKEN_ID)`) e herança/classes.
 - Detecção e tratamento de erros sintáticos (quando a ordem dos tokens não respeita a gramática).
 
 ---
@@ -75,14 +79,16 @@ res://
 │   ├── pressure_plate.tscn  # Placas de pressão com tokens
 │   ├── projectile.tscn      # Projétil de ataque/dano
 │   └── boss_entrance.tscn   # Portal de teleporte para as arenas
-└── scripts/fase3_parser/
-    ├── main_room.gd         # Gerenciamento da sala principal e portais
-    ├── boss_fight.gd        # Lógica de validação sintática e combate
-    ├── player.gd            # Física de movimento, vida e animação
-    ├── pressure_plate.gd    # Detecção de acionamento das placas
-    ├── projectile.gd        # Movimentação e colisão de projéteis
-    ├── boss_body.gd         # Receptor de dano dos chefões
-    └── effect_helper.gd     # Utilitário para instanciação de efeitos visuais
+├── scripts/fase3_parser/
+│   ├── main_room.gd         # Gerenciamento da sala principal e portais
+│   ├── boss_fight.gd        # Lógica de validação sintática e combate
+│   ├── player.gd            # Física de movimento, vida e animação
+│   ├── pressure_plate.gd    # Detecção de acionamento das placas
+│   ├── projectile.gd        # Movimentação e colisão de projéteis
+│   ├── boss_body.gd         # Receptor de dano dos chefões
+│   └── effect_helper.gd     # Utilitário para instanciação de efeitos visuais
+└── tests/
+    └── headless_fase3_parser_test.gd # Testes unitários das opções de tokens e regras
 ```
 
 ---
@@ -97,3 +103,4 @@ res://
 | **CT-04** | RF-03 | Pisar nas placas na sequência sintática correta | Projétil azul atinge o boss e reduz 1 de vida | ✅ PASS |
 | **CT-05** | RF-04 | Pisar nas placas na ordem incorreta | Boss anima ataque e dispara projétil, player perde 1 vida | ✅ PASS |
 | **CT-06** | RF-05 | Derrotar o chefão e entrar no portal de saída | Retorna à Sala Principal com vidas restauradas | ✅ PASS |
+| **CT-07** | RF-02, RP-01 | Execução do teste headless de tokens (`headless_fase3_parser_test.gd`) | Todas as sentenças de 3, 4, 5 e 6 tokens são validadas sem falhas | ✅ PASS |
