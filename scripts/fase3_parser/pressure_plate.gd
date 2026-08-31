@@ -13,7 +13,7 @@ var is_pressed: bool = false
 @onready var color_rect: ColorRect = $ColorRect if has_node("ColorRect") else null
 @onready var label: Label = $Label if has_node("Label") else null
 
-var _default_scale: Vector2 = Vector2(0.28, 0.28)
+var _default_scale: Vector2 = Vector2(3.5, 3.5)
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)

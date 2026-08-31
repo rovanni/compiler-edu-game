@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfqgnwhn30bgq"
-path="res://.godot/imported/placasPressao.png-2f5a55e23f424d0587ee9edb92f56728.ctex"
+uid="uid://cmpressio002b"
+path="res://.godot/imported/pressionado.png-83158c72e5145fa68814fd1a0220de20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/placasPressao.png"
-dest_files=["res://.godot/imported/placasPressao.png-2f5a55e23f424d0587ee9edb92f56728.ctex"]
+source_file="res://assets/fase3_parser/sprites/pressionado.png"
+dest_files=["res://.godot/imported/pressionado.png-83158c72e5145fa68814fd1a0220de20.ctex"]
 
 [params]
 
