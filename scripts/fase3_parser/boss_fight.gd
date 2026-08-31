@@ -36,12 +36,111 @@ var expected_sequence: Array = []
 var current_sequence: Array = []
 var is_fight_active: bool = true
 
-var possible_codes: Array = [
-	["var", "x", "=", "10"],
-	["if", "(", "true", ")"],
-	["print", "(", "\"ola\"", ")"],
-	["func", "main", "(", ")"]
+const CODES_LEVEL_3_PLATES: Array = [
+	["x", "=", "10"],
+	["return", "0", ";"],
+	["func", "main", "()"],
+	["if", "true", ":"],
+	["player", ".", "jump()"],
+	["tokens", ".", "clear()"]
 ]
+
+const CODES_LEVEL_4_PLATES: Array = [
+	["var", "x", "=", "10"],
+	["let", "total", "=", "0"],
+	["const", "PI", "=", "3"],
+	["int", "hp", "=", "100"],
+	["bool", "vivo", "=", "true"],
+	["string", "nome", "=", "\"hero\""],
+	["tokens", "=", "[", "]"],
+	["if", "(", "true", ")"],
+	["if", "(", "ativo", ")"],
+	["if", "(", "ready", ")"],
+	["while", "(", "alive", ")"],
+	["while", "(", "loop", ")"],
+	["func", "main", "(", ")"],
+	["func", "init", "(", ")"],
+	["func", "update", "(", ")"],
+	["print", "(", "\"ola\"", ")"],
+	["print", "(", "score", ")"],
+	["draw", "(", "sprite", ")"],
+	["play", "(", "\"som\"", ")"],
+	["return", "a", "+", "b"],
+	["return", "x", "*", "2"],
+	["y", "+=", "5", ";"],
+	["x", "=", "y", ";"],
+	["score", "+=", "10", ";"],
+	["player", ".", "jump", "()"],
+	["player", ".", "attack", "()"],
+	["game", ".", "start", "()"],
+	["stack", ".", "push", "(tok)"]
+]
+
+const CODES_LEVEL_5_PLATES: Array = [
+	["var", "x", "=", "10", ";"],
+	["let", "msg", "=", "\"parser\"", ";"],
+	["const", "MAX_HP", "=", "100", ";"],
+	["int", "soma", "=", "0", ";"],
+	["float", "speed", "=", "2.5", ";"],
+	["if", "(", "x", ">", "0)"],
+	["if", "(", "flag", "==", "true)"],
+	["if", "(", "a", "!=", "b)"],
+	["if", "(", "life", "<=", "0)"],
+	["if", "x", ">", "0", ":"],
+	["if", "ativo", "==", "true", ":"],
+	["while", "(", "count", "<", "5)"],
+	["while", "(", "running", "==", "true)"],
+	["while", "(", "true", ")", "{"],
+	["for", "item", "in", "lista", ":"],
+	["for", "tok", "in", "tokens", ":"],
+	["return", "x", "+", "y", ";"],
+	["return", "a", "*", "b", ";"],
+	["total", "=", "preco", "*", "qtd"],
+	["res", "=", "a", "-", "b"],
+	["damage", "=", "atk", "/", "def"],
+	["x", "=", "x", "+", "1"],
+	["print", "(", "\"ola\"", ")", ";"],
+	["print", "(", "\"score:\",", "pontos", ")"],
+	["func", "soma", "(", "a", ")"],
+	["func", "render", "(", "delta", ")"],
+	["parser", ".", "next_token", "(", ")"],
+	["lexer", ".", "tokenize", "(", "src)"],
+	["stack", ".", "push", "(", "val)"],
+	["arr", "[", "0", "]", ";"]
+]
+
+const CODES_LEVEL_6_PLATES: Array = [
+	["if", "(", "x", "==", "5", ")"],
+	["if", "(", "a", ">", "b", ")"],
+	["if", "(", "life", "<=", "0", ")"],
+	["if", "(", "tok", "!=", "null", ")"],
+	["if", "(", "ready", "&&", "valid", ")"],
+	["if", "(", "!ready", ")", "return", ";"],
+	["while", "(", "count", "<", "10", ")"],
+	["while", "(", "is_running", "==", "true", ")"],
+	["while", "(", "true", ")", "{", "}"],
+	["for", "i", "in", "range", "(", "10)"],
+	["for", "t", "in", "tokens", ":", "advance()"],
+	["var", "soma", "=", "a", "+", "b"],
+	["let", "result", "=", "x", "*", "y"],
+	["var", "dist", "=", "x", "-", "y"],
+	["const", "AREA", "=", "base", "*", "alt"],
+	["var", "hp", "=", "max", "-", "damage"],
+	["func", "calc", "(", "x", ")", ":"],
+	["func", "parse", "(", "src", ")", ":"],
+	["func", "match", "(", "type", ")", ":"],
+	["return", "(", "a", "+", "b", ")"],
+	["return", "max", "(", "a", ",", "b)"],
+	["print", "(", "\"valor:\"", ",", "x", ")"],
+	["print", "(", "\"token:\"", ",", "tok", ")"],
+	["arr", "[", "i", "]", "=", "val"],
+	["ast", ".", "add_child", "(", "node", ")"],
+	["parser", ".", "consume", "(", "TOKEN_ID", ")"],
+	["var", "x", "=", "10", ";", "print(x)"],
+	["class", "Parser", "extends", "Compiler", "{", "}"]
+]
+
+var possible_codes: Array = CODES_LEVEL_4_PLATES
 
 const PROJECTILE_SCENE = preload("res://scenes/fase3_parser/projectile.tscn")
 
@@ -211,35 +310,32 @@ func _generate_new_puzzle() -> void:
 		return
 		
 	var possible_codes_for_level = []
-	if active_plates_count <= 4:
-		possible_codes_for_level = [
-			["var", "x", "=", "10"],
-			["if", "(", "true", ")"],
-			["print", "(", "\"ola\"", ")"],
-			["func", "main", "(", ")"],
-			["y", "+=", "5", ";"]
-		]
+	if active_plates_count <= 3:
+		possible_codes_for_level = CODES_LEVEL_3_PLATES
+	elif active_plates_count == 4:
+		possible_codes_for_level = CODES_LEVEL_4_PLATES
 	elif active_plates_count == 5:
-		possible_codes_for_level = [
-			["var", "x", "=", "10", ";"],
-			["if", "(", "x", ">", "0"],
-			["print", "(", "\"ola\"", ")", ";"],
-			["while", "(", "true", ")", "{"],
-			["return", "x", "+", "y", ";"]
-		]
+		possible_codes_for_level = CODES_LEVEL_5_PLATES
 	else: # >= 6
-		possible_codes_for_level = [
-			["var", "x", "=", "10", ";", "print(x)"],
-			["if", "(", "x", "==", "5", ")"],
-			["for", "i", "in", "range", "(", "10)"],
-			["while", "(", "true", ")", "{", "}"]
-		]
+		possible_codes_for_level = CODES_LEVEL_6_PLATES
 	
-	var random_code = possible_codes_for_level[randi() % possible_codes_for_level.size()]
-	expected_sequence = random_code.duplicate()
+	# Evita sortear a mesma sequência consecutiva se houver mais de uma opção
+	var chosen_code = possible_codes_for_level[randi() % possible_codes_for_level.size()]
+	if possible_codes_for_level.size() > 1 and expected_sequence.size() > 0:
+		var attempts = 0
+		while chosen_code == expected_sequence and attempts < 5:
+			chosen_code = possible_codes_for_level[randi() % possible_codes_for_level.size()]
+			attempts += 1
+			
+	expected_sequence = chosen_code.duplicate()
 	
-	var shuffled_code = random_code.duplicate()
+	# Embaralha garantindo que não comece na ordem já resolvida
+	var shuffled_code = chosen_code.duplicate()
 	shuffled_code.shuffle()
+	var shuffle_attempts = 0
+	while shuffled_code == expected_sequence and shuffle_attempts < 10 and shuffled_code.size() > 1:
+		shuffled_code.shuffle()
+		shuffle_attempts += 1
 	
 	if plates_node:
 		for i in range(plates.size()):
@@ -259,6 +355,13 @@ func _on_plate_pressed(plate_value: String) -> void:
 	
 	current_sequence.append(plate_value)
 	
+	if desc_label:
+		var current_str = " ".join(current_sequence)
+		if show_hints:
+			desc_label.text = "Monte: " + " ".join(expected_sequence) + "\nSequência: " + current_str
+		else:
+			desc_label.text = "Sequência: " + current_str
+	
 	if current_sequence.size() == expected_sequence.size():
 		_check_sequence()
 
@@ -271,10 +374,10 @@ func _check_sequence() -> void:
 			
 	if is_correct:
 		_spawn_projectile(player.global_position, boss_body, false)
-		desc_label.text = "SUCESSO! Você disparou contra o chefão!"
+		desc_label.text = "SUCESSO! Você disparou contra o chefão!\nCódigo: " + " ".join(expected_sequence)
 		await get_tree().create_timer(1.5).timeout
 	else:
-		desc_label.text = "SINTAXE INVÁLIDA! O chefão disparou contra você!"
+		desc_label.text = "SINTAXE INVÁLIDA! O chefão disparou contra você!\nEsperado: " + " ".join(expected_sequence)
 		
 		if _is_gosma() and boss_anim:
 			if boss_anim.sprite_frames.has_animation("slime_attacking"):
