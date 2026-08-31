@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/fase2_scanner/scanner_token.gd" id="1_token"]
+[ext_resource type="Texture2D" path="res://assets/fase1_tokens/Tokens.png" id="2_frame"]
+[ext_resource type="FontFile" path="res://fonts/Friend Bestie.otf" id="3_font"]
+[sub_resource type="RectangleShape2D" id="TokenShape"]
+size = Vector2(72, 58)
+[node name="ScannerToken" type="Area2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_token")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("2_frame")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("TokenShape")
+[node name="Lexeme" type="Label" parent="."]
+offset_left = -46.0
+offset_top = -23.0
+offset_right = 46.0
+offset_bottom = 8.0
+theme_override_colors/font_color = Color(0.03, 0.07, 0.12, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 22
+text = "int"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="Kind" type="Label" parent="."]
+offset_left = -40.0
+offset_top = 7.0
+offset_right = 40.0
+offset_bottom = 27.0
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 12
+text = "PAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

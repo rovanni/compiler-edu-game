@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cmld3k60156h7"]
+
+[ext_resource type="Script" uid="uid://bcyca4wjmc5jb" path="res://scripts/fase5_erroLexico/introducao.gd" id="1_qxes1"]
+[ext_resource type="Texture2D" uid="uid://c8jfjy3sy57im" path="res://assets/fase5_erroLexico/Introdução.png" id="1_xyu5f"]
+
+[node name="Introducao" type="Control" unique_id=473838646]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qxes1")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1904424594]
+layout_mode = 0
+offset_left = -4.0
+offset_right = 1276.0
+offset_bottom = 720.0
+texture = ExtResource("1_xyu5f")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BotaoJogar" type="Button" parent="." unique_id=130688034]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.2
+offset_left = 731.0
+offset_top = 471.0
+offset_right = 875.0
+offset_bottom = 359.0

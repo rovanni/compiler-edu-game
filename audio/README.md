@@ -24,3 +24,6 @@ Os arquivos utilizados individualmente possuem licença CC0.
 ## Observação Importante!
 Cada arquivo deve ser verificado quanto à licença antes
 de ser incorporado ao projeto.
+
+Os efeitos incorporados à Fase 6 e suas páginas de origem estão registrados
+em `docs/creditos_assets.md`.

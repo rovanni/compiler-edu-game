@@ -1,62 +1,63 @@
-[gd_scene load_steps=20 format=3 uid="uid://b6541lxc5xemv"]
+[gd_scene load_steps=21 format=3 uid="uid://b6541lxc5xemv"]
 
 [ext_resource type="Script" uid="uid://bsi3nkafeycju" path="res://scripts/fase1_tokens/main.gd" id="1_aok25"]
-[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://scenes/fase1_tokens/jogador.tscn" id="1_fw3yd"]
 [ext_resource type="Texture2D" uid="uid://biiokgv8l4ems" path="res://assets/fase1_tokens/Background.png" id="2_31vik"]
 [ext_resource type="PackedScene" uid="uid://bv1ga6htghoi" path="res://scenes/fase1_tokens/token.tscn" id="3_7jglo"]
 [ext_resource type="Texture2D" uid="uid://ensm70pc12mq" path="res://assets/fase1_tokens/Background2.png" id="3_c1hp4"]
 [ext_resource type="PackedScene" uid="uid://csh1bwsdpm4dx" path="res://scenes/fase1_tokens/espinho.tscn" id="4_7jglo"]
+[ext_resource type="PackedScene" uid="uid://dywj2ibrbhnlp" path="res://scenes/fase1_tokens/jogador.tscn" id="5_ofg8o"]
+[ext_resource type="PackedScene" path="res://scenes/fase2_scanner/portal.tscn" id="7_ofg8o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2iikd"]
-size = Vector2(1152, 70)
+size = Vector2(1280, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aok25"]
-size = Vector2(74, 788)
+size = Vector2(74, 859)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c1hp4"]
-size = Vector2(155, 64.5625)
+size = Vector2(174, 78)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jmotk"]
-size = Vector2(265, 70)
+size = Vector2(292, 79)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rqy2x"]
-size = Vector2(887, 15)
+size = Vector2(787, 15.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oj5sr"]
-size = Vector2(296, 66)
+size = Vector2(327, 75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opyur"]
-size = Vector2(155, 143)
+size = Vector2(167.5, 157.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0rat"]
-size = Vector2(172.5, 42)
+size = Vector2(201, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_laf11"]
-size = Vector2(152.25, 32.5)
+size = Vector2(178, 32.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fhtre"]
-size = Vector2(153.75, 26.5)
+size = Vector2(164.875, 26.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_khjkm"]
-size = Vector2(186, 23.5)
+size = Vector2(202, 23.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_205e0"]
-size = Vector2(189, 27)
+size = Vector2(213.5, 27)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gkhts"]
-size = Vector2(107, 107)
+size = Vector2(119, 107)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_aok25")
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(576, 313.00003)
-scale = Vector2(0.6889953, 0.66524976)
+position = Vector2(640, 360.00003)
+scale = Vector2(0.76555026, 0.7651435)
 texture = ExtResource("2_31vik")
 
 [node name="Terreno" type="Sprite2D" parent="."]
-position = Vector2(575, 333.49997)
-scale = Vector2(0.77734375, 0.94433594)
+position = Vector2(635, 376)
+scale = Vector2(0.85546875, 1.0273438)
 texture = ExtResource("3_c1hp4")
 
 [node name="Cenário" type="Node2D" parent="."]
@@ -64,119 +65,124 @@ texture = ExtResource("3_c1hp4")
 [node name="Chão" type="StaticBody2D" parent="Cenário"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Chão"]
-position = Vector2(576, 683)
+position = Vector2(640, 755)
 shape = SubResource("RectangleShape2D_2iikd")
 
 [node name="Teto" type="StaticBody2D" parent="Cenário"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Teto"]
-position = Vector2(576, -35)
+position = Vector2(640, -34)
 shape = SubResource("RectangleShape2D_2iikd")
 
 [node name="Parede1" type="StaticBody2D" parent="Cenário"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Parede1"]
-position = Vector2(-37, 324)
+position = Vector2(-37, 360.5)
 shape = SubResource("RectangleShape2D_aok25")
 
 [node name="Parede2" type="StaticBody2D" parent="Cenário"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cenário/Parede2"]
-position = Vector2(1189, 324)
+position = Vector2(1317, 360.5)
 shape = SubResource("RectangleShape2D_aok25")
 
-[node name="Jogador" parent="." instance=ExtResource("1_fw3yd")]
-position = Vector2(38, 244)
-scale = Vector2(0.8, 0.8)
+[node name="Portal" parent="." instance=ExtResource("7_ofg8o")]
+position = Vector2(1197, 312.00003)
+scale = Vector2(0.9, 0.9)
+
+[node name="Jogador" parent="." instance=ExtResource("5_ofg8o")]
+position = Vector2(61, 225)
 
 [node name="Tokens" type="Node2D" parent="."]
 
 [node name="Token" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(362, 189)
+position = Vector2(331, 229)
 
 [node name="Token2" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(584, 68)
+position = Vector2(610, 544)
 texto = "X"
 
 [node name="Token3" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(935, 194)
+position = Vector2(1032, 182)
 texto = "="
 
 [node name="Token4" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(150, 537)
+position = Vector2(168, 589)
 texto = "12"
 
 [node name="Token5" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(332, 422)
+position = Vector2(369, 474)
 texto = "+"
 
 [node name="Token6" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(961, 496)
-texto = "8"
+position = Vector2(1165, 588)
+texto = "10"
 
 [node name="Token7" parent="Tokens" instance=ExtResource("3_7jglo")]
-position = Vector2(625, 249)
+position = Vector2(656, 326)
 texto = ";"
 
 [node name="Espinho" parent="." instance=ExtResource("4_7jglo")]
-position = Vector2(348, 612)
+position = Vector2(384, 682)
+scale = Vector2(1.2, 1.5)
 
 [node name="Espinho2" parent="." instance=ExtResource("4_7jglo")]
-position = Vector2(928, 617)
+position = Vector2(1023.99994, 684)
+scale = Vector2(1.1, 1.4)
 
 [node name="Colisões" type="StaticBody2D" parent="."]
 
 [node name="Colisão1" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(77.5, 438.71875)
+position = Vector2(87, 495)
 shape = SubResource("RectangleShape2D_c1hp4")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão2" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(132.5, 613)
+position = Vector2(146, 680.5)
 shape = SubResource("RectangleShape2D_jmotk")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão3" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(708.5, 640.5)
+position = Vector2(685.5, 712.25)
 shape = SubResource("RectangleShape2D_rqy2x")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão4" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(550, 600)
+position = Vector2(607.5, 667.5)
 shape = SubResource("RectangleShape2D_oj5sr")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão5" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(775.5, 561.5)
+position = Vector2(854.75, 625.75)
 shape = SubResource("RectangleShape2D_opyur")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão6" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(1065.75, 612)
+position = Vector2(1179.5, 688)
 shape = SubResource("RectangleShape2D_l0rat")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão7" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(1076.125, 304.75)
+position = Vector2(1191, 345)
 shape = SubResource("RectangleShape2D_laf11")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão8" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(798, 343.75)
+position = Vector2(880.5625, 387)
 shape = SubResource("RectangleShape2D_fhtre")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão9" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(584, 137)
+position = Vector2(644, 161)
 shape = SubResource("RectangleShape2D_khjkm")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão10" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(303.5, 263.5)
+position = Vector2(335.25, 299)
 shape = SubResource("RectangleShape2D_205e0")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)
 
 [node name="Colisão11" type="CollisionShape2D" parent="Colisões"]
-position = Vector2(53.5, 524.5)
+position = Vector2(59.5, 587.5)
 shape = SubResource("RectangleShape2D_gkhts")
 debug_color = Color(0.777166, 0, 0.12899315, 0.41960785)

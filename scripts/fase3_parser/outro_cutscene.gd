@@ -17,4 +17,6 @@ func _on_skip_button_pressed() -> void:
 	_return_to_menu()
 
 func _return_to_menu() -> void:
+	if GameManager:
+		GameManager.complete_phase(3, not GameManager.phase_had_mistake)
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")

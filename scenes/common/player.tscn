@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=3 uid="uid://djj3itmfjmlmh"]
+
+[ext_resource type="Script" uid="uid://bg01cw3drc0wc" path="res://scripts/common/player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://byaqjrrernlny" path="res://assets/fase1_tokens/Player2.png" id="2_walk"]
+[ext_resource type="Texture2D" uid="uid://f4mn0cyk1t86" path="res://assets/fase1_tokens/Player1.png" id="3_idle"]
+[ext_resource type="Texture2D" uid="uid://cbusj6mgq2vxg" path="res://assets/fase1_tokens/Player3.png" id="4_jump"]
+[ext_resource type="Texture2D" uid="uid://c4h2x80xn3kqw" path="res://assets/fase2_scanner/player_carry_pose_game.png" id="5_carry_pose"]
+[ext_resource type="Texture2D" uid="uid://gy6yt317psxy" path="res://assets/fase2_scanner/player_carry_walk_game.png" id="6_carry_walk"]
+[ext_resource type="Texture2D" uid="uid://d3i628nysnxs" path="res://assets/fase2_scanner/player_carry_jump_game.png" id="7_carry_jump"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_walk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_idle")
+}],
+"loop": true,
+"name": &"andar",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_idle")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_jump")
+}],
+"loop": false,
+"name": &"pular",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_carry"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_carry_walk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_carry_pose")
+}],
+"loop": true,
+"name": &"andar_carregando",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="PlayerShape"]
+size = Vector2(38, 76)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -18)
+scale = Vector2(0.105, 0.105)
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+
+[node name="CarryPose" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("5_carry_pose")
+
+[node name="CarryWalk" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+sprite_frames = SubResource("SpriteFrames_carry")
+animation = &"andar_carregando"
+
+[node name="CarryJump" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -26)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("7_carry_jump")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("PlayerShape")

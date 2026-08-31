@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c6f1chao001"]
+
+[ext_resource type="Script" uid="uid://ciyd0kcjj3wll" path="res://scripts/fase6_sintatico/chao.gd" id="1_chao"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/piso_castelo.png" id="2_piso"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
+size = Vector2(1280, 10)
+
+[node name="Chao" type="Area2D" unique_id=1556412826]
+script = ExtResource("1_chao")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=143106132]
+shape = SubResource("RectangleShape2D_chao")
+
+[node name="Piso" type="Sprite2D" parent="."]
+z_index = 10
+position = Vector2(0, 76)
+scale = Vector2(0.884589, 1)
+texture = ExtResource("2_piso")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

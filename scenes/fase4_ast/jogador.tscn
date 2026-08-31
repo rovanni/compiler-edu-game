@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://fase4_jogador"]
+[gd_scene load_steps=12 format=3 uid="uid://fase4_jogador"]
 
 [ext_resource type="Script" uid="uid://4i1gur6yz6fo" path="res://scripts/fase4_ast/jogador.gd" id="1_j4"]
 [ext_resource type="Texture2D" uid="uid://byaqjrrernlny" path="res://assets/fase1_tokens/Player2.png" id="2_j4"]
 [ext_resource type="Texture2D" uid="uid://f4mn0cyk1t86" path="res://assets/fase1_tokens/Player1.png" id="3_j4"]
 [ext_resource type="Texture2D" uid="uid://cbusj6mgq2vxg" path="res://assets/fase1_tokens/Player3.png" id="4_j4"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="5_j4"]
+[ext_resource type="Texture2D" uid="uid://c4h2x80xn3kqw" path="res://assets/fase2_scanner/player_carry_pose_game.png" id="6_carry_pose"]
+[ext_resource type="Texture2D" uid="uid://gy6yt317psxy" path="res://assets/fase2_scanner/player_carry_walk_game.png" id="7_carry_walk"]
+[ext_resource type="Texture2D" uid="uid://d3i628nysnxs" path="res://assets/fase2_scanner/player_carry_jump_game.png" id="8_carry_jump"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_j4"]
 animations = [{
@@ -35,19 +39,75 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j4"]
-size = Vector2(17.5, 40)
+[sub_resource type="SpriteFrames" id="SpriteFrames_carry_j4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_carry_walk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_carry_pose")
+}],
+"loop": true,
+"name": &"andar_carregando",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="PlayerCollision"]
+size = Vector2(34, 70)
 
 [node name="Jogador" type="CharacterBody2D"]
+z_index = 2
+collision_layer = 1
+collision_mask = 1
 script = ExtResource("1_j4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(2, 0)
+position = Vector2(2, -4)
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_j4")
 animation = &"idle"
 
+[node name="CarryPose" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -5)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("6_carry_pose")
+
+[node name="CarryWalk" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -5)
+scale = Vector2(0.88, 0.88)
+sprite_frames = SubResource("SpriteFrames_carry_j4")
+animation = &"andar_carregando"
+
+[node name="CarryJump" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(4, -5)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("8_carry_jump")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2.5, -7)
-scale = Vector2(2, 2)
-shape = SubResource("RectangleShape2D_j4")
+position = Vector2(0, 5)
+shape = SubResource("PlayerCollision")
+
+[node name="HeldToken" type="PanelContainer" parent="."]
+z_index = 2
+offset_left = -29.0
+offset_top = -99.0
+offset_right = 29.0
+offset_bottom = -45.0
+mouse_filter = 2
+
+[node name="Token" type="Label" parent="HeldToken"]
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("5_j4")
+theme_override_font_sizes/font_size = 25
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/fase2_scanner/token_block.gd" id="1_block"]
+[ext_resource type="FontFile" path="res://fonts/Friend Bestie.otf" id="2_font"]
+
+[sub_resource type="RectangleShape2D" id="BlockShape"]
+size = Vector2(58, 54)
+
+[node name="TokenBlock" type="RigidBody2D" groups=["carryable_block"]]
+mass = 0.7
+gravity_scale = 1.0
+continuous_cd = 2
+lock_rotation = true
+script = ExtResource("1_block")
+
+[node name="Panel" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-29, -27, 29, -27, 29, 27, -29, 27)
+color = Color(0.345, 0.651, 1, 1)
+
+[node name="Border" type="Line2D" parent="."]
+points = PackedVector2Array(-29, -27, 29, -27, 29, 27, -29, 27, -29, -27)
+width = 3.0
+default_color = Color(0.027, 0.082, 0.137, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BlockShape")
+
+[node name="Lexeme" type="Label" parent="."]
+offset_left = -31.0
+offset_top = -23.0
+offset_right = 31.0
+offset_bottom = 2.0
+theme_override_colors/font_color = Color(0.027, 0.082, 0.137, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.45)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Kind" type="Label" parent="."]
+offset_left = -27.0
+offset_top = 3.0
+offset_right = 27.0
+offset_bottom = 22.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1

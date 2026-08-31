@@ -1,0 +1,282 @@
+[gd_scene load_steps=13 format=3 uid="uid://i3v43qir2nep"]
+
+[ext_resource type="Script" uid="uid://byoltf34tpeb1" path="res://scripts/fase2_scanner/main.gd" id="1_main"]
+[ext_resource type="Texture2D" uid="uid://dmb05mxmt2nmr" path="res://assets/fase2_scanner/fundocenario.png" id="2_background"]
+[ext_resource type="PackedScene" path="res://scenes/fase2_scanner/portal.tscn" id="4_portal"]
+[ext_resource type="PackedScene" uid="uid://djj3itmfjmlmh" path="res://scenes/common/player.tscn" id="5_player"]
+[ext_resource type="PackedScene" path="res://scenes/fase2_scanner/alignment_rack.tscn" id="6_rack"]
+[ext_resource type="Script" uid="uid://byfi6cdtpna2d" path="res://scripts/fase2_scanner/bridge_progress.gd" id="7_progress"]
+[ext_resource type="PackedScene" uid="uid://bsbkt050e2645" path="res://scenes/fase2_scanner/bridge_slot.tscn" id="8_slot"]
+[ext_resource type="Texture2D" uid="uid://cjtad8peiu2lf" path="res://assets/fase2_scanner/bridge/stone_platform_small.png" id="9_small"]
+[ext_resource type="Texture2D" uid="uid://52bjctxm1wou" path="res://assets/fase2_scanner/bridge/stone_platform_wide.png" id="10_wide"]
+[ext_resource type="Texture2D" uid="uid://bccyf3c02chu5" path="res://assets/fase2_scanner/bridge/stone_cliff.png" id="11_cliff"]
+[ext_resource type="PackedScene" path="res://scenes/fase2_scanner/bridge_student_npc.tscn" id="12_npc"]
+
+[sub_resource type="RectangleShape2D" id="BoundsShape"]
+size = Vector2(40, 720)
+
+[node name="Fase2Scanner" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="ValleySky" type="Sprite2D" parent="Background"]
+show_behind_parent = true
+z_index = -20
+position = Vector2(1284.3751, 337)
+scale = Vector2(1.3936313, 1.1831597)
+texture = ExtResource("2_background")
+
+[node name="WidePlatformDecoration2" type="Sprite2D" parent="Background/ValleySky"]
+top_level = true
+visibility_layer = 3
+z_index = -3
+texture_filter = 1
+position = Vector2(399.99997, 442.00003)
+scale = Vector2(0.100789465, 0.10219999)
+texture = ExtResource("10_wide")
+
+[node name="WidePlatformDecoration" type="Sprite2D" parent="Background/ValleySky/WidePlatformDecoration2"]
+top_level = true
+z_index = -3
+texture_filter = 1
+position = Vector2(1611, 649)
+scale = Vector2(0.100789465, 0.10219999)
+texture = ExtResource("10_wide")
+
+[node name="WidePlatformDecoration3" type="Sprite2D" parent="Background/ValleySky"]
+top_level = true
+z_index = -3
+texture_filter = 1
+position = Vector2(1358, 553)
+scale = Vector2(0.100789465, 0.10219999)
+texture = ExtResource("10_wide")
+
+[node name="LeftCliff" type="Sprite2D" parent="Background/ValleySky"]
+top_level = true
+z_index = -4
+texture_filter = 1
+position = Vector2(1145, 546)
+scale = Vector2(0.16476247, 0.12653664)
+texture = ExtResource("11_cliff")
+flip_h = true
+
+[node name="StonePlatformDecoration" type="Sprite2D" parent="Background/ValleySky"]
+top_level = true
+z_index = -3
+texture_filter = 1
+position = Vector2(127, 490)
+scale = Vector2(0.16969696, 0.14761896)
+texture = ExtResource("9_small")
+
+[node name="WidePlatformDecoration4" type="Sprite2D" parent="Background/ValleySky"]
+top_level = true
+z_index = -3
+texture_filter = 1
+position = Vector2(1851.9999, 561)
+scale = Vector2(0.100789465, 0.10219999)
+texture = ExtResource("10_wide")
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="LeftCliff" type="Sprite2D" parent="Terrain"]
+z_index = -4
+texture_filter = 1
+position = Vector2(638.99994, 546)
+scale = Vector2(0.18246631, 0.13818361)
+texture = ExtResource("11_cliff")
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="PortalPlatformBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(142.5, 493.5)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/PortalPlatformBody"]
+position = Vector2(-19.5, -4.5)
+polygon = PackedVector2Array(-112, -22, 111, -9, 110, 5, 103, 4, 104, 10, 101, 19, 89, 25, 80, 34, 47, 34, -4, 33, -36, 35, -46, 42, -70, 42, -81, 33, -85, 22, -99, 19, -106, 15, -107, -3, -112, -3, -115, -12)
+
+[node name="WidePlatformLeftBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(355, 565)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/WidePlatformLeftBody"]
+position = Vector2(-47, 39)
+polygon = PackedVector2Array(-74, -9, -2, -8, 31, -8, 82, -9, 86, -4, 87, 2, 84, 6, 81.5, 10.5, 82, 16, 79, 21, 73, 23, 68, 24, 66, 30, 59, 32, 39, 32, -53, 32, -58, 29, -61, 23, -69, 22, -75, 18, -75, 11, -76, 6, -80, 5, -81, 0, -80, -5, -78, -8)
+
+[node name="WidePlatformUpperLeftBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(426.5, 398.5)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/WidePlatformUpperLeftBody"]
+position = Vector2(-32.5, 24.5)
+polygon = PackedVector2Array(-78, -6, -56.5, -5.5, 34, -6, 82, -6, 87, 1, 86, 8, 82, 8, 82, 13, 82, 21, 77, 24, 68, 26, 66, 31, 63, 34, 14, 34, -55, 34, -59, 29, -62, 25, -72, 23, -75, 19, -75, 13, -75, 7, -80, 8, -82, 1)
+
+[node name="SmallPlatformCenterBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(900.5, 500)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/SmallPlatformCenterBody"]
+position = Vector2(-14.5, -21)
+polygon = PackedVector2Array(-64, 45, -34, 46, 24, 48, 99, 54, 106, 61, 105, 70, 102, 71, 100, 75, 100, 79, 98, 83, 95, 87, 91, 89, 86, 94, 81, 96, 62, 96, 13, 96, -1, 97, -7, 101, -12, 103, -17, 104, -25, 104, -32, 103, -38, 100, -41, 97, -41, 94, -43, 88, -47, 86, -55, 84, -60, 79, -62, 75, -61, 72, -62, 64, -65, 63, -68, 59, -67, 51)
+
+[node name="WidePlatformCenterBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1406, 503)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/WidePlatformCenterBody"]
+position = Vector2(-52, 34)
+polygon = PackedVector2Array(-77, -9, 79, -8, 83, -4, 85, 1, 82, 5, 79, 8, 79, 18, 75, 23, 66, 24, 63, 29, 56, 33, -7, 32, -54, 33, -60, 29, -64, 23, -71, 23, -76, 19, -78, 14, -79, 8, -82.673485, 4.16317, -84, -3)
+
+[node name="WidePlatformHighBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1623, 456)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/WidePlatformHighBody"]
+position = Vector2(-25, -14)
+polygon = PackedVector2Array(-90, -12, -18, -9, 103, -2, 108, 8, 101, 12, 100, 19, 97, 27, 88, 30, 83, 36, 71, 38, 0, 37, -16, 38, -27, 44, -41, 46, -57, 43, -62, 37, -66, 28, -70, 28, -82, 23, -88, 16, -88, 4, -93, 1, -94, -7)
+
+[node name="WidePlatformRightBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1646, 600)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/WidePlatformRightBody"]
+position = Vector2(-41, 33)
+polygon = PackedVector2Array(-78, -8, 79, -8, 86, 0, 81.5, 10.5, 80, 16, 75, 22, 66, 23, 64, 31, 54, 32, -1, 32, -42, 32, -52, 32, -59, 30, -62, 24, -74, 22, -77, 14, -79, 5, -85, -1)
+
+[node name="CliffTopBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1148, 473)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/CliffTopBody"]
+polygon = PackedVector2Array(-59, -12, -18.229187, -12.970734, 34.219025, -14.219505, 60, -14, 66, -6, 66.43082, 3.0471878, 59, 8, 48, 12, 46, 26, 45, 34, 43, 41, 38, 44, 28, 56, 28, 67, 28, 72, 24, 82, 27, 93, 36, 101, 41, 100, 51, 100, 62, 102, 70, 108, 72, 115, 69, 122, 65, 124, 62, 132, 63, 140, 57, 145, 48, 148, 46, 154, 44, 165, 42, 168, 39, 170, 36, 176, 30, 182, 21, 184, 9, 183, 1, 184, -11, 184, -23, 183, -42, 184, -52, 181, -56, 179, -61, 175, -63, 172, -66, 168, -66, 164, -67, 156, -69, 148, -64, 143, -60, 139, -58, 135, -60, 123, -60, 105, -58, 92, -60, 83, -58, 73, -60, 62, -55, 53, -60, 50, -60, 43, -57, 32, -59, 22, -60, 11, -64, 0)
+
+[node name="TerrainCliffBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(630, 441)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/TerrainCliffBody"]
+position = Vector2(12, 25)
+polygon = PackedVector2Array(-67, -15, 49, -15, 64, -4, 60, 12, 57.420105, 53.7471, 61, 69, 59.601654, 83.09985, 62, 92, 56, 105, 60, 121, 61, 134, 57.37755, 150.90475, 68, 159, 70, 169, 67, 181, 66, 188, 60, 193, 48, 201, 17.069534, 200.66011, 0, 203, -18, 202, -36, 201, -46, 195, -49, 189, -56, 180, -57, 167, -68, 159, -75, 156, -76, 148, -78, 140, -79, 135, -85, 132, -85, 120, -77, 111, -44, 108, -35, 99, -35, 88, -37, 78, -39, 57, -55, 44, -60, 24, -61.75392, 14.228119, -73, 8, -79, 0, -79, -11)
+
+[node name="MissingPlatformBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1665, 468)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/MissingPlatformBody"]
+position = Vector2(174, 81)
+polygon = PackedVector2Array(-73, -12, -53, -12, 19.056519, -11.9999695, 75, -12, 83, -12, 91, -9, 92, -4, 91, 1, 87, 3, 88, 13, 83, 18, 75, 19, 72, 24, 68, 28, -36, 29, -47, 29, -53, 25, -55, 20, -63, 19, -69, 15, -70, 9, -71.24159, 2.2505493, -75, 2, -76, -4)
+
+[node name="BridgeLeftTopBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(487, 218)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/BridgeLeftTopBody"]
+position = Vector2(-6, 42.59375)
+scale = Vector2(1, 0.5208333)
+polygon = PackedVector2Array(-481, 14.219971, -298, 14.219971, 110, 14.219971, 735.67365, 18.033623, 740, 19.97998, 745, 29.580017, -68, 21.899963, -319, 33.419983, -483, 27.659973)
+one_way_collision = true
+
+[node name="BridgeRightSurfaceBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2000, 260)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/BridgeRightSurfaceBody"]
+polygon = PackedVector2Array(-481, 24, 306, 19, 553, 19, 556, 18, 555, 19, 552, 17, 547, 16, 481, 12, 289, 10, 157, 10, -49, 11, -208, 11, -470, 14, -476, 14, -481, 13)
+disabled = true
+
+[node name="BridgeGateBody" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1570, 360)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/BridgeGateBody"]
+polygon = PackedVector2Array(-21, -307, 19, -306, 21, -81, 178, -73, 19, -73, 16, -71, 15, -64, -18, -64)
+
+[node name="Bridge" type="Node2D" parent="."]
+
+[node name="BridgeSlots" type="Node2D" parent="."]
+
+[node name="BridgeProgress" type="Node2D" parent="BridgeSlots"]
+script = ExtResource("7_progress")
+
+[node name="BridgeSlot01" parent="BridgeSlots/BridgeProgress" instance=ExtResource("8_slot")]
+position = Vector2(1225.7, 265)
+scale = Vector2(0.2, 0.2)
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot02" parent="BridgeSlots/BridgeProgress" instance=ExtResource("8_slot")]
+position = Vector2(1290.85, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 1
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot03" parent="BridgeSlots/BridgeProgress" instance=ExtResource("8_slot")]
+position = Vector2(1356, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 2
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot04" parent="BridgeSlots/BridgeProgress" instance=ExtResource("8_slot")]
+position = Vector2(1421.15, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 3
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeSlot05" parent="BridgeSlots/BridgeProgress" instance=ExtResource("8_slot")]
+position = Vector2(1486.3, 265)
+scale = Vector2(0.2, 0.2)
+slot_index = 4
+slot_size = Vector2(90, 28)
+art_scale = Vector2(0.75, 1)
+
+[node name="BridgeStudentNPC" parent="." instance=ExtResource("12_npc")]
+position = Vector2(963, 263)
+
+[node name="Vines" type="Node2D" parent="."]
+
+[node name="Decorations" type="Node2D" parent="."]
+
+[node name="StonePlatformDecoration" type="Sprite2D" parent="Decorations"]
+z_index = -3
+texture_filter = 1
+position = Vector2(910, 547)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("9_small")
+
+[node name="WidePlatformDecoration" type="Sprite2D" parent="Decorations"]
+z_index = -3
+texture_filter = 1
+position = Vector2(316, 622.00006)
+scale = Vector2(0.100789465, 0.10219999)
+texture = ExtResource("10_wide")
+
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+
+[node name="LeftWall" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(-20, 360)
+shape = SubResource("BoundsShape")
+
+[node name="RightWall" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(2580, 360)
+shape = SubResource("BoundsShape")
+
+[node name="Portals" type="Node2D" parent="."]
+
+[node name="EntryPortal" parent="Portals" instance=ExtResource("4_portal")]
+position = Vector2(109, 442)
+
+[node name="ExitPortal" parent="Portals" instance=ExtResource("4_portal")]
+position = Vector2(2454, 249)
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+position = Vector2(112, 445)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 2560
+limit_bottom = 720
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
+
+[node name="AlignmentRack" parent="." instance=ExtResource("6_rack")]
+
+[node name="BlockContainer" type="Node2D" parent="."]
+
+[node name="StonePlatformDecoration" type="Sprite2D" parent="."]
+z_index = -3
+texture_filter = 1
+position = Vector2(1609.0001, 451)
+scale = Vector2(0.15045452, 0.13071427)
+texture = ExtResource("9_small")

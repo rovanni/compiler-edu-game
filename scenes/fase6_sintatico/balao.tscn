@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://c6f1balao001"]
+
+[ext_resource type="Script" path="res://scripts/fase6_sintatico/balao.gd" id="1_balao"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/balao.png" id="2_tex"]
+[ext_resource type="FontFile" path="res://fonts/BalooThambi2-ExtraBold.ttf" id="3_font"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_balao"]
+radius = 29.0
+
+[node name="Balao" type="Area2D"]
+script = ExtResource("1_balao")
+simbolo = "x"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_balao")
+
+[node name="Sombra" type="Sprite2D" parent="."]
+position = Vector2(3, 21)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_tex")
+self_modulate = Color(0.01, 0.02, 0.04, 0.42)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 18)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_tex")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -50.0
+offset_right = 30.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.025, 0.035, 0.05, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.82)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 38
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1
