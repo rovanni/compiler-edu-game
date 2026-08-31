@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qd5e16gdxmy4"
-path="res://.godot/imported/Green-fire.png-558a519b008e79732625939cfcc419a3.ctex"
+uid="uid://c37lsxq8snmjw"
+path="res://.godot/imported/blue-fire.png-924e091211dfc7ab8320975f36df85c0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/Green-fire.png"
-dest_files=["res://.godot/imported/Green-fire.png-558a519b008e79732625939cfcc419a3.ctex"]
+source_file="res://assets/fase3_parser/sprites/blue-fire.png"
+dest_files=["res://.godot/imported/blue-fire.png-924e091211dfc7ab8320975f36df85c0.ctex"]
 
 [params]
 

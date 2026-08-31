@@ -7,6 +7,10 @@ extends Node2D
 
 var active_entrance: BossEntrance = null
 
+static var gosma_defeated: bool = false
+static var fantasma_defeated: bool = false
+static var final_defeated: bool = false
+
 func _ready() -> void:
 	if prompt_panel:
 		prompt_panel.visible = false
@@ -22,6 +26,8 @@ func _ready() -> void:
 				child.player_entered.connect(_on_boss_entrance_player_entered)
 				child.player_exited.connect(_on_boss_entrance_player_exited)
 
+	_start_ambient_animations(self)
+
 	var player = get_node_or_null("Player")
 	if player:
 		EffectHelper.play_one_shot_effect(self, "res://assets/fase3_parser/sprites/smoke_burst.png", player.global_position, 128.0, 15.0)
@@ -29,6 +35,19 @@ func _ready() -> void:
 	var btn_voltar = get_node_or_null("CanvasLayer/UI/HeaderPanel/BtnVoltarMenu")
 	if btn_voltar:
 		btn_voltar.pressed.connect(_on_btn_voltar_menu_pressed)
+
+func _start_ambient_animations(node: Node) -> void:
+	for child in node.get_children():
+		if child is AnimatedSprite2D:
+			var player_node = get_node_or_null("Player")
+			if player_node and (child == player_node.get_node_or_null("AnimatedSprite2D") or player_node.is_ancestor_of(child)):
+				continue
+			if child.sprite_frames:
+				var anim_name = child.animation if (child.animation != "" and child.sprite_frames.has_animation(child.animation)) else child.sprite_frames.get_animation_names()[0]
+				child.sprite_frames.set_animation_loop(anim_name, true)
+				if not child.is_playing():
+					child.play(anim_name)
+		_start_ambient_animations(child)
 
 func _on_btn_voltar_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
@@ -61,17 +80,31 @@ func _unhandled_input(event: InputEvent) -> void:
 			_enter_boss_phase(active_entrance)
 
 func _on_boss_entrance_player_entered(entrance: BossEntrance) -> void:
-	active_entrance = entrance
 	if prompt_label and prompt_panel:
 		var boss_name_text = entrance.boss_name
-		if entrance.is_final_boss:
-			prompt_label.text = "[★ BOSS FINAL ★] Pressione 'E' ou 'ENTER' para desafiar %s!" % boss_name_text
+		var can_enter = true
+		
+		if entrance.boss_name.to_lower() == "fantasma" and not gosma_defeated:
+			can_enter = false
+			prompt_label.text = "Derrote o Boss Gosma primeiro para liberar esta arena!"
+		elif entrance.is_final_boss and not fantasma_defeated:
+			can_enter = false
+			prompt_label.text = "Derrote o Boss Fantasma primeiro para liberar esta arena!"
 		else:
-			prompt_label.text = "Pressione 'E' ou 'ENTER' para entrar na fase de %s!" % boss_name_text
+			if entrance.is_final_boss:
+				prompt_label.text = "[★ BOSS FINAL ★] Pressione 'E' ou 'ENTER' para desafiar %s!" % boss_name_text
+			else:
+				prompt_label.text = "Pressione 'E' ou 'ENTER' para entrar na fase de %s!" % boss_name_text
+		
+		if can_enter:
+			active_entrance = entrance
+		else:
+			active_entrance = null
+		
 		prompt_panel.visible = true
 
 func _on_boss_entrance_player_exited(entrance: BossEntrance) -> void:
-	if active_entrance == entrance:
+	if active_entrance == entrance or active_entrance == null:
 		active_entrance = null
 		if prompt_panel:
 			prompt_panel.visible = false

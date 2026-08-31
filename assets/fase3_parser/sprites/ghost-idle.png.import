@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baou413gdy8r"
-path="res://.godot/imported/Ghost-attacking.png-ea9ef75b1d647abb9c84cf8a58e12bcc.ctex"
+uid="uid://bkksgfartj6j"
+path="res://.godot/imported/ghost-idle.png-c614db62891ff6b4088aac25770a4604.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/Ghost-attacking.png"
-dest_files=["res://.godot/imported/Ghost-attacking.png-ea9ef75b1d647abb9c84cf8a58e12bcc.ctex"]
+source_file="res://assets/fase3_parser/sprites/ghost-idle.png"
+dest_files=["res://.godot/imported/ghost-idle.png-c614db62891ff6b4088aac25770a4604.ctex"]
 
 [params]
 

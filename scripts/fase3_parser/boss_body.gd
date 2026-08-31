@@ -7,4 +7,3 @@ func take_damage() -> void:
 		var root = get_tree().current_scene
 		if root and root.has_method("boss_take_damage"):
 			root.boss_take_damage()
-

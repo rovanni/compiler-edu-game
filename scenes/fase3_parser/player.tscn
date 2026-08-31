@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://bbktwctese3kx"]
+[gd_scene load_steps=0 format=3 uid="uid://bbktwctese3kx"]
 
 [ext_resource type="Script" uid="uid://cleyylvmpjjf6" path="res://scripts/fase3_parser/player.gd" id="1_aufts"]
-[ext_resource type="Texture2D" uid="uid://c83vy4cgysd7o" path="res://assets/fase3_parser/sprites/Player-idle-trimmed.png" id="2_ompsb"]
+[ext_resource type="Texture2D" uid="uid://c83vy4cgysd7o" path="res://assets/fase3_parser/sprites/player-idle-trimmed.png" id="2_ompsb"]
 [ext_resource type="Texture2D" uid="uid://cnqae32buncxy" path="res://assets/fase3_parser/sprites/player-run-trimmed.png" id="3_iph5g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]

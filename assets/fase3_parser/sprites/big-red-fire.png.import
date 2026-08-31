@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c83vy4cgysd7o"
-path="res://.godot/imported/Player-idle-trimmed.png-ddae10b19cc2962a9dc0cc0adb15e3dd.ctex"
+uid="uid://dlc4y0ojordkv"
+path="res://.godot/imported/big-red-fire.png-b8fb10808f7558a75af99156417250bb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/Player-idle-trimmed.png"
-dest_files=["res://.godot/imported/Player-idle-trimmed.png-ddae10b19cc2962a9dc0cc0adb15e3dd.ctex"]
+source_file="res://assets/fase3_parser/sprites/big-red-fire.png"
+dest_files=["res://.godot/imported/big-red-fire.png-b8fb10808f7558a75af99156417250bb.ctex"]
 
 [params]
 

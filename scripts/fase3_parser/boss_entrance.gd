@@ -11,15 +11,12 @@ signal player_exited(entrance: BossEntrance)
 @export var bg_path: String = ""
 @export_file("*.tscn") var arena_scene_path: String = ""
 
-@onready var label: Label = $Label
 @onready var pad_rect: ColorRect = $PadRect
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	
-	if label:
-		label.text = boss_name.to_upper()
 	if pad_rect:
 		pad_rect.color = accent_color
 		

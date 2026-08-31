@@ -51,6 +51,66 @@ func _is_gosma() -> bool:
 func _is_fantasma() -> bool:
 	return current_boss_name.to_lower() == "fantasma" or current_boss_id == "boss_fantasma_blue" or current_boss_id == "boss_3"
 
+func _is_final() -> bool:
+	var name_lower = current_boss_name.to_lower()
+	return name_lower == "rei parser" or name_lower == "final" or current_boss_id == "boss_final_parser" or current_boss_id == "boss_final"
+
+func _play_ghost_idle() -> void:
+	if not boss_anim or not _is_fantasma():
+		return
+	
+	var idle_anim: String = ""
+	if boss_anim.sprite_frames:
+		if boss_anim.sprite_frames.has_animation("ghost-idle"):
+			idle_anim = "ghost-idle"
+		elif boss_anim.sprite_frames.has_animation("ghost_idle"):
+			idle_anim = "ghost_idle"
+			
+	if idle_anim != "":
+		boss_anim.sprite_frames.set_animation_loop(idle_anim, true)
+		_update_ghost_scale(idle_anim)
+		boss_anim.animation = idle_anim
+		boss_anim.play(idle_anim)
+	else:
+		boss_anim.animation = "ghost_attacking"
+		boss_anim.stop()
+		boss_anim.frame = 0
+
+func _play_slime_idle() -> void:
+	if not boss_anim or not _is_gosma():
+		return
+	var idle_anim: String = ""
+	if boss_anim.sprite_frames:
+		if boss_anim.sprite_frames.has_animation("slime_idle"):
+			idle_anim = "slime_idle"
+		elif boss_anim.sprite_frames.has_animation("slime-idle"):
+			idle_anim = "slime-idle"
+	if idle_anim != "":
+		boss_anim.sprite_frames.set_animation_loop(idle_anim, true)
+		boss_anim.animation = idle_anim
+		boss_anim.play(idle_anim)
+	else:
+		boss_anim.animation = "slime_attacking"
+		boss_anim.stop()
+		boss_anim.frame = 0
+
+func _play_final_idle() -> void:
+	if not boss_anim or not _is_final():
+		return
+	var idle_anim: String = ""
+	if boss_anim.sprite_frames:
+		if boss_anim.sprite_frames.has_animation("final_idle"):
+			idle_anim = "final_idle"
+		elif boss_anim.sprite_frames.has_animation("final-idle"):
+			idle_anim = "final-idle"
+	if idle_anim != "":
+		boss_anim.sprite_frames.set_animation_loop(idle_anim, true)
+		boss_anim.animation = idle_anim
+		boss_anim.play(idle_anim)
+
+func _update_ghost_scale(_anim_name: String = "") -> void:
+	pass
+
 func _ready() -> void:
 	_init_hearts_ui()
 	if arena_boss_name != "":
@@ -71,23 +131,21 @@ func _ready() -> void:
 		if boss_anim:
 			boss_anim.show()
 			boss_anim.scale = Vector2(0.45, 0.45)
-			boss_anim.animation = "slime_attacking"
-			if boss_anim.sprite_frames.has_animation("slime_attacking"):
-				boss_anim.sprite_frames.set_animation_loop("slime_attacking", false)
-			boss_anim.stop()
-			boss_anim.frame = 0
+			_play_slime_idle()
 
 	elif _is_fantasma():
 		if boss_block:
 			boss_block.hide()
 		if boss_anim:
 			boss_anim.show()
-			boss_anim.scale = Vector2(0.12, 0.12)
-			boss_anim.animation = "ghost_attacking"
-			if boss_anim.sprite_frames.has_animation("ghost_attacking"):
-				boss_anim.sprite_frames.set_animation_loop("ghost_attacking", false)
-			boss_anim.stop()
-			boss_anim.frame = 0
+			_play_ghost_idle()
+	elif _is_final():
+		if boss_block:
+			boss_block.hide()
+		if boss_anim:
+			boss_anim.show()
+			boss_anim.scale = Vector2(0.45, 0.45)
+			_play_final_idle()
 	else:
 		if boss_block:
 			boss_block.show()
@@ -236,14 +294,14 @@ func _check_sequence() -> void:
 			if boss_anim.is_playing():
 				await boss_anim.animation_finished
 			
-			# Mantém o boss parado no primeiro frame (frame 0)
-			boss_anim.stop()
-			boss_anim.frame = 0
+			# Retorna para a animação de idle da gosma
+			_play_slime_idle()
 			
 			await get_tree().create_timer(0.5).timeout
 		elif _is_fantasma() and boss_anim:
 			if boss_anim.sprite_frames.has_animation("ghost_attacking"):
 				boss_anim.sprite_frames.set_animation_loop("ghost_attacking", false)
+			_update_ghost_scale("ghost_attacking")
 			boss_anim.animation = "ghost_attacking"
 			boss_anim.frame = 0
 			boss_anim.play("ghost_attacking")
@@ -259,9 +317,8 @@ func _check_sequence() -> void:
 			if boss_anim.is_playing():
 				await boss_anim.animation_finished
 			
-			# Mantém o boss parado no primeiro frame (frame 0)
-			boss_anim.stop()
-			boss_anim.frame = 0
+			# Transita normalmente de volta para a animação de parado em loop
+			_play_ghost_idle()
 			
 			await get_tree().create_timer(0.5).timeout
 		else:
@@ -280,6 +337,9 @@ func _spawn_projectile(spawn_pos: Vector2, target_node: Node2D, is_enemy: bool) 
 	if is_enemy and _is_gosma():
 		if proj.has_method("set_slime_attack_sprite"):
 			proj.set_slime_attack_sprite()
+	elif is_enemy and _is_final():
+		if proj.has_method("set_final_attack_sprite"):
+			proj.set_final_attack_sprite()
 	else:
 		var color_rect = proj.get_node_or_null("ColorRect")
 		if color_rect:
@@ -301,6 +361,17 @@ func boss_take_damage() -> void:
 			player.current_lives = player.max_lives
 			update_lives_ui(player.current_lives)
 			
+		var MainRoomScript = load("res://scripts/fase3_parser/main_room.gd")
+		var is_final = false
+		
+		if _is_gosma():
+			if MainRoomScript: MainRoomScript.gosma_defeated = true
+		elif _is_fantasma():
+			if MainRoomScript: MainRoomScript.fantasma_defeated = true
+		else:
+			if MainRoomScript: MainRoomScript.final_defeated = true
+			is_final = true
+			
 		if boss_anim and boss_anim.visible:
 			if _is_gosma() and boss_anim.sprite_frames.has_animation("slime_dying"):
 				boss_anim.sprite_frames.set_animation_loop("slime_dying", false)
@@ -309,9 +380,15 @@ func boss_take_damage() -> void:
 			
 		if is_instance_valid(boss_body):
 			boss_body.queue_free()
-		if exit_portal:
-			exit_portal.visible = true
-			exit_portal.set_deferred("monitoring", true)
+			
+		if is_final:
+			desc_label.text = "VOCÊ VENCEU O DESAFIO FINAL!"
+			await get_tree().create_timer(2.0).timeout
+			get_tree().change_scene_to_file("res://scenes/fase3_parser/outro_cutscene.tscn")
+		else:
+			if exit_portal:
+				exit_portal.visible = true
+				exit_portal.set_deferred("monitoring", true)
 
 func _on_player_took_damage(new_lives: int) -> void:
 	update_lives_ui(new_lives)

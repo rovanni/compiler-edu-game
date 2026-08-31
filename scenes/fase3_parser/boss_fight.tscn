@@ -1,12 +1,13 @@
-[gd_scene format=3 uid="uid://6hektp0wpcx5"]
+[gd_scene load_steps=0 format=3 uid="uid://6hektp0wpcx5"]
 
 [ext_resource type="Script" uid="uid://bosjeh0bw5fja" path="res://scripts/fase3_parser/boss_fight.gd" id="1_boss_fight_script"]
 [ext_resource type="PackedScene" uid="uid://bbktwctese3kx" path="res://scenes/fase3_parser/player.tscn" id="2_player_scene"]
-[ext_resource type="Texture2D" uid="uid://dtsas4dtk5njt" path="res://assets/fase3_parser/sprites/Spider-dying.png" id="3_67f06"]
+[ext_resource type="Texture2D" uid="uid://dtsas4dtk5njt" path="res://assets/fase3_parser/sprites/spider-dying.png" id="3_67f06"]
 [ext_resource type="PackedScene" uid="uid://c8gab4e3a2d1" path="res://scenes/fase3_parser/pressure_plate.tscn" id="3_plate_scene"]
-[ext_resource type="Texture2D" uid="uid://g3wmc7kv8252" path="res://assets/fase3_parser/sprites/Slime-attacking.png" id="4_31neg"]
+[ext_resource type="Texture2D" uid="uid://g3wmc7kv8252" path="res://assets/fase3_parser/sprites/slime-attacking.png" id="4_31neg"]
 [ext_resource type="Script" uid="uid://8tw8fs13n0ot" path="res://scripts/fase3_parser/boss_body.gd" id="4_boss_body_script"]
-[ext_resource type="Texture2D" uid="uid://baou413gdy8r" path="res://assets/fase3_parser/sprites/Ghost-attacking.png" id="5_ghost_attacking"]
+[ext_resource type="Texture2D" uid="uid://baou413gdy8r" path="res://assets/fase3_parser/sprites/ghost-attacking.png" id="5_ghost_attacking"]
+[ext_resource type="Texture2D" uid="uid://bkksgfartj6j" path="res://assets/fase3_parser/sprites/ghost-idle.png" id="6_ghost_idle"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boss"]
 size = Vector2(120, 120)
@@ -106,6 +107,86 @@ region = Rect2(12540, 0, 1254, 1254)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghost_11"]
 atlas = ExtResource("5_ghost_attacking")
 region = Rect2(13794, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_0"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(0, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_1"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(1254, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_2"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(2508, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_3"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(3762, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_4"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(5016, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_5"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(6270, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_6"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(7524, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_7"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(8778, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_8"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(10032, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_9"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(11286, 0, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_10"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(0, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_11"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(1254, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_12"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(2508, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_13"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(3762, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_14"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(5016, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_15"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(6270, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_16"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(7524, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_17"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(8778, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_18"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(10032, 1254, 1254, 1254)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost_idle_19"]
+atlas = ExtResource("6_ghost_idle")
+region = Rect2(11286, 1254, 1254, 1254)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3grv3"]
 atlas = ExtResource("4_31neg")
@@ -241,6 +322,136 @@ animations = [{
 }],
 "loop": 0,
 "name": &"ghost_attacking",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_15")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_19")
+}],
+"loop": 1,
+"name": &"ghost-idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_15")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost_idle_19")
+}],
+"loop": 1,
+"name": &"ghost_idle",
 "speed": 10.0
 }, {
 "frames": [{

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://g3wmc7kv8252"
-path="res://.godot/imported/Slime-attacking.png-12bdff6d0edee5127c6800e58afeff8d.ctex"
+uid="uid://0a4xm5hsrp7x"
+path="res://.godot/imported/big-blue-fire.png-4aeafe39bf64801d6337541caf79c75a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/Slime-attacking.png"
-dest_files=["res://.godot/imported/Slime-attacking.png-12bdff6d0edee5127c6800e58afeff8d.ctex"]
+source_file="res://assets/fase3_parser/sprites/big-blue-fire.png"
+dest_files=["res://.godot/imported/big-blue-fire.png-4aeafe39bf64801d6337541caf79c75a.ctex"]
 
 [params]
 

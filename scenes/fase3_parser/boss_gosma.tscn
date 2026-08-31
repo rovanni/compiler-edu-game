@@ -1,14 +1,17 @@
-[gd_scene format=3 uid="uid://csn80cyfcigg3"]
+[gd_scene load_steps=91 format=3 uid="uid://csn80cyfcigg3"]
 
 [ext_resource type="Script" uid="uid://bosjeh0bw5fja" path="res://scripts/fase3_parser/boss_fight.gd" id="1_boss_fight_script"]
 [ext_resource type="Texture2D" uid="uid://1t5voadqkqew" path="res://assets/fase3_parser/backgrouds/green_boss_bg.png" id="2_green_bg"]
 [ext_resource type="PackedScene" uid="uid://bbktwctese3kx" path="res://scenes/fase3_parser/player.tscn" id="2_player_scene"]
-[ext_resource type="Texture2D" uid="uid://dtsas4dtk5njt" path="res://assets/fase3_parser/sprites/Spider-dying.png" id="3_67f06"]
+[ext_resource type="SpriteFrames" uid="uid://cw0p3dycsv7ev" path="res://assets/fase3_parser/sprites/portal_spriteframes.tres" id="2_portal_frames"]
+[ext_resource type="Texture2D" uid="uid://dtsas4dtk5njt" path="res://assets/fase3_parser/sprites/spider-dying.png" id="3_67f06"]
 [ext_resource type="PackedScene" uid="uid://c8gab4e3a2d1" path="res://scenes/fase3_parser/pressure_plate.tscn" id="3_plate_scene"]
-[ext_resource type="Texture2D" uid="uid://qd5e16gdxmy4" path="res://assets/fase3_parser/sprites/Green-fire.png" id="3_yj117"]
-[ext_resource type="Texture2D" uid="uid://g3wmc7kv8252" path="res://assets/fase3_parser/sprites/Slime-attacking.png" id="4_31neg"]
+[ext_resource type="Texture2D" uid="uid://qd5e16gdxmy4" path="res://assets/fase3_parser/sprites/green-fire.png" id="3_yj117"]
+[ext_resource type="Texture2D" uid="uid://g3wmc7kv8252" path="res://assets/fase3_parser/sprites/slime-attacking.png" id="4_31neg"]
 [ext_resource type="Script" uid="uid://8tw8fs13n0ot" path="res://scripts/fase3_parser/boss_body.gd" id="4_boss_body_script"]
-[ext_resource type="Texture2D" uid="uid://baou413gdy8r" path="res://assets/fase3_parser/sprites/Ghost-attacking.png" id="5_ghost_attacking"]
+[ext_resource type="Texture2D" uid="uid://baou413gdy8r" path="res://assets/fase3_parser/sprites/ghost-attacking.png" id="5_ghost_attacking"]
+[ext_resource type="Texture2D" uid="uid://cxc26gc0xot0u" path="res://assets/fase3_parser/sprites/final_idle.png" id="6_6k4v6"]
+[ext_resource type="Texture2D" uid="uid://c11jmgjxmwoqt" path="res://assets/fase3_parser/sprites/slime-idle.png" id="9_a4l6d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgm34"]
 atlas = ExtResource("3_yj117")
@@ -69,7 +72,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ncycn")
 }],
-"loop": 1,
+"loop": true,
 "name": &"fire",
 "speed": 11.0
 }]
@@ -124,6 +127,66 @@ region = Rect2(2560, 0, 256, 256)
 [sub_resource type="AtlasTexture" id="AtlasTexture_76ywu"]
 atlas = ExtResource("3_67f06")
 region = Rect2(2816, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukevx"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(0, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5s5t0"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(230, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iv1qa"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(460, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pc3an"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(690, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf68q"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(920, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3of2l"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(0, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4cbr"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(230, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sgav"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(460, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a62oq"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(690, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gi44n"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(920, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahko4"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(0, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwmhb"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(230, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ui86u"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(460, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yobwu"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(690, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vffcs"]
+atlas = ExtResource("6_6k4v6")
+region = Rect2(920, 512, 230, 256)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghost_0"]
 atlas = ExtResource("5_ghost_attacking")
@@ -225,6 +288,66 @@ region = Rect2(2816, 0, 256, 256)
 atlas = ExtResource("4_31neg")
 region = Rect2(3072, 0, 256, 256)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_sb3xr"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(0, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr84w"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(230, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_os7w4"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(460, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_152mv"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(690, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4fj6g"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(920, 0, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2j0a"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(0, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uo1pd"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(230, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yt2g4"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(460, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i207a"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(690, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26lfl"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(920, 256, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvmmn"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(0, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1your"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(230, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nni7s"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(460, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ftbr0"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(690, 512, 230, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1av07"]
+atlas = ExtResource("9_a4l6d")
+region = Rect2(920, 512, 230, 256)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_107i1"]
 animations = [{
 "frames": [{
@@ -264,9 +387,59 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_76ywu")
 }],
-"loop": 1,
+"loop": true,
 "name": &"aranha_dying",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukevx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5s5t0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iv1qa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pc3an")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nf68q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3of2l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4cbr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sgav")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a62oq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gi44n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ahko4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwmhb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ui86u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yobwu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vffcs")
+}],
+"loop": true,
+"name": &"final_idle",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -305,7 +478,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ghost_11")
 }],
-"loop": 0,
+"loop": false,
 "name": &"ghost_attacking",
 "speed": 10.0
 }, {
@@ -349,104 +522,164 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g1mv6")
 }],
-"loop": 0,
+"loop": false,
 "name": &"slime_attacking",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sb3xr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pr84w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_os7w4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_152mv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4fj6g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2j0a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uo1pd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yt2g4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i207a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26lfl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvmmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1your")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nni7s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ftbr0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1av07")
+}],
+"loop": true,
+"name": &"slime_idle",
+"speed": 9.0
 }]
 
-[node name="BossFight" type="Node2D" unique_id=880135929]
+[node name="BossFight" type="Node2D"]
 script = ExtResource("1_boss_fight_script")
 arena_boss_name = "Gosma"
 arena_boss_id = "boss_gosma_green"
 arena_boss_color = Color(0.2, 0.75, 0.35, 1)
-exit_portal_size = Vector2(150, 150)
 
-[node name="Background" type="Sprite2D" parent="." unique_id=266578923]
+[node name="Background" type="Sprite2D" parent="."]
 position = Vector2(627, 627)
 texture = ExtResource("2_green_bg")
 
-[node name="Fires" type="StaticBody2D" parent="Background" unique_id=859834110]
+[node name="Fires" type="StaticBody2D" parent="Background"]
 position = Vector2(-149, 225)
 scale = Vector2(2, 2)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1236746346]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Background/Fires"]
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Background/Fires" unique_id=527433062]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(-177, -28)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1172502076]
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(-234, -73)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="Background/Fires" unique_id=668074314]
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(-195.5, -193.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="Background/Fires" unique_id=78971420]
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(-121.5, -246)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1329184688]
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(-3, -268)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="Background/Fires" unique_id=191759317]
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(146.5, -267.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1937443140]
+[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(280, -246.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1054031248]
+[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(356, -192.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1506851906]
+[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(385, -73)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D11" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1980017984]
+[node name="AnimatedSprite2D11" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(320, -26.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="AnimatedSprite2D12" type="AnimatedSprite2D" parent="Background/Fires" unique_id=1768397393]
+[node name="AnimatedSprite2D12" type="AnimatedSprite2D" parent="Background/Fires"]
 position = Vector2(143, -0.5)
 sprite_frames = SubResource("SpriteFrames_jlms8")
 animation = &"fire"
 autoplay = "fire"
 
-[node name="Arena" type="Node2D" parent="." unique_id=1675370934]
+[node name="StaticBody2D" type="StaticBody2D" parent="Background"]
+visible = false
 
-[node name="BossBody" type="StaticBody2D" parent="Arena" unique_id=743760281 groups=["boss"]]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Background/StaticBody2D"]
+position = Vector2(-86, 270)
+polygon = PackedVector2Array(-1, 0, -1, 165, 155, 166, 155, 2, 196, 0, 214, -17, 248, -5, 249, 38, 327, 60, 385, 25, 412, -69, 445, -18, 467, -74, 485, -24, 529, -89, 564, -70, 590, -75, 620, -153, 639, -114, 680, -224, 644, -242, 672, -307, 521, -424, 490, -415, 419, -478, 326, -450, 200, -494, 151, -509, 150, -587, 9, -586, 9, -618, 157, -617, 204, -532, 446, -497, 691, -341, 709, -234, 618, -44, 403, 43, 318, 93, 190, 42, 189, 185, -27, 185, -31, 23)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Background/StaticBody2D"]
+position = Vector2(-120, 294)
+polygon = PackedVector2Array(-2, 2, -12, -37, -55, -38, -64, 0, -95, -19, -120, -3, -181, -29, -207, -88, -228, -46, -246, -36, -263, -78, -297, -128, -323, -77, -341, -122, -383, -100, -453, -241, -472, -266, -423, -303, -447, -356, -406, -364, -329, -438, -302, -455, -276, -441, -237, -461, -232, -499, -134, -491, -65, -517, -39, -501, -12, -518, 32, -534, 43, -543, 43, -642, -51, -551, -250, -528, -474, -372, -457, -302, -513, -255, -451, -158, -341, 0, -107, 22, -16, 29)
+
+[node name="Arena" type="Node2D" parent="."]
+
+[node name="BossBody" type="StaticBody2D" parent="Arena" groups=["boss"]]
 position = Vector2(627, 410)
 script = ExtResource("4_boss_body_script")
 
-[node name="BossBlock" type="ColorRect" parent="Arena/BossBody" unique_id=496342482]
+[node name="BossBlock" type="ColorRect" parent="Arena/BossBody"]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -461,7 +694,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.2, 0.75, 0.35, 1)
 
-[node name="BossNameLabel" type="Label" parent="Arena/BossBody/BossBlock" unique_id=1914780849]
+[node name="BossNameLabel" type="Label" parent="Arena/BossBody/BossBlock"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -478,34 +711,37 @@ theme_override_font_sizes/font_size = 16
 text = "GOSMA"
 horizontal_alignment = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/BossBody" unique_id=1082232601]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/BossBody"]
 shape = SubResource("RectangleShape2D_boss")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Arena/BossBody" unique_id=1152822403]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Arena/BossBody"]
 scale = Vector2(0.45, 0.45)
 sprite_frames = SubResource("SpriteFrames_107i1")
 animation = &"slime_attacking"
+frame = 12
+frame_progress = 1.0
 
-[node name="Plates" type="Node2D" parent="Arena" unique_id=1908854578]
+[node name="Plates" type="Node2D" parent="Arena"]
 
-[node name="PressurePlate1" parent="Arena/Plates" unique_id=1346058358 instance=ExtResource("3_plate_scene")]
+[node name="PressurePlate1" parent="Arena/Plates" instance=ExtResource("3_plate_scene")]
 position = Vector2(400, 600)
 
-[node name="PressurePlate2" parent="Arena/Plates" unique_id=1273499466 instance=ExtResource("3_plate_scene")]
+[node name="PressurePlate2" parent="Arena/Plates" instance=ExtResource("3_plate_scene")]
 position = Vector2(854, 600)
 
-[node name="PressurePlate3" parent="Arena/Plates" unique_id=56667748 instance=ExtResource("3_plate_scene")]
+[node name="PressurePlate3" parent="Arena/Plates" instance=ExtResource("3_plate_scene")]
 position = Vector2(400, 800)
 
-[node name="PressurePlate4" parent="Arena/Plates" unique_id=1432032535 instance=ExtResource("3_plate_scene")]
+[node name="PressurePlate4" parent="Arena/Plates" instance=ExtResource("3_plate_scene")]
 position = Vector2(854, 800)
 
-[node name="ExitPortal" type="Area2D" parent="Arena" unique_id=900376879]
+[node name="ExitPortal" type="Area2D" parent="Arena"]
 visible = false
 position = Vector2(627, 410)
 monitoring = false
 
-[node name="ColorRect" type="ColorRect" parent="Arena/ExitPortal" unique_id=688629549]
+[node name="ColorRect" type="ColorRect" parent="Arena/ExitPortal"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -519,15 +755,20 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.9, 0.8, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/ExitPortal" unique_id=2076978607]
+[node name="PortalAnim" type="AnimatedSprite2D" parent="Arena/ExitPortal"]
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_portal_frames")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/ExitPortal"]
 shape = SubResource("RectangleShape2D_boss")
 
-[node name="Player" parent="." unique_id=1820575999 instance=ExtResource("2_player_scene")]
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
 position = Vector2(627, 1000)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1401419095]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="UI" type="Control" parent="CanvasLayer" unique_id=1273177677]
+[node name="UI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -535,7 +776,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/UI" unique_id=1710426932]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -549,7 +790,7 @@ theme_override_font_sizes/font_size = 24
 text = "FASE DE COMBATE: GOSMA"
 horizontal_alignment = 1
 
-[node name="DescLabel" type="Label" parent="CanvasLayer/UI" unique_id=1280599524]
+[node name="DescLabel" type="Label" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -563,7 +804,7 @@ theme_override_font_sizes/font_size = 14
 text = "Pise nas placas na ordem correta para atacar o chefão!"
 horizontal_alignment = 1
 
-[node name="BossHealthBar" type="ProgressBar" parent="CanvasLayer/UI" unique_id=64591992]
+[node name="BossHealthBar" type="ProgressBar" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -577,7 +818,7 @@ max_value = 3.0
 value = 3.0
 show_percentage = false
 
-[node name="HeartsContainer" type="HBoxContainer" parent="CanvasLayer/UI" unique_id=656227750]
+[node name="HeartsContainer" type="HBoxContainer" parent="CanvasLayer/UI"]
 layout_mode = 1
 offset_left = 40.0
 offset_top = 40.0
@@ -585,28 +826,28 @@ offset_right = 180.0
 offset_bottom = 80.0
 theme_override_constants/separation = 8
 
-[node name="Heart1" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer" unique_id=656227751]
+[node name="Heart1" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heart2" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer" unique_id=656227752]
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heart3" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer" unique_id=656227753]
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/UI/HeartsContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ReturnButton" type="Button" parent="CanvasLayer/UI" unique_id=736191207]
+[node name="ReturnButton" type="Button" parent="CanvasLayer/UI"]
 visible = false
 layout_mode = 1
 anchors_preset = 7

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtsas4dtk5njt"
-path="res://.godot/imported/Spider-dying.png-b2b2e04230710885ee43a2aad73a8cec.ctex"
+uid="uid://p7v8q5bfyobw"
+path="res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/Spider-dying.png"
-dest_files=["res://.godot/imported/Spider-dying.png-b2b2e04230710885ee43a2aad73a8cec.ctex"]
+source_file="res://assets/fase3_parser/sprites/red-portal.png"
+dest_files=["res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"]
 
 [params]
 
