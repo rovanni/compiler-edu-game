@@ -20,6 +20,14 @@ Esta pasta contém toda a documentação técnica, pedagógica, de engenharia de
 
 ---
 
+## 📂 Documentação das Fases
+
+| Fase | Documento de Engenharia | Evidências AEX | Grupo |
+|---|---|---|---|
+| **Fase 2: Vale do Scanner** | [fases/fase2_scanner.md](fases/fase2_scanner.md) | [evidencias_fase2.md](evidencias_fase2.md) | Grupo 2 |
+
+---
+
 ## 🎯 Como Utilizar esta Documentação
 
 1. **Cada Grupo (Grupos 1 a 6):** Deve copiar o [Template de Documentação de Fase](templates/template_documentacao_fase.md) e salvar em `docs/fases/faseX_nome.md` para documentar sua fase com artefatos de Engenharia de Software.

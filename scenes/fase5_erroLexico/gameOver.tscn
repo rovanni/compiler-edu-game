@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://1jtc0wxoy1v8"]
+
+[ext_resource type="Texture2D" uid="uid://cw7s0v5vgib87" path="res://assets/fase5_erroLexico/GameOver.png" id="1_7p0e4"]
+[ext_resource type="Script" uid="uid://bqgm6cbp8guhq" path="res://scripts/fase5_erroLexico/gameOver.gd" id="1_x6ece"]
+
+[node name="GameOver" type="Control" unique_id=499738564]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_x6ece")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1999259602]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_7p0e4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BotaoTentarNovamente" type="Button" parent="." unique_id=2106427347]
+layout_mode = 0
+offset_left = 548.0
+offset_top = 406.0
+offset_right = 735.0
+offset_bottom = 442.0

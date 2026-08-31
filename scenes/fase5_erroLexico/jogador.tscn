@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://bdfnj4qxyn0r3"]
+
+[ext_resource type="Script" uid="uid://q5xcvxsyf32e" path="res://scripts/fase5_erroLexico/jogador.gd" id="1_hfdgo"]
+[ext_resource type="Texture2D" uid="uid://dewym55mhijkw" path="res://assets/fase5_erroLexico/Player2.png" id="2_hfdgo"]
+[ext_resource type="Texture2D" uid="uid://uyy4vl3qfmwe" path="res://assets/fase5_erroLexico/Player1.png" id="3_ktk5e"]
+[ext_resource type="Texture2D" uid="uid://dyg280350peh1" path="res://assets/fase5_erroLexico/Player3.png" id="4_yd7fe"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_utjk5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hfdgo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ktk5e")
+}],
+"loop": 1,
+"name": &"andar",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ktk5e")
+}],
+"loop": 1,
+"name": &"parado",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_yd7fe")
+}],
+"loop": 1,
+"name": &"pular",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h3uhx"]
+size = Vector2(55, 87)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hfdgo"]
+size = Vector2(57.5, 87)
+
+[node name="Jogador" type="CharacterBody2D" unique_id=1847335985]
+script = ExtResource("1_hfdgo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=627814239]
+light_mask = 3
+z_index = 5
+position = Vector2(388, 480)
+scale = Vector2(0.15427041, 0.108621)
+sprite_frames = SubResource("SpriteFrames_utjk5")
+animation = &"parado"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1639652569]
+position = Vector2(381.5, 471.5)
+shape = SubResource("RectangleShape2D_h3uhx")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1775108221]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1683672600]
+position = Vector2(381.25, 471.5)
+shape = SubResource("RectangleShape2D_hfdgo")

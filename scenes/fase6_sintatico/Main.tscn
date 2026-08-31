@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6f1main001"]
+[gd_scene format=3 uid="uid://c6f1main001"]
 
 [ext_resource type="Script" uid="uid://220muiw56nr4" path="res://scripts/fase6_sintatico/main.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://rjrni3bnx126" path="res://scripts/fase6_sintatico/gerenciador_expressao.gd" id="2_ger"]

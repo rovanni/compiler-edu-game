@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" load_steps=10 format=3 uid="uid://cw0p3dycsv7ev"]
+
+[ext_resource type="Texture2D" uid="uid://cij86l5wwptob" path="res://assets/fase3_parser/sprites/purple-portal.png" id="1_x7d6p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7d6p"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvww5"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgxhg"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpq2v"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1tp0"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofcfm"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50ax6"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(0, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3b6o0"]
+atlas = ExtResource("1_x7d6p")
+region = Rect2(256, 512, 256, 256)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7d6p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvww5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgxhg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dpq2v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1tp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofcfm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50ax6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3b6o0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]

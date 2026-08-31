@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dm5njnbd5nur6"]
+[gd_scene format=3 uid="uid://dm5njnbd5nur6"]
 
 [ext_resource type="Script" path="res://scripts/fase6_sintatico/tutorial.gd" id="1_tut"]
 [ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/cenario.tscn" id="2_cenario"]

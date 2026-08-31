@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d14wfrxf61x7r"
-path="res://.godot/imported/PlayerCarry.png-23d41fa0a8e5e5cd8788436bb1452618.ctex"
+uid="uid://cw7s0v5vgib87"
+path="res://.godot/imported/GameOver.png-458077c677266c0019dc1e4fbf5ecbe5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase1_tokens/PlayerCarry.png"
-dest_files=["res://.godot/imported/PlayerCarry.png-23d41fa0a8e5e5cd8788436bb1452618.ctex"]
+source_file="res://assets/fase5_erroLexico/GameOver.png"
+dest_files=["res://.godot/imported/GameOver.png-458077c677266c0019dc1e4fbf5ecbe5.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6f1efeito01"]
+[gd_scene format=3 uid="uid://c6f1efeito01"]
 
 [ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_01.png" id="1_e1"]
 [ext_resource type="Texture2D" path="res://assets/fase6_sintatico/animacao/estouro_02.png" id="2_e2"]

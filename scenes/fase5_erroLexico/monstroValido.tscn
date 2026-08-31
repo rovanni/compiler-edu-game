@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://fq2bnpem17yx"]
+
+[ext_resource type="Texture2D" uid="uid://ct6i3m142l0p1" path="res://assets/fase5_erroLexico/MonstroValido.png" id="1_ys7yk"]
+[ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="2_yj8f3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yj8f3"]
+size = Vector2(39, 34)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_velx0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a8278"]
+size = Vector2(50, 8.375)
+
+[node name="MonstroValido" type="CharacterBody2D" unique_id=427687048]
+collision_layer = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=965184072]
+position = Vector2(425, 297.00003)
+scale = Vector2(0.07978723, 0.06756756)
+texture = ExtResource("1_ys7yk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=487239579]
+position = Vector2(425.5, 299)
+shape = SubResource("RectangleShape2D_yj8f3")
+
+[node name="Label" type="Label" parent="." unique_id=574427350]
+offset_left = 356.0
+offset_top = 243.0
+offset_right = 498.0
+offset_bottom = 269.0
+theme_override_colors/font_color = Color(0.62352943, 0.9607843, 0.043137256, 1)
+theme_override_fonts/font = ExtResource("2_yj8f3")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/focus = SubResource("StyleBoxFlat_velx0")
+horizontal_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1614889182]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=88934585]
+position = Vector2(426, 274.1875)
+shape = SubResource("RectangleShape2D_a8278")
