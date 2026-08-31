@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://ut2hdcaykm4n" path="res://assets/menu/fase4_ast_card.png" id="5_fase4_preview"]
 [ext_resource type="Texture2D" uid="uid://chl4sjdwgm526" path="res://assets/fase2_scanner/vale_scanner_background.png" id="6_fase2_preview"]
 [ext_resource type="Texture2D" uid="uid://1v7heon8j2x5" path="res://assets/menu/fase5_erroLexico.png" id="7_3y2rt"]
+[ext_resource type="Texture2D" uid="uid://pxvyj6a85pou" path="res://assets/fase3_parser/backgrouds/main_background.png" id="8_fase3_preview"]
+[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/castelo.png" id="9_fase6_preview"]
 
 [node name="Menu" type="Control" unique_id=10098437]
 layout_mode = 3
@@ -305,10 +307,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "3
-CAVERNA PARSER
-(Parser)"
-autowrap_mode = 2
+
+[node name="PreviewFase3" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3" unique_id=501314962]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_fase3_preview")
+expand_mode = 1
 
 [node name="CardFase4" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards" unique_id=614555744]
 layout_mode = 2
@@ -354,10 +363,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "6
-FORTALEZA SINTÁTICA
-(Erros Sintáticos)"
-autowrap_mode = 2
+
+[node name="PreviewFase6" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6" unique_id=1269313876]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_fase6_preview")
+expand_mode = 1
 
 [node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=779493040]
 custom_minimum_size = Vector2(0, 26)
