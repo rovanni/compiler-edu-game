@@ -7,6 +7,8 @@ signal disparou
 @export var velocidade_horizontal: float = 520.0
 @export var margem_horizontal: float = 52.0
 @export var altura_boca: float = 94.0
+@export var cor_raio_mira: Color = Color(0.45, 0.88, 1.0, 0.62)
+@export_range(1.0, 8.0, 0.5) var espessura_raio_mira: float = 2.0
 
 @onready var som_tiro: AudioStreamPlayer = $Tiro
 
@@ -17,6 +19,19 @@ var _mouse_x := 0.0
 func _ready() -> void:
 	_mouse_x = get_viewport_rect().size.x * 0.5
 	position.x = _mouse_x
+	queue_redraw()
+
+## O projétil sobe em linha reta a partir da boca; a linha-guia mostra a
+## coluna que será atingida antes de o jogador disparar.
+func _draw() -> void:
+	draw_dashed_line(
+		Vector2(0.0, -altura_boca),
+		Vector2(0.0, -global_position.y),
+		cor_raio_mira,
+		espessura_raio_mira,
+		14.0,
+		false
+	)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

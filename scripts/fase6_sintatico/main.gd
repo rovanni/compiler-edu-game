@@ -31,11 +31,15 @@ extends Node2D
 
 const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
 const CAMINHO_TUTORIAL := "res://scenes/fase6_sintatico/Tutorial.tscn"
+const DEBUG_PATH_FASE_1 := "res://resources/fase6_sintatico/fase1.tres"
+const DEBUG_PATH_FASE_2 := "res://resources/fase6_sintatico/fase2.tres"
+const DEBUG_PATH_FASE_3 := "res://resources/fase6_sintatico/fase3.tres"
 
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
 @onready var spawner: SpawnerBaloes = $SpawnerBaloes
 @onready var label_expressao: RichTextLabel = $UI/PainelObjetivo/VBox/LabelExpressao
 @onready var label_progresso: Label = $UI/PainelObjetivo/VBox/LabelProgresso
+@onready var painel_objetivo: PanelContainer = $UI/PainelObjetivo
 @onready var label_mensagem: Label = $UI/LabelMensagem
 @onready var canhao: CanhaoFase6 = $Canhao
 @onready var overlay_mecanica: Control = $UI/OverlayMecanica
@@ -78,7 +82,8 @@ func _ready() -> void:
 	if config == null:
 		push_warning("Main.tscn sem ConfigFase atribuído — usando valores padrão.")
 		config = ConfigFase.new()
-	if not Fase6Estado.execucao_ativa:
+	var iniciou_execucao_agora := not Fase6Estado.execucao_ativa
+	if iniciou_execucao_agora:
 		Fase6Estado.iniciar_execucao()
 
 	jogo_acabou = false
@@ -89,6 +94,10 @@ func _ready() -> void:
 		GameManager.game_over.connect(_on_game_manager_game_over)
 
 	GameManager.begin_phase(PHASE_ID)
+	# Ao abrir a Fase 6 diretamente (por exemplo, no editor), ela também deve
+	# começar com vidas completas. Pelo tutorial/menu o reset já ocorre antes.
+	if iniciou_execucao_agora:
+		GameManager.reset_lives()
 	_criar_hud()
 
 	gerenciador.definir_expressao(config.expressao_objetivo)
@@ -100,6 +109,9 @@ func _ready() -> void:
 	spawner.chefe_pronto_para_spawn.connect(_on_chefe_pronto_para_spawn)
 	spawner.iniciar(gerenciador)
 	overlay_botao.pressed.connect(_on_overlay_mecanica_confirmado)
+	# Espaço é exclusivamente o disparo. Os diálogos mecânicos avançam apenas
+	# com Enter ou clique para que um tiro repetido não os feche por acidente.
+	overlay_botao.focus_mode = Control.FOCUS_NONE
 	overlay_mecanica.hide()
 
 	_atualizar_ui()
@@ -129,8 +141,13 @@ func _on_balao_estourado(simbolo: String) -> void:
 		GameManager.break_combo()
 		_mostrar_mensagem("Proteja o símbolo '%s': espere o próximo balão!" % simbolo, COR_ALERTA)
 		_atualizar_ui()
+	elif gerenciador.faz_parte_da_expressao(simbolo):
+		# É válido, porém ainda não ocupa a posição atual da expressão.
+		GameManager.register_correct_action()
+		_mostrar_mensagem("Boa! '%s' é da expressão, mas não é a vez." % simbolo, COR_SUCESSO)
+		_atualizar_ui()
 	else:
-		# Estourou um símbolo que não é a vez dele (lixo ou fora de ordem) -> correto.
+		# Estourou lixo fora da expressão -> correto.
 		GameManager.register_correct_action()
 		_mostrar_mensagem("Boa defesa! Símbolo '%s' eliminado." % simbolo, COR_SUCESSO)
 		_atualizar_ui()
@@ -233,6 +250,7 @@ func _on_botao_proxima_fase_pressed() -> void:
 	if proxima_config == null:
 		push_error("Não foi possível carregar ConfigFase em: " + config.proxima_fase_config_path)
 		return
+	GameManager.reset_lives()
 	Fase6Estado.definir_proxima_config(proxima_config)
 	get_tree().reload_current_scene()
 
@@ -245,11 +263,30 @@ func _atualizar_ui() -> void:
 		32
 	)
 	var proximo := gerenciador.proximo_esperado()
-	label_progresso.text = "Próximo símbolo: %s   •   Progresso: %d/%d" % [
+	label_progresso.text = "Próximo: %s  •  %d/%d" % [
 		proximo if proximo != "" else "✓",
 		gerenciador.indice_atual,
 		gerenciador.expressao.size(),
 	]
+	_ajustar_largura_painel_objetivo()
+
+## O painel acompanha o texto realmente exibido. Em vez de reservar uma
+## coluna fixa de 600 px, termina logo após o último caractere da expressão
+## (com apenas as margens necessárias do painel).
+func _ajustar_largura_painel_objetivo() -> void:
+	var fonte: Font = label_expressao.get_theme_font(&"normal_font")
+	if fonte == null:
+		return
+	var largura_expressao := fonte.get_string_size("Expressão: ", HORIZONTAL_ALIGNMENT_LEFT, -1, 22).x
+	for indice in range(gerenciador.expressao.size()):
+		var tamanho := 32 if indice == gerenciador.indice_atual else 22
+		largura_expressao += fonte.get_string_size(gerenciador.expressao[indice], HORIZONTAL_ALIGNMENT_LEFT, -1, tamanho).x
+		if indice < gerenciador.expressao.size() - 1:
+			largura_expressao += fonte.get_string_size(" ", HORIZONTAL_ALIGNMENT_LEFT, -1, 22).x
+	var largura_progresso := fonte.get_string_size(label_progresso.text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x
+	var largura_painel := clampf(maxf(largura_expressao, largura_progresso) + 34.0, 220.0, 590.0)
+	painel_objetivo.size.x = ceilf(largura_painel)
+	label_expressao.custom_minimum_size.x = maxf(1.0, largura_painel - 32.0)
 
 func _mostrar_mensagem(texto: String, cor: Color = COR_NEUTRA) -> void:
 	if label_mensagem:
@@ -289,6 +326,42 @@ func _input(event: InputEvent) -> void:
 		or (event is InputEventMouseMotion and event.relative.length_squared() > 4.0)
 	):
 		_tempo_sem_entrada = 0.0
+	if tutorial_mecanica_ativo:
+		if (
+			event is InputEventKey
+			and event.pressed
+			and not event.echo
+			and event.keycode in [KEY_ENTER, KEY_KP_ENTER]
+			and overlay_botao.visible
+		):
+			get_viewport().set_input_as_handled()
+			_on_overlay_mecanica_confirmado()
+		return
+	_processar_atalho_debug(event)
+
+func _processar_atalho_debug(event: InputEvent) -> void:
+	if not OS.is_debug_build() or not event is InputEventKey or not event.pressed or event.echo:
+		return
+	var caminho_config := ""
+	match event.keycode:
+		KEY_1:
+			caminho_config = DEBUG_PATH_FASE_1
+		KEY_2:
+			caminho_config = DEBUG_PATH_FASE_2
+		KEY_3:
+			caminho_config = DEBUG_PATH_FASE_3
+		_:
+			return
+	var proxima_config: ConfigFase = load(caminho_config)
+	if proxima_config == null:
+		push_error("DEBUG: Falha ao carregar configuração: " + caminho_config)
+		return
+	GameManager.rollback_to(0)
+	GameManager.reset_lives()
+	Fase6Estado.iniciar_execucao()
+	Fase6Estado.definir_proxima_config(proxima_config)
+	get_viewport().set_input_as_handled()
+	get_tree().reload_current_scene()
 
 func _pausar() -> void:
 	if pausado or jogo_acabou:
@@ -322,6 +395,7 @@ func _voltar_ao_menu() -> void:
 	Fase6Estado.encerrar_execucao()
 	if not fase_concluida:
 		GameManager.abandon_phase()
+	GameManager.reset_lives()
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
 
 func _on_replay_requested() -> void:
@@ -391,13 +465,12 @@ func _abrir_overlay_mecanica(
 	)
 	overlay_texto.text = texto
 	overlay_botao.visible = interativo
+	overlay_botao.text = "Entendi (Enter)"
 	alerta_exclamacoes.visible = alerta_chefe
 	alerta_fundo.visible = alerta_chefe
 	overlay_mecanica.show()
 	if alerta_chefe:
 		_animar_alerta_chefe()
-	if interativo:
-		call_deferred("_focar_botao_overlay")
 
 func _animar_alerta_chefe() -> void:
 	alerta_exclamacoes.scale = Vector2(0.88, 0.88)
@@ -415,10 +488,6 @@ func _animar_alerta_chefe() -> void:
 	var tween_fundo := create_tween().set_loops(2)
 	tween_fundo.tween_property(alerta_fundo, "modulate:a", 0.3, 0.42)
 	tween_fundo.tween_property(alerta_fundo, "modulate:a", 0.12, 0.42)
-
-func _focar_botao_overlay() -> void:
-	if tutorial_mecanica_ativo and overlay_botao.visible and overlay_botao.is_inside_tree():
-		overlay_botao.grab_focus()
 
 func _on_overlay_mecanica_confirmado() -> void:
 	if not tutorial_mecanica_ativo:

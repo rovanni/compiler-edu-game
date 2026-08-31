@@ -78,9 +78,23 @@ func configure_phase6_compact_layout() -> void:
 	_subtitle_label.add_theme_font_size_override("font_size", 12)
 	_menu_button.text = "⚙\nMENU"
 	_timer_panel.hide()
+	_aplicar_transparencia_fase6()
 	for child in _root.get_children():
 		if child != _overlay:
 			_habilitar_clique_atraves(child)
+
+## O HUD é compartilhado entre as fases, mas a Fase 6 precisa deixar o céu
+## visível para a leitura dos balões. Os overrides existem somente nesta
+## instância após a configuração específica, sem alterar o visual padrão.
+func _aplicar_transparencia_fase6() -> void:
+	var fundo := Color(PANEL.r, PANEL.g, PANEL.b, 0.38)
+	var fundo_hover := Color(PANEL_2.r, PANEL_2.g, PANEL_2.b, 0.52)
+	var fundo_pressed := Color(0.09, 0.2, 0.29, 0.56)
+	for painel in [_lives_panel, _points_panel, _title_panel]:
+		painel.add_theme_stylebox_override("panel", _style(fundo, BORDER, 3, 7))
+	_menu_button.add_theme_stylebox_override("normal", _style(fundo, BORDER, 3, 6))
+	_menu_button.add_theme_stylebox_override("hover", _style(fundo_hover, GOLD, 3, 6))
+	_menu_button.add_theme_stylebox_override("pressed", _style(fundo_pressed, GOLD, 3, 6))
 
 
 func configure_scanner(code_bbcode: String, slot_count: int, progress_text: String) -> void:

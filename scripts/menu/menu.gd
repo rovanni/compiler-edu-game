@@ -60,19 +60,19 @@ func aplicar_estilos_prototipo() -> void:
 	# 3. Cards dos Mundos (Grid) com borda PRETA
 	var card1 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase1")
 	if card1: estilar_card(card1, Color("#1E4627"), cor_borda_preta)
-	
+
 	var card2 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase2")
 	if card2: estilar_card(card2, Color("#19376D"), cor_borda_preta)
-	
+
 	var card3 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3")
 	if card3: estilar_card(card3, Color("#5C4A1E"), cor_borda_preta)
-	
+
 	var card4 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4")
 	if card4: estilar_card(card4, Color("#442A5C"), cor_borda_preta)
-	
+
 	var card5 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase5")
 	if card5: estilar_card(card5, Color("#5C2A2A"), cor_borda_preta)
-	
+
 	var card6 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
 	if card6: estilar_card(card6, Color("#3A1A2A"), cor_borda_preta)
 
@@ -232,6 +232,9 @@ func preparar_fase(fase_id: int) -> void:
 		GameManager.begin_phase(fase_id)
 	else:
 		GameManager.start_new_session(fase_id)
+	# NÃO deve manter as vidas perdidas para a fase 6
+	if fase_id == 6:
+		GameManager.reset_lives()
 
 func atualizar_estado_da_sessao() -> void:
 	var status: Label = $MarginContainer/VBoxRoot/FooterBar/LblVersion

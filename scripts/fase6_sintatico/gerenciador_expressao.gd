@@ -49,6 +49,11 @@ func pertence_a_expressao(simbolo: String) -> bool:
 			return true
 	return false
 
+## Considera a expressão inteira. Caracteres já coletados também são válidos
+## visualmente, por isso continuam verdes quando aparecerem novamente.
+func faz_parte_da_expressao(simbolo: String) -> bool:
+	return simbolo in expressao
+
 func eh_a_vez_dele(simbolo: String) -> bool:
 	return proximo_esperado() == simbolo
 
