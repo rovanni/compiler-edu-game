@@ -78,6 +78,14 @@ func register_correct_action() -> int:
 	combo_changed.emit(combo, bonus)
 	return awarded
 
+## Interrompe a sequência atual sem alterar pontos, vidas ou o estado de
+## conclusão perfeita da fase. Usado para ações que desperdiçam uma chance,
+## mas não constituem um erro penalizado.
+func break_combo() -> void:
+	if _phase_terminal:
+		return
+	_reset_combo()
+
 func register_mistake(_reason: String = "erro", costs_life: bool = true) -> int:
 	if _phase_terminal:
 		return lives

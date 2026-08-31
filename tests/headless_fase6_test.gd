@@ -19,7 +19,8 @@ func _executar() -> void:
 	_test_penalidade_fatal()
 	_test_material_de_destaque()
 	_test_integracao_dos_assets()
-	_test_layout_e_cliques_da_fase6()
+	await _test_combo_quebrado_ao_estourar_simbolo_certo()
+	await _test_layout_e_cliques_da_fase6()
 	await process_frame
 
 	if failures == 0:
@@ -47,6 +48,9 @@ func _test_progresso_da_expressao() -> void:
 	_expect(indice_observado[0] == 1, "observadores devem enxergar o progresso já atualizado")
 	_expect(not gerenciador.registrar_coleta_correta("0"), "símbolo fora de ordem deve ser rejeitado")
 	_expect(gerenciador.indice_atual == 1, "entrada inválida não deve alterar o progresso")
+	_expect(gerenciador.faz_parte_da_expressao("x"), "caractere da expressão deve ser reconhecido para a cor verde")
+	_expect(gerenciador.faz_parte_da_expressao("0"), "dígito expandido deve ser reconhecido para a cor verde")
+	_expect(not gerenciador.faz_parte_da_expressao("@"), "símbolo externo não pode receber a cor de expressão")
 	gerenciador.queue_free()
 
 func _test_gatilho_do_chefe() -> void:
@@ -64,6 +68,20 @@ func _test_gatilho_do_chefe() -> void:
 	spawner.aplicar_config(config)
 	spawner.iniciar(gerenciador)
 	spawner.pausar(true)
+	var balao_alvo = BALAO_SCENE.instantiate()
+	balao_alvo.simbolo = gerenciador.proximo_esperado()
+	spawner.add_child(balao_alvo)
+	spawner._registrar_balao_expressao_vivo(balao_alvo)
+	for _tentativa in range(20):
+		_expect(spawner._escolher_simbolo() != gerenciador.proximo_esperado(), "não pode nascer outro balão com o próximo símbolo enquanto o alvo vive")
+	balao_alvo.queue_free()
+	var balao_igual = BALAO_SCENE.instantiate()
+	balao_igual.simbolo = "="
+	spawner.add_child(balao_igual)
+	spawner._registrar_balao_expressao_vivo(balao_igual)
+	for _tentativa in range(20):
+		_expect(spawner._escolher_lixo_diferente_de("") != "=", "um caractere válido fora da ordem também não pode ser duplicado")
+	balao_igual.queue_free()
 
 	var alertas := [0]
 	spawner.chefe_pronto_para_spawn.connect(func() -> void: alertas[0] += 1)
@@ -84,6 +102,9 @@ func _test_gatilho_do_chefe() -> void:
 	)
 	spawner.spawnar_chefe()
 	_expect(chefe_criado[0] != null and chefe_criado[0].eh_gigante, "spawn solicitado deve criar o chefe")
+	_expect(not gerenciador.faz_parte_da_expressao(chefe_criado[0].simbolo), "chefe deve usar sempre um caractere inválido")
+	_expect(chefe_criado[0].vidas == SpawnerBaloesScript.VIDAS_CHEFE, "chefe deve usar a resistência configurada")
+	_expect(chefe_criado[0].velocidade_queda == SpawnerBaloesScript.VELOCIDADE_CHEFE, "chefe deve usar a velocidade configurada")
 	spawner.spawnar_chefe()
 	_expect(quantidade_chefes[0] == 1, "chefe não deve ser criado mais de uma vez")
 
@@ -132,6 +153,46 @@ func _test_integracao_dos_assets() -> void:
 	_expect(AudioServer.get_bus_index(&"SFX") >= 0, "o bus SFX deve existir")
 	efeito.free()
 
+func _test_combo_quebrado_ao_estourar_simbolo_certo() -> void:
+	var manager = root.get_node("GameManager")
+	manager.start_new_session(6)
+	var main_scene: PackedScene = load("res://scenes/fase6_sintatico/Main.tscn")
+	var main = main_scene.instantiate()
+	root.add_child(main)
+	await process_frame
+	main.spawner.pausar(true)
+	main._on_balao_estourado("=")
+	_expect(main.label_mensagem.text.contains("não é a vez"), "eliminar caractere verde fora de ordem deve explicar que ele ainda não é o próximo")
+
+	manager.register_correct_action()
+	manager.register_correct_action()
+	manager.register_correct_action()
+	var pontos_antes: int = manager.score
+	var vidas_antes: int = manager.lives
+	main._on_balao_estourado(main.gerenciador.proximo_esperado())
+
+	_expect(manager.combo == 0, "estourar o símbolo que deveria cair deve quebrar o combo")
+	_expect(manager.score == pontos_antes, "quebrar o combo ao estourar o símbolo certo não deve retirar pontos")
+	_expect(manager.lives == vidas_antes, "estourar o símbolo certo não deve retirar vida")
+	_expect(main.hud._combo_label.text == "PONTOS", "o HUD deve ocultar o combo interrompido")
+
+	manager.register_correct_action()
+	manager.register_correct_action()
+	manager.register_correct_action()
+	var balao_errado = BALAO_SCENE.instantiate()
+	balao_errado.simbolo = "@"
+	root.add_child(balao_errado)
+	main._on_balao_chegou_ao_chao(balao_errado.simbolo, Vector2.ZERO, balao_errado)
+	_expect(manager.combo == 0, "deixar um balão errado cair deve zerar o combo")
+	_expect(main.hud._combo_label.text == "PONTOS", "o HUD deve ocultar o combo após a queda errada")
+	manager.register_correct_action()
+	_expect(main.hud._combo_label.text == "PONTOS", "um kill ainda não deve exibir combo")
+	manager.register_correct_action()
+	_expect(main.hud._combo_label.text.begins_with("COMBO 2"), "o combo deve reaparecer no segundo kill, não após quatro")
+	balao_errado.queue_free()
+	main.queue_free()
+	await process_frame
+
 func _test_layout_e_cliques_da_fase6() -> void:
 	var hud_scene: PackedScene = load("res://scenes/common/game_hud.tscn")
 	var main_scene: PackedScene = load("res://scenes/fase6_sintatico/Main.tscn")
@@ -142,20 +203,31 @@ func _test_layout_e_cliques_da_fase6() -> void:
 	_expect(hud._lives_panel.size.x == 208.0, "o HUD padrão deve preservar seu tamanho original")
 	hud.configure_phase6_compact_layout()
 	_expect(hud._lives_panel.size.x == 190.0, "a Fase 6 deve usar um HUD compacto")
+	var estilo_vidas: StyleBoxFlat = hud._lives_panel.get_theme_stylebox("panel")
+	_expect(estilo_vidas.bg_color.a < 1.0, "o HUD compartilhado deve ficar transparente somente na Fase 6")
 	_expect(hud._lives_panel.mouse_filter == Control.MOUSE_FILTER_IGNORE, "painéis laterais devem deixar o clique atravessar")
 	_expect(hud._menu_button.mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Menu deve consumir o clique")
 	hud.free()
 
 	var main = main_scene.instantiate()
+	root.add_child(main)
+	await process_frame
 	_expect(main.get_node("Canhao").position.x == 640.0, "a gameplay deve permanecer centralizada na tela")
 	_expect(main.get_node("UI/PainelObjetivo").mouse_filter == Control.MOUSE_FILTER_IGNORE, "o painel de objetivo deve permitir disparos")
 	_expect(main.get_node("UI/PainelControles").mouse_filter == Control.MOUSE_FILTER_IGNORE, "o painel de controles deve permitir disparos")
-	main.free()
+	_expect(main.get_node("UI/PainelObjetivo").size.x < 600.0, "o painel da expressão não deve reservar uma largura fixa excessiva")
+	main.queue_free()
+	await process_frame
 
 	var tutorial = tutorial_scene.instantiate()
 	_expect(tutorial.get_node("Canhao").position.x == 640.0, "o tutorial deve permanecer centralizado na tela")
 	_expect(tutorial.get_node("UI/Caixa").mouse_filter == Control.MOUSE_FILTER_IGNORE, "a fala do tutorial deve permitir disparos")
 	_expect(tutorial.get_node("UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo").mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Próximo deve consumir o clique")
+	_expect(tutorial.get_node("UI/BotaoPular").text.contains("(P)"), "o tutorial deve informar a tecla de pular")
+	var tecla_p := InputEventKey.new()
+	tecla_p.keycode = KEY_P
+	tecla_p.pressed = true
+	_expect(tutorial._eh_atalho_pular(tecla_p), "a tecla P deve ser reconhecida como atalho para pular o tutorial")
 	tutorial._gerenciador_exemplo.free()
 	tutorial.free()
 
