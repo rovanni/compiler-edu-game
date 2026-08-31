@@ -17,6 +17,25 @@ const SLOT_SNAP_RADIUS := 150.0
 
 @onready var lexeme_label: Label = $Lexeme
 @onready var kind_label: Label = $Kind
+@onready var prompt: Label = $Prompt
+
+
+func _ready() -> void:
+	prompt.visible = false
+
+
+func _process(_delta: float) -> void:
+	if is_placed or held or not visible:
+		prompt.visible = false
+		return
+
+	var player := get_tree().get_first_node_in_group(&"player") as Node2D
+	if player == null:
+		prompt.visible = false
+		return
+
+	var offset := global_position - player.global_position
+	prompt.visible = offset.length() < 145.0 or (absf(offset.x) < 90.0 and absf(offset.y) < 145.0)
 
 
 func configure(data: Dictionary, destination: Vector2, destination_index: int, compact: bool) -> void:
