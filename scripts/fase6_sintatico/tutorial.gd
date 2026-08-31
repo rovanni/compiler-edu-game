@@ -41,18 +41,20 @@ enum Estado {
 # queda mais lenta equilibra o controle por teclado em relação ao mouse.
 const VELOCIDADE_NORMAL := 65.0
 const COR_BALAO_TUTORIAL := Color(0.55, 0.6, 0.75)
+const COR_BALAO_EXPRESSAO := Color("4fca72")
 const SIMBOLO_CERTO := "y"
 const SIMBOLO_ERRADO := "@"
 const EXPRESSAO_EXEMPLO: Array[String] = ["y", "=", "1"]
+const TECLA_PULAR_TUTORIAL := KEY_P
 
 @export_range(0.0, 600.0, 5.0) var tempo_retorno_inatividade: float = 120.0
 
 const TEXTOS := {
 	Estado.INTRO: "Bem-vindo! Sua missão: montar a expressão no topo, na ordem certa, caractere por caractere.",
 	Estado.TIRO: "Este é o seu canhão. Mova-o com o mouse, A/D ou setas. Clique ou pressione Espaço para atirar.",
-	Estado.APONTAR_ALVO: "O caractere em destaque na expressão é o que você precisa capturar agora.",
-	Estado.BALAO_CERTO: "Quando o balão CERTO cair, não atire nele: deixe-o chegar ao chão para coletar.",
-	Estado.BALAO_ERRADO: "Balões ERRADOS devem ser atingidos! Alinhe o canhão e clique ou pressione Espaço.",
+	Estado.APONTAR_ALVO: "Os balões verdes trazem caracteres da expressão. Proteja-os: deixe-os cair na ordem destacada para montar a expressão.",
+	Estado.BALAO_CERTO: "Quando um balão VERDE cair, não atire nele: deixe-o chegar ao chão para coletar o caractere certo.",
+	Estado.BALAO_ERRADO: "Balões de outras cores não pertencem à expressão. Eles devem ser atingidos! Alinhe o canhão e clique ou pressione Espaço.",
 	Estado.VIDA_PERDIDA: "Deixar cair um balão errado custa uma vida! Alinhe o canhão e tente eliminá-lo.",
 	Estado.FINAL: "Você treinou uma tarefa de análise sintática: conferir símbolos e sua ordem. Essa lógica é usada na construção de compiladores e linguagens de programação!",
 }
@@ -109,6 +111,10 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if pausado:
+		return
+	if _eh_atalho_pular(event):
+		get_viewport().set_input_as_handled()
+		_on_botao_pular_pressed()
 		return
 	if event.keycode not in [KEY_ENTER, KEY_KP_ENTER]:
 		return
@@ -220,7 +226,7 @@ func _spawnar_balao(simbolo: String) -> void:
 	_balao_atual.vidas = 1 # garante um só impacto, mesmo que balao.gd suporte fortificados
 	_balao_atual.position = Vector2(300, -95)
 	area_baloes.add_child(_balao_atual)
-	_balao_atual.definir_cor(COR_BALAO_TUTORIAL)
+	_balao_atual.definir_cor(COR_BALAO_EXPRESSAO if simbolo in EXPRESSAO_EXEMPLO else COR_BALAO_TUTORIAL)
 
 	_balao_atual.estourado.connect(_on_balao_tutorial_estourado)
 	_balao_atual.chegou_ao_chao.connect(_on_balao_tutorial_caiu)
@@ -278,6 +284,14 @@ func _on_canhao_disparou() -> void:
 	_ja_acertou_no_passo_atual = true
 	label_dica_acao.text = "Muito bem! Cada clique ou toque no Espaço dispara um projétil."
 	_liberar_proximo(true)
+
+func _eh_atalho_pular(event: InputEvent) -> bool:
+	return (
+		event is InputEventKey
+		and event.pressed
+		and not event.echo
+		and event.keycode == TECLA_PULAR_TUTORIAL
+	)
 
 ## --- Ênfase visual de vida perdida ---
 func _mostrar_enfase_vida_perdida() -> void:
@@ -370,4 +384,5 @@ func _definir_simulacao_ativa(ativa: bool) -> void:
 func _voltar_ao_menu() -> void:
 	Fase6Estado.encerrar_execucao()
 	GameManager.abandon_phase()
+	GameManager.reset_lives()
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")

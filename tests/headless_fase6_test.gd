@@ -195,6 +195,11 @@ func _test_layout_e_cliques_da_fase6() -> void:
 	_expect(tutorial.get_node("Canhao").position.x == 640.0, "o tutorial deve permanecer centralizado na tela")
 	_expect(tutorial.get_node("UI/Caixa").mouse_filter == Control.MOUSE_FILTER_IGNORE, "a fala do tutorial deve permitir disparos")
 	_expect(tutorial.get_node("UI/Caixa/VBoxCaixa/HBoxBotoes/BotaoProximo").mouse_filter == Control.MOUSE_FILTER_STOP, "o botão Próximo deve consumir o clique")
+	_expect(tutorial.get_node("UI/BotaoPular").text.contains("(P)"), "o tutorial deve informar a tecla de pular")
+	var tecla_p := InputEventKey.new()
+	tecla_p.keycode = KEY_P
+	tecla_p.pressed = true
+	_expect(tutorial._eh_atalho_pular(tecla_p), "a tecla P deve ser reconhecida como atalho para pular o tutorial")
 	tutorial._gerenciador_exemplo.free()
 	tutorial.free()
 

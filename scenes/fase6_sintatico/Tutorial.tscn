@@ -157,4 +157,4 @@ offset_bottom = 142.0
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StylePular")
-text = "Pular tutorial"
+text = "Pular tutorial (P)"
