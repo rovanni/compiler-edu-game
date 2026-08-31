@@ -473,7 +473,7 @@ func update_lives_ui(lives: int) -> void:
 
 func _on_exit_portal_entered(body: Node2D) -> void:
 	if body.is_in_group("player") or body.name == "Player":
-		_return_to_main_room()
+		call_deferred("_return_to_main_room")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

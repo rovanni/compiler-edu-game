@@ -11,7 +11,7 @@ signal player_exited(entrance: BossEntrance)
 @export var bg_path: String = ""
 @export_file("*.tscn") var arena_scene_path: String = ""
 
-@onready var pad_rect: ColorRect = $PadRect
+@onready var pad_rect: ColorRect = get_node_or_null("PadRect") as ColorRect
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
