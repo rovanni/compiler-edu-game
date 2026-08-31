@@ -56,6 +56,12 @@ func _ready() -> void:
 	_expect(not phase.player.is_on_floor(), "seta para baixo deve atravessar a plataforma semissólida")
 	_expect(phase.player.global_position.y > 500.0, "jogador deve se deslocar para baixo ao atravessar a plataforma")
 
+	phase.ambience_player.stop()
+	phase.ambience_player.stream = null
+	phase.queue_free()
+	await get_tree().process_frame
+	await get_tree().create_timer(0.1).timeout
+
 	if failures == 0:
 		print("PASS: colisões e pousos da Fase 4")
 		get_tree().quit(0)

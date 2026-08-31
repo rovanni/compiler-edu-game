@@ -117,13 +117,13 @@ func finish_block_delivery(block: Node) -> void:
 
 func play_exit_animation() -> void:
 	_exit_animation_active = true
-	var start_position := global_position + Vector2(0, 24)
-	global_position = start_position
+	global_position = spawn_position + Vector2(0.0, -62.0)
 	modulate = Color(1, 1, 1, 0.0)
 	scale = Vector2(0.72, 0.72)
+	atualizar_animacao()
 	var tween := create_tween()
 	tween.set_parallel(true)
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "global_position", spawn_position, 0.72)
 	tween.tween_property(self, "modulate:a", 1.0, 0.42)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.72)

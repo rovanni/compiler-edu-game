@@ -31,7 +31,6 @@ func abrir_modal(modal: Control) -> void:
 	if modal: modal.show()
 
 # --- Estilização Dinâmica com a Paleta do Protótipo (Bordas Pretas & Contorno nos Títulos) ---
-
 func aplicar_estilos_prototipo() -> void:
 	var cor_borda_preta = Color("#000000")
 
@@ -174,7 +173,6 @@ func adicionar_contorno_titulos() -> void:
 			l.add_theme_constant_override("outline_size", 8)
 
 # --- Ações Principais ---
-
 func _on_btn_jogar_pressed() -> void:
 	GameManager.start_new_session(1)
 	iniciar_fase("res://scenes/fase1_tokens/Main.tscn")
@@ -191,7 +189,6 @@ func _on_btn_creditos_pressed() -> void:
 	abrir_modal(modal_creditos)
 
 # --- Ações TopBar ---
-
 func _on_btn_configuracoes_pressed() -> void:
 	abrir_modal(modal_config)
 
@@ -202,7 +199,6 @@ func _on_btn_tutorial_pressed() -> void:
 	abrir_modal(modal_tutorial)
 
 # --- Ações dos Cards de Mundos ---
-
 func _on_card_fase_1_pressed() -> void:
 	preparar_fase(1)
 	iniciar_fase("res://scenes/fase1_tokens/Main.tscn")
@@ -212,7 +208,8 @@ func _on_card_fase_2_pressed() -> void:
 	iniciar_fase("res://scenes/fase2_scanner/main.tscn")
 
 func _on_card_fase_3_pressed() -> void:
-	exibir_mensagem_em_breve("Caverna do Parser")
+	preparar_fase(3)
+	iniciar_fase("res://scenes/fase3_parser/main_room.tscn")
 
 func _on_card_fase_4_pressed() -> void:
 	preparar_fase(4)
@@ -223,10 +220,10 @@ func _on_card_fase_5_pressed() -> void:
 	iniciar_fase("res://scenes/fase5_erroLexico/introducao.tscn")
 
 func _on_card_fase_6_pressed() -> void:
-	exibir_mensagem_em_breve("Fortaleza dos Erros Sintáticos")
+	preparar_fase(6)
+	iniciar_fase("res://scenes/fase6_sintatico/Tutorial.tscn")
 
 # --- Helpers ---
-
 func iniciar_fase(caminho_cena: String) -> void:
 	get_tree().change_scene_to_file(caminho_cena)
 
@@ -241,10 +238,20 @@ func atualizar_estado_da_sessao() -> void:
 	if not GameManager.session_active:
 		status.text = "v1.0.0"
 		return
+
 	status.text = "PONTOS %d • VIDAS %d" % [GameManager.score, GameManager.lives]
+
 	var card_fase_2: Button = $MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase2
-	if GameManager.is_phase_completed(2):
+	if card_fase_2 and GameManager.is_phase_completed(2):
 		card_fase_2.text = "✓ 2\nVALE DO SCANNER\n(CONCLUÍDA)"
+
+	var card_fase_3: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3")
+	if card_fase_3 and GameManager.is_phase_completed(3):
+		card_fase_3.text = "✓ 3\nCAVERNA PARSER\n(CONCLUÍDA)"
+
+	var card_fase_6: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
+	if card_fase_6 and GameManager.is_phase_completed(6):
+		card_fase_6.text = "✓ 6\nFORTALEZA DOS ERROS SINTÁTICOS\n(CONCLUÍDA)"
 
 func exibir_mensagem_em_breve(nome_fase: String) -> void:
 	print("A fase '", nome_fase, "' está em desenvolvimento!")
