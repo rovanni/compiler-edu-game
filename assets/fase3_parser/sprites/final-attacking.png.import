@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cawrp0yjhvgs3"
-path="res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"
+uid="uid://c0wg0s25egsf6"
+path="res://.godot/imported/final-attacking.png-ed8d16f748f4f3c2887845512e02cdee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/red-portal.png"
-dest_files=["res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"]
+source_file="res://assets/fase3_parser/sprites/final-attacking.png"
+dest_files=["res://.godot/imported/final-attacking.png-ed8d16f748f4f3c2887845512e02cdee.ctex"]
 
 [params]
 

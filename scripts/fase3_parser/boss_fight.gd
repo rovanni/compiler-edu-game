@@ -2,8 +2,8 @@ extends Node2D
 
 @onready var title_label: Label = $CanvasLayer/UI/TitleLabel
 @onready var desc_label: Label = $CanvasLayer/UI/DescLabel
-@onready var boss_block: ColorRect = $Arena/BossBody/BossBlock
-@onready var boss_name_label: Label = $Arena/BossBody/BossBlock/BossNameLabel
+@onready var boss_block: ColorRect = get_node_or_null("Arena/BossBody/BossBlock")
+@onready var boss_name_label: Label = get_node_or_null("Arena/BossBody/BossBlock/BossNameLabel")
 @onready var background_sprite: Sprite2D = $Background
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/BossHealthBar
 @onready var boss_health_texture: TextureRect = $CanvasLayer/UI/BossHealthTexture if $CanvasLayer/UI.has_node("BossHealthTexture") else null
@@ -811,6 +811,39 @@ func _trigger_syntax_error() -> void:
 		_play_ghost_idle()
 		
 		await get_tree().create_timer(0.5).timeout
+	elif _is_final() and boss_anim:
+		var attack_anim = ""
+		if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_attacking"):
+			attack_anim = "final_attacking"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-attacking"):
+			attack_anim = "final-attacking"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_attack"):
+			attack_anim = "final_attack"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-atack"):
+			attack_anim = "final-atack"
+			
+		if attack_anim != "":
+			boss_anim.sprite_frames.set_animation_loop(attack_anim, false)
+			boss_anim.animation = attack_anim
+			boss_anim.frame = 0
+			boss_anim.play(attack_anim)
+			
+			var frame_count = boss_anim.sprite_frames.get_frame_count(attack_anim)
+			var shoot_frame = int(frame_count / 2)
+			while boss_anim.is_playing() and boss_anim.frame < shoot_frame:
+				await boss_anim.frame_changed
+			
+			if is_fight_active and is_instance_valid(boss_body):
+				_spawn_projectile(boss_body.global_position, player, true)
+			
+			if boss_anim.is_playing():
+				await boss_anim.animation_finished
+			
+			_play_final_idle()
+			await get_tree().create_timer(0.5).timeout
+		else:
+			_spawn_projectile(boss_body.global_position, player, true)
+			await get_tree().create_timer(1.5).timeout
 	else:
 		_spawn_projectile(boss_body.global_position, player, true)
 		await get_tree().create_timer(1.5).timeout
@@ -868,10 +901,34 @@ func boss_take_damage() -> void:
 			is_final = true
 			
 		if boss_anim and boss_anim.visible:
-			if _is_gosma() and boss_anim.sprite_frames.has_animation("slime_dying"):
-				boss_anim.sprite_frames.set_animation_loop("slime_dying", false)
-				boss_anim.play("slime_dying")
+			var death_anim = ""
+			if _is_gosma():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("slime_dying"): death_anim = "slime_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("slime-dying"): death_anim = "slime-dying"
+			elif _is_fantasma():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("ghost_dying"): death_anim = "ghost_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("ghost-dying"): death_anim = "ghost-dying"
+			elif _is_final():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_dying"): death_anim = "final_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-dying"): death_anim = "final-dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_dyed"): death_anim = "final_dyed"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("dying"): death_anim = "dying"
+				
+			if death_anim != "":
+				# =========================================================================
+				# ESCALA DA ANIMAÇÃO DE MORTE
+				# Para alterar o tamanho depois: mude o valor abaixo (ex: 0.9 = 10% menor, 0.8 = 20% menor, 1.0 = tamanho normal)
+				var death_scale_factor: float = 0.9
+				# =========================================================================
+				
+				var original_scale = boss_anim.scale
+				boss_anim.scale = original_scale * death_scale_factor
+				
+				boss_anim.sprite_frames.set_animation_loop(death_anim, false)
+				boss_anim.play(death_anim)
 				await boss_anim.animation_finished
+				
+				boss_anim.scale = original_scale
 			
 		if is_instance_valid(boss_body):
 			boss_body.queue_free()
@@ -920,7 +977,7 @@ func _init_hearts_ui() -> void:
 	var base_tex = load(HEART_TEXTURE_PATH) as Texture2D
 	if base_tex:
 		var tex_size = base_tex.get_size()
-		var frame_w = tex_size.x / 2.0
+		var frame_w = tex_size.x / 3.0
 		var frame_h = tex_size.y
 		
 		full_heart_tex = AtlasTexture.new()
@@ -929,7 +986,7 @@ func _init_hearts_ui() -> void:
 		
 		empty_heart_tex = AtlasTexture.new()
 		empty_heart_tex.atlas = base_tex
-		empty_heart_tex.region = Rect2(frame_w, 0, frame_w, frame_h)
+		empty_heart_tex.region = Rect2(frame_w * 2.0, 0, frame_w, frame_h)
 	
 	if lives_label:
 		lives_label.visible = false
@@ -961,11 +1018,11 @@ func _init_hearts_ui() -> void:
 			heart_rects.append(tr)
 		
 		for tr in heart_rects:
-			tr.custom_minimum_size = Vector2(36, 36)
+			tr.custom_minimum_size = Vector2(45, 45)
 			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			tr.pivot_offset = Vector2(18, 18)
+			tr.pivot_offset = Vector2(22.5, 22.5)
 
 func update_lives_ui(lives: int) -> void:
 	if heart_rects.is_empty():

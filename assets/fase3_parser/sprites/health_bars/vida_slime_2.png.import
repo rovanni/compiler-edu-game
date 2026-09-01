@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cawrp0yjhvgs3"
-path="res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"
+uid="uid://biage4hn4qcvc"
+path="res://.godot/imported/vida_slime_2.png-69390afcade12b6770fdbc41552e8e64.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/red-portal.png"
-dest_files=["res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"]
+source_file="res://assets/fase3_parser/sprites/health_bars/vida_slime_2.png"
+dest_files=["res://.godot/imported/vida_slime_2.png-69390afcade12b6770fdbc41552e8e64.ctex"]
 
 [params]
 

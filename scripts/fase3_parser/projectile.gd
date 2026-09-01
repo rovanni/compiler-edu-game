@@ -35,7 +35,8 @@ func set_final_attack_sprite() -> void:
 		return
 		
 	var sf = SpriteFrames.new()
-	sf.add_animation("default")
+	if not sf.has_animation("default"):
+		sf.add_animation("default")
 	sf.set_animation_loop("default", true)
 	sf.set_animation_speed("default", 12.0)
 	

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cawrp0yjhvgs3"
-path="res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"
+uid="uid://cyyst8x6t80db"
+path="res://.godot/imported/slime-dying.png-753c43129f291a96634a3e4ef50d1ec1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/red-portal.png"
-dest_files=["res://.godot/imported/red-portal.png-3a6922dee4b92c38e8fc079f8a3859c7.ctex"]
+source_file="res://assets/fase3_parser/sprites/slime-dying.png"
+dest_files=["res://.godot/imported/slime-dying.png-753c43129f291a96634a3e4ef50d1ec1.ctex"]
 
 [params]
 
