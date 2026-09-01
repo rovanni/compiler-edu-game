@@ -2,10 +2,12 @@ extends Node2D
 
 @onready var title_label: Label = $CanvasLayer/UI/TitleLabel
 @onready var desc_label: Label = $CanvasLayer/UI/DescLabel
-@onready var boss_block: ColorRect = $Arena/BossBody/BossBlock
-@onready var boss_name_label: Label = $Arena/BossBody/BossBlock/BossNameLabel
+@onready var boss_block: ColorRect = get_node_or_null("Arena/BossBody/BossBlock")
+@onready var boss_name_label: Label = get_node_or_null("Arena/BossBody/BossBlock/BossNameLabel")
 @onready var background_sprite: Sprite2D = $Background
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/BossHealthBar
+@onready var boss_health_texture: TextureRect = $CanvasLayer/UI/BossHealthTexture if $CanvasLayer/UI.has_node("BossHealthTexture") else null
+@onready var boss_hud_bottom_label: Label = $CanvasLayer/UI/BossHUDBottomLabel if $CanvasLayer/UI.has_node("BossHUDBottomLabel") else null
 @onready var hearts_container: HBoxContainer = $CanvasLayer/UI/HeartsContainer if $CanvasLayer/UI.has_node("HeartsContainer") else null
 @onready var lives_label: Label = $CanvasLayer/UI/LivesLabel if $CanvasLayer/UI.has_node("LivesLabel") else null
 @onready var return_button: Button = $CanvasLayer/UI/ReturnButton
@@ -19,6 +21,45 @@ const HEART_TEXTURE_PATH: String = "res://assets/fase3_parser/sprites/heart.png"
 var full_heart_tex: AtlasTexture
 var empty_heart_tex: AtlasTexture
 var heart_rects: Array[TextureRect] = []
+
+# Referências de Áudio e Efeitos Sonoros
+const AUDIO_PATHS: Dictionary = {
+	"edu_attack": "res://assets/fase3_parser/audio/edu/ataque.mp3",
+	"edu_death": "res://assets/fase3_parser/audio/edu/morte.mp3",
+	"edu_victory": "res://assets/fase3_parser/audio/edu/vitoria.mp3",
+	"slime_bgm": "res://assets/fase3_parser/audio/slime/slime_mainSong.mp3",
+	"slime_entrance": "res://assets/fase3_parser/audio/slime/entrada.mp3",
+	"slime_damage_1": "res://assets/fase3_parser/audio/slime/dano.mp3",
+	"slime_damage_2": "res://assets/fase3_parser/audio/slime/dano2.mp3",
+	"slime_half_hp": "res://assets/fase3_parser/audio/slime/meia_vida.mp3",
+	"slime_death": "res://assets/fase3_parser/audio/slime/morreu.mp3",
+	"slime_victory": "res://assets/fase3_parser/audio/slime/vitoria.mp3",
+	"ghost_bgm": "res://assets/fase3_parser/audio/fantasma/fantasma_mainSong.mp3",
+	"ghost_entrance_1": "res://assets/fase3_parser/audio/fantasma/entrada.mp3",
+	"ghost_entrance_2": "res://assets/fase3_parser/audio/fantasma/entrada2.ogg",
+	"ghost_damage_1": "res://assets/fase3_parser/audio/fantasma/dano.mp3",
+	"ghost_damage_2": "res://assets/fase3_parser/audio/fantasma/dano2.mp3",
+	"ghost_half_hp": "res://assets/fase3_parser/audio/fantasma/meia_vida.mp3",
+	"ghost_death": "res://assets/fase3_parser/audio/fantasma/morreu.ogg",
+	"ghost_victory": "res://assets/fase3_parser/audio/fantasma/vitoria.mp3",
+	"final_bgm": "res://assets/fase3_parser/audio/reiParser/parser_mainSong.mp3",
+	"final_entrance": "res://assets/fase3_parser/audio/reiParser/entrada.mp3",
+	"final_damage": "res://assets/fase3_parser/audio/reiParser/dano.mp3",
+	"final_death": "res://assets/fase3_parser/audio/reiParser/morreu.mp3",
+	"final_victory": "res://assets/fase3_parser/audio/reiParser/vitoria.mp3"
+}
+
+const BGM_NORMAL_DB: float = -6.0
+const BGM_DUCKED_DB: float = -18.0
+var _bgm_duck_tween: Tween = null
+
+var _audio_cache: Dictionary = {}
+var bgm_player: AudioStreamPlayer = null
+var boss_sfx_player: AudioStreamPlayer = null
+var boss_voice_player: AudioStreamPlayer = null
+var player_sfx_player: AudioStreamPlayer = null
+var max_boss_health: int = 3
+var has_played_half_hp: bool = false
 
 @export var arena_boss_name: String = ""
 @export var arena_boss_id: String = ""
@@ -208,18 +249,224 @@ func _play_final_idle() -> void:
 		boss_anim.animation = idle_anim
 		boss_anim.play(idle_anim)
 
+func _get_audio_stream(key_or_path: String) -> AudioStream:
+	var path = AUDIO_PATHS.get(key_or_path, key_or_path)
+	if _audio_cache.has(path):
+		return _audio_cache[path]
+		
+	var stream: AudioStream = null
+	if ResourceLoader.exists(path):
+		var res = load(path)
+		if res is AudioStream:
+			stream = res
+			
+	if stream == null and key_or_path == "edu_victory":
+		var alt_path = "res://assets/fase3_parser/audio/edu/vitória.mp3"
+		if ResourceLoader.exists(alt_path):
+			var res = load(alt_path)
+			if res is AudioStream:
+				stream = res
+				path = alt_path
+			
+	if stream == null:
+		var global_p = ProjectSettings.globalize_path(path)
+		if path.ends_with(".mp3"):
+			stream = AudioStreamMP3.load_from_file(global_p)
+		elif path.ends_with(".ogg"):
+			stream = AudioStreamOggVorbis.load_from_file(global_p)
+			
+	if stream != null:
+		_audio_cache[path] = stream
+	return stream
+
+func _setup_audio_players() -> void:
+	bgm_player = AudioStreamPlayer.new()
+	bgm_player.name = "BGMPlayer"
+	bgm_player.volume_db = BGM_NORMAL_DB
+	add_child(bgm_player)
+	bgm_player.finished.connect(func():
+		if is_fight_active and bgm_player and bgm_player.stream:
+			bgm_player.play()
+	)
+
+	boss_sfx_player = AudioStreamPlayer.new()
+	boss_sfx_player.name = "BossSFXPlayer"
+	boss_sfx_player.volume_db = 0.0
+	add_child(boss_sfx_player)
+
+	boss_voice_player = AudioStreamPlayer.new()
+	boss_voice_player.name = "BossVoicePlayer"
+	boss_voice_player.volume_db = 1.0
+	add_child(boss_voice_player)
+
+	player_sfx_player = AudioStreamPlayer.new()
+	player_sfx_player.name = "PlayerSFXPlayer"
+	player_sfx_player.volume_db = 0.0
+	add_child(player_sfx_player)
+
+func _apply_bgm_ducking(stream: AudioStream) -> void:
+	if not is_fight_active or not bgm_player or not bgm_player.playing:
+		return
+	var duration: float = stream.get_length() if stream else 1.5
+	if duration <= 0.0:
+		duration = 1.5
+	if _bgm_duck_tween and _bgm_duck_tween.is_valid():
+		_bgm_duck_tween.kill()
+	_bgm_duck_tween = create_tween()
+	_bgm_duck_tween.tween_property(bgm_player, "volume_db", BGM_DUCKED_DB, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_bgm_duck_tween.tween_interval(duration)
+	_bgm_duck_tween.tween_property(bgm_player, "volume_db", BGM_NORMAL_DB, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+func _start_boss_audio() -> void:
+	var bgm_key := ""
+	var entrance_key := ""
+	
+	if _is_gosma():
+		bgm_key = "slime_bgm"
+		entrance_key = "slime_entrance"
+	elif _is_fantasma():
+		bgm_key = "ghost_bgm"
+		entrance_key = "ghost_entrance_1" if randf() > 0.5 else "ghost_entrance_2"
+	elif _is_final():
+		bgm_key = "final_bgm"
+		entrance_key = "final_entrance"
+		
+	if bgm_key != "":
+		var bgm_stream = _get_audio_stream(bgm_key)
+		if bgm_stream and bgm_player:
+			if bgm_stream is AudioStreamMP3:
+				(bgm_stream as AudioStreamMP3).loop = true
+			elif bgm_stream is AudioStreamOggVorbis:
+				(bgm_stream as AudioStreamOggVorbis).loop = true
+			bgm_player.stream = bgm_stream
+			bgm_player.volume_db = BGM_NORMAL_DB
+			bgm_player.play()
+			
+	if entrance_key != "":
+		var entrance_stream = _get_audio_stream(entrance_key)
+		if entrance_stream and boss_voice_player:
+			boss_voice_player.stream = entrance_stream
+			boss_voice_player.play()
+			_apply_bgm_ducking(entrance_stream)
+
+func _play_player_attack_sound() -> void:
+	var stream = _get_audio_stream("edu_attack")
+	if stream and player_sfx_player:
+		player_sfx_player.stream = stream
+		player_sfx_player.play()
+		_apply_bgm_ducking(stream)
+
+func _play_player_victory_sound() -> void:
+	var stream = _get_audio_stream("edu_victory")
+	if stream and player_sfx_player:
+		player_sfx_player.stream = stream
+		player_sfx_player.play()
+		_apply_bgm_ducking(stream)
+
+func _play_player_death_sound() -> void:
+	var stream = _get_audio_stream("edu_death")
+	if stream and player_sfx_player:
+		player_sfx_player.stream = stream
+		player_sfx_player.play()
+
+func _play_boss_damage_sound() -> void:
+	var key := ""
+	if _is_gosma():
+		key = "slime_damage_1" if randf() > 0.5 else "slime_damage_2"
+	elif _is_fantasma():
+		key = "ghost_damage_1" if randf() > 0.5 else "ghost_damage_2"
+	elif _is_final():
+		key = "final_damage"
+		
+	if key != "":
+		var stream = _get_audio_stream(key)
+		if stream and boss_sfx_player:
+			boss_sfx_player.stream = stream
+			boss_sfx_player.play()
+			_apply_bgm_ducking(stream)
+
+func _play_boss_half_hp_sound() -> void:
+	var key := ""
+	if _is_gosma():
+		key = "slime_half_hp"
+	elif _is_fantasma():
+		key = "ghost_half_hp"
+	elif _is_final():
+		key = "final_damage"
+		
+	if key != "":
+		var stream = _get_audio_stream(key)
+		if stream and boss_voice_player:
+			boss_voice_player.stream = stream
+			boss_voice_player.play()
+			_apply_bgm_ducking(stream)
+
+func _play_boss_death_sound() -> void:
+	var key := ""
+	if _is_gosma():
+		key = "slime_death"
+	elif _is_fantasma():
+		key = "ghost_death"
+	elif _is_final():
+		key = "final_death"
+		
+	if key != "":
+		var stream = _get_audio_stream(key)
+		if stream and boss_sfx_player:
+			boss_sfx_player.stream = stream
+			boss_sfx_player.play()
+
+func _play_boss_victory_sound() -> void:
+	var key := ""
+	if _is_gosma():
+		key = "slime_victory"
+	elif _is_fantasma():
+		key = "ghost_victory"
+	elif _is_final():
+		key = "final_victory"
+		
+	if key != "":
+		var stream = _get_audio_stream(key)
+		if stream and boss_voice_player:
+			boss_voice_player.stream = stream
+			boss_voice_player.play()
+
+func _stop_bgm(immediate: bool = false) -> void:
+	if _bgm_duck_tween and _bgm_duck_tween.is_valid():
+		_bgm_duck_tween.kill()
+	if bgm_player and bgm_player.playing:
+		if immediate:
+			bgm_player.stop()
+		else:
+			var tween = create_tween()
+			tween.tween_property(bgm_player, "volume_db", -40.0, 0.6)
+			tween.tween_callback(bgm_player.stop)
+
+func _stop_all_audio() -> void:
+	if _bgm_duck_tween and _bgm_duck_tween.is_valid():
+		_bgm_duck_tween.kill()
+	if bgm_player: bgm_player.stop()
+	if boss_sfx_player: boss_sfx_player.stop()
+	if boss_voice_player: boss_voice_player.stop()
+	if player_sfx_player: player_sfx_player.stop()
+
 func _update_ghost_scale(_anim_name: String = "") -> void:
 	pass
 
 func _ready() -> void:
+	_setup_audio_players()
 	_init_hearts_ui()
-	_setup_health_bar_style()
+	_init_boss_health_ui()
 	if arena_boss_name != "":
 		current_boss_name = arena_boss_name
 	if arena_boss_id != "":
 		current_boss_id = arena_boss_id
 	if arena_boss_color != Color(0, 0, 0, 0):
 		current_boss_color = arena_boss_color
+
+	if health_bar:
+		max_boss_health = int(health_bar.max_value)
+		boss_health = max_boss_health
 
 	if title_label:
 		title_label.text = "FASE DE COMBATE: " + current_boss_name.to_upper()
@@ -281,25 +528,112 @@ func _ready() -> void:
 		
 	# Inicia automaticamente animações decorativas/cenário (como chamas)
 	_start_ambient_animations(self)
+	_start_boss_audio()
 
-func _setup_health_bar_style() -> void:
-	if not health_bar:
+func _init_boss_health_ui() -> void:
+	var ui = $CanvasLayer/UI if has_node("CanvasLayer/UI") else null
+	if not ui:
 		return
-	
-	var bg_style := StyleBoxFlat.new()
-	bg_style.bg_color = Color("#112410", 0.85) # Fundo escuro com tom verde musgo
-	bg_style.border_color = Color("#071406", 0.9) # Borda escura profunda
-	bg_style.set_border_width_all(2)
-	bg_style.set_corner_radius_all(6)
+		
+	# 1. Rótulo do Nome do Chefão (estilo Souls na parte inferior)
+	if ui.has_node("BossHUDBottomLabel"):
+		boss_hud_bottom_label = ui.get_node("BossHUDBottomLabel") as Label
+	else:
+		boss_hud_bottom_label = Label.new()
+		boss_hud_bottom_label.name = "BossHUDBottomLabel"
+		boss_hud_bottom_label.anchor_left = 0.5
+		boss_hud_bottom_label.anchor_right = 0.5
+		boss_hud_bottom_label.anchor_top = 1.0
+		boss_hud_bottom_label.anchor_bottom = 1.0
+		boss_hud_bottom_label.offset_left = -300.0
+		boss_hud_bottom_label.offset_top = -105.0
+		boss_hud_bottom_label.offset_right = 300.0
+		boss_hud_bottom_label.offset_bottom = -70.0
+		boss_hud_bottom_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		boss_hud_bottom_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		boss_hud_bottom_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		boss_hud_bottom_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		boss_hud_bottom_label.add_theme_font_size_override("font_size", 18)
+		boss_hud_bottom_label.add_theme_color_override("font_color", Color("#f5f6fa"))
+		boss_hud_bottom_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
+		boss_hud_bottom_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+		boss_hud_bottom_label.add_theme_constant_override("outline_size", 6)
+		boss_hud_bottom_label.add_theme_constant_override("shadow_offset_y", 2)
+		ui.add_child(boss_hud_bottom_label)
+		
+	boss_hud_bottom_label.text = current_boss_name.to_upper()
+		
+	# 2. Barra de Vida do Chefão (estilo Souls na parte inferior)
+	if ui.has_node("BossHealthTexture"):
+		boss_health_texture = ui.get_node("BossHealthTexture") as TextureRect
+	else:
+		boss_health_texture = TextureRect.new()
+		boss_health_texture.name = "BossHealthTexture"
+		boss_health_texture.anchor_left = 0.5
+		boss_health_texture.anchor_right = 0.5
+		boss_health_texture.anchor_top = 1.0
+		boss_health_texture.anchor_bottom = 1.0
+		boss_health_texture.offset_left = -260.0
+		boss_health_texture.offset_top = -75.0
+		boss_health_texture.offset_right = 260.0
+		boss_health_texture.offset_bottom = -15.0
+		boss_health_texture.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		boss_health_texture.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		boss_health_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		boss_health_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		boss_health_texture.pivot_offset = Vector2(260, 30)
+		ui.add_child(boss_health_texture)
+		
+	if health_bar:
+		health_bar.visible = false
+		
+	update_boss_health_ui(false)
 
-	var fill_style := StyleBoxFlat.new()
-	fill_style.bg_color = Color("#4cd137") # Verde gosma / slime vibrante
-	fill_style.border_color = Color("#8cf858") # Borda verde ácido / brilho
-	fill_style.set_border_width_all(1)
-	fill_style.set_corner_radius_all(6)
-
-	health_bar.add_theme_stylebox_override("background", bg_style)
-	health_bar.add_theme_stylebox_override("fill", fill_style)
+func update_boss_health_ui(animate: bool = true) -> void:
+	if not boss_health_texture:
+		return
+		
+	var boss_key := "slime"
+	if _is_fantasma():
+		boss_key = "fantasma"
+	elif _is_final():
+		boss_key = "parser"
+		
+	var level := "alta"
+	if boss_health == 2:
+		level = "media"
+	elif boss_health <= 1:
+		level = "baixa"
+		
+	var path := "res://assets/fase3_parser/sprites/health_bars/%s/%s.png" % [boss_key, level]
+	var tex: Texture2D = null
+	if ResourceLoader.exists(path):
+		var res = load(path)
+		if res is Texture2D:
+			tex = res
+			
+	if not tex:
+		var global_p = ProjectSettings.globalize_path(path)
+		var img = Image.load_from_file(global_p)
+		if img:
+			tex = ImageTexture.create_from_image(img)
+			
+	if tex:
+		boss_health_texture.texture = tex
+		
+	if boss_health <= 0:
+		var t = create_tween()
+		t.set_parallel(true)
+		t.tween_property(boss_health_texture, "modulate:a", 0.0, 0.4)
+		if boss_hud_bottom_label:
+			t.tween_property(boss_hud_bottom_label, "modulate:a", 0.0, 0.4)
+	elif animate:
+		boss_health_texture.modulate.a = 1.0
+		if boss_hud_bottom_label:
+			boss_hud_bottom_label.modulate.a = 1.0
+		var t = create_tween()
+		t.tween_property(boss_health_texture, "scale", Vector2(1.12, 1.12), 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		t.tween_property(boss_health_texture, "scale", Vector2(1.0, 1.0), 0.15).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 func _setup_exit_portal_animation() -> void:
 	if not exit_portal:
@@ -370,10 +704,38 @@ func _generate_new_puzzle() -> void:
 			desc_label.text = "Monte o código logicamente:\n" + " ".join(expected_sequence)
 		else:
 			desc_label.text = "Monte o código na ordem correta!"
+	_update_plate_hints()
+
+func _update_plate_hints() -> void:
+	if not plates_node:
+		return
+		
+	var next_token: String = ""
+	if show_hints and is_fight_active and not is_evaluating_sequence:
+		if current_sequence.size() < expected_sequence.size():
+			next_token = expected_sequence[current_sequence.size()]
+			
+	for child in plates_node.get_children():
+		if child is PressurePlate:
+			if child.is_pressed:
+				child.set_highlight(false)
+			elif show_hints and next_token != "" and child.plate_value == next_token:
+				child.set_highlight(true)
+			else:
+				child.set_highlight(false)
 
 func _on_plate_pressed(plate_value: String) -> void:
 	if not is_fight_active or is_evaluating_sequence: return
 	
+	var current_step := current_sequence.size()
+	
+	# Se errou a ordem (mesmo no primeiro elemento), aciona o contra-ataque imediatamente!
+	if current_step >= expected_sequence.size() or plate_value != expected_sequence[current_step]:
+		current_sequence.append(plate_value)
+		_trigger_syntax_error()
+		return
+		
+	# Caso o token esteja correto para o passo atual:
 	current_sequence.append(plate_value)
 	
 	if desc_label:
@@ -384,72 +746,108 @@ func _on_plate_pressed(plate_value: String) -> void:
 			desc_label.text = "Sequência: " + current_str
 	
 	if current_sequence.size() == expected_sequence.size():
-		_check_sequence()
-
-func _check_sequence() -> void:
-	is_evaluating_sequence = true
-	var is_correct = true
-	for i in range(expected_sequence.size()):
-		if current_sequence[i] != expected_sequence[i]:
-			is_correct = false
-			break
-			
-	if is_correct:
-		_spawn_projectile(player.global_position, boss_body, false)
-		desc_label.text = "SUCESSO! Você disparou contra o chefão!\nCódigo: " + " ".join(expected_sequence)
-		await get_tree().create_timer(1.5).timeout
+		_trigger_syntax_success()
 	else:
-		desc_label.text = "SINTAXE INVÁLIDA! O chefão disparou contra você!\nEsperado: " + " ".join(expected_sequence)
+		_update_plate_hints()
+
+func _trigger_syntax_success() -> void:
+	is_evaluating_sequence = true
+	_update_plate_hints()
+	_play_player_attack_sound()
+	_spawn_projectile(player.global_position, boss_body, false)
+	desc_label.text = "SUCESSO! Você disparou contra o chefão!\nCódigo: " + " ".join(expected_sequence)
+	await get_tree().create_timer(1.5).timeout
+	is_evaluating_sequence = false
+	if is_fight_active:
+		_generate_new_puzzle()
+
+func _trigger_syntax_error() -> void:
+	is_evaluating_sequence = true
+	_update_plate_hints()
+	desc_label.text = "SINTAXE INVÁLIDA! O chefão disparou contra você!\nEsperado: " + " ".join(expected_sequence)
+	
+	if _is_gosma() and boss_anim:
+		if boss_anim.sprite_frames.has_animation("slime_attacking"):
+			boss_anim.sprite_frames.set_animation_loop("slime_attacking", false)
+		boss_anim.animation = "slime_attacking"
+		boss_anim.frame = 0
+		boss_anim.play("slime_attacking")
 		
-		if _is_gosma() and boss_anim:
-			if boss_anim.sprite_frames.has_animation("slime_attacking"):
-				boss_anim.sprite_frames.set_animation_loop("slime_attacking", false)
-			boss_anim.animation = "slime_attacking"
-			boss_anim.frame = 0
-			boss_anim.play("slime_attacking")
+		# Aguarda até o frame 7 da animação para disparar o projétil
+		while boss_anim.is_playing() and boss_anim.frame < 7:
+			await boss_anim.frame_changed
+		
+		if is_fight_active and is_instance_valid(boss_body):
+			_spawn_projectile(boss_body.global_position, player, true)
+		
+		# Aguarda o término da animação do ataque
+		if boss_anim.is_playing():
+			await boss_anim.animation_finished
+		
+		# Retorna para a animação de idle da gosma
+		_play_slime_idle()
+		
+		await get_tree().create_timer(0.5).timeout
+	elif _is_fantasma() and boss_anim:
+		if boss_anim.sprite_frames.has_animation("ghost_attacking"):
+			boss_anim.sprite_frames.set_animation_loop("ghost_attacking", false)
+		_update_ghost_scale("ghost_attacking")
+		boss_anim.animation = "ghost_attacking"
+		boss_anim.frame = 0
+		boss_anim.play("ghost_attacking")
+		
+		# Aguarda até o frame 6 da animação para disparar o projétil
+		while boss_anim.is_playing() and boss_anim.frame < 6:
+			await boss_anim.frame_changed
+		
+		if is_fight_active and is_instance_valid(boss_body):
+			_spawn_projectile(boss_body.global_position, player, true)
+		
+		# Aguarda o término da animação do ataque
+		if boss_anim.is_playing():
+			await boss_anim.animation_finished
+		
+		# Transita normalmente de volta para a animação de parado em loop
+		_play_ghost_idle()
+		
+		await get_tree().create_timer(0.5).timeout
+	elif _is_final() and boss_anim:
+		var attack_anim = ""
+		if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_attacking"):
+			attack_anim = "final_attacking"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-attacking"):
+			attack_anim = "final-attacking"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_attack"):
+			attack_anim = "final_attack"
+		elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-atack"):
+			attack_anim = "final-atack"
 			
-			# Aguarda até o frame 7 da animação para disparar o projétil
-			while boss_anim.is_playing() and boss_anim.frame < 7:
+		if attack_anim != "":
+			boss_anim.sprite_frames.set_animation_loop(attack_anim, false)
+			boss_anim.animation = attack_anim
+			boss_anim.frame = 0
+			boss_anim.play(attack_anim)
+			
+			var frame_count = boss_anim.sprite_frames.get_frame_count(attack_anim)
+			var shoot_frame = int(frame_count / 2)
+			while boss_anim.is_playing() and boss_anim.frame < shoot_frame:
 				await boss_anim.frame_changed
 			
 			if is_fight_active and is_instance_valid(boss_body):
 				_spawn_projectile(boss_body.global_position, player, true)
 			
-			# Aguarda o término da animação do ataque
 			if boss_anim.is_playing():
 				await boss_anim.animation_finished
 			
-			# Retorna para a animação de idle da gosma
-			_play_slime_idle()
-			
-			await get_tree().create_timer(0.5).timeout
-		elif _is_fantasma() and boss_anim:
-			if boss_anim.sprite_frames.has_animation("ghost_attacking"):
-				boss_anim.sprite_frames.set_animation_loop("ghost_attacking", false)
-			_update_ghost_scale("ghost_attacking")
-			boss_anim.animation = "ghost_attacking"
-			boss_anim.frame = 0
-			boss_anim.play("ghost_attacking")
-			
-			# Aguarda até o frame 6 da animação para disparar o projétil
-			while boss_anim.is_playing() and boss_anim.frame < 6:
-				await boss_anim.frame_changed
-			
-			if is_fight_active and is_instance_valid(boss_body):
-				_spawn_projectile(boss_body.global_position, player, true)
-			
-			# Aguarda o término da animação do ataque
-			if boss_anim.is_playing():
-				await boss_anim.animation_finished
-			
-			# Transita normalmente de volta para a animação de parado em loop
-			_play_ghost_idle()
-			
+			_play_final_idle()
 			await get_tree().create_timer(0.5).timeout
 		else:
 			_spawn_projectile(boss_body.global_position, player, true)
 			await get_tree().create_timer(1.5).timeout
-		
+	else:
+		_spawn_projectile(boss_body.global_position, player, true)
+		await get_tree().create_timer(1.5).timeout
+	
 	is_evaluating_sequence = false
 	if is_fight_active:
 		_generate_new_puzzle()
@@ -477,12 +875,15 @@ func boss_take_damage() -> void:
 	if not is_fight_active: return
 	
 	boss_health -= 1
+	update_boss_health_ui(true)
 	if health_bar:
-		var tween = create_tween()
-		tween.tween_property(health_bar, "value", float(boss_health), 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		health_bar.value = float(boss_health)
 		
 	if boss_health <= 0:
 		is_fight_active = false
+		_stop_bgm()
+		_play_boss_death_sound()
+		_play_player_victory_sound()
 		desc_label.text = "CHEFÃO DERROTADO! Vidas restauradas."
 		if player:
 			player.current_lives = player.max_lives
@@ -500,37 +901,83 @@ func boss_take_damage() -> void:
 			is_final = true
 			
 		if boss_anim and boss_anim.visible:
-			if _is_gosma() and boss_anim.sprite_frames.has_animation("slime_dying"):
-				boss_anim.sprite_frames.set_animation_loop("slime_dying", false)
-				boss_anim.play("slime_dying")
+			var death_anim = ""
+			if _is_gosma():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("slime_dying"): death_anim = "slime_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("slime-dying"): death_anim = "slime-dying"
+			elif _is_fantasma():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("ghost_dying"): death_anim = "ghost_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("ghost-dying"): death_anim = "ghost-dying"
+			elif _is_final():
+				if boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_dying"): death_anim = "final_dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final-dying"): death_anim = "final-dying"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("final_dyed"): death_anim = "final_dyed"
+				elif boss_anim.sprite_frames and boss_anim.sprite_frames.has_animation("dying"): death_anim = "dying"
+				
+			if death_anim != "":
+				# =========================================================================
+				# ESCALA DA ANIMAÇÃO DE MORTE
+				# Para alterar o tamanho depois: mude o valor abaixo (ex: 0.9 = 10% menor, 0.8 = 20% menor, 1.0 = tamanho normal)
+				var death_scale_factor: float = 0.9
+				# =========================================================================
+				
+				var original_scale = boss_anim.scale
+				boss_anim.scale = original_scale * death_scale_factor
+				
+				boss_anim.sprite_frames.set_animation_loop(death_anim, false)
+				boss_anim.play(death_anim)
 				await boss_anim.animation_finished
+				
+				boss_anim.scale = original_scale
 			
 		if is_instance_valid(boss_body):
 			boss_body.queue_free()
 			
 		if is_final:
 			desc_label.text = "VOCÊ VENCEU O DESAFIO FINAL!"
-			await get_tree().create_timer(2.0).timeout
+			var final_wait: float = 4.5
+			if boss_sfx_player and boss_sfx_player.stream:
+				final_wait = max(final_wait, boss_sfx_player.stream.get_length())
+			if player_sfx_player and player_sfx_player.stream:
+				final_wait = max(final_wait, player_sfx_player.stream.get_length())
+			await get_tree().create_timer(final_wait + 0.8).timeout
+			_stop_all_audio()
 			get_tree().change_scene_to_file("res://scenes/fase3_parser/outro_cutscene.tscn")
 		else:
 			if exit_portal:
 				exit_portal.visible = true
 				exit_portal.set_deferred("monitoring", true)
+	else:
+		if not has_played_half_hp and boss_health <= int(ceil(float(max_boss_health) / 2.0)):
+			has_played_half_hp = true
+			_play_boss_half_hp_sound()
+		else:
+			_play_boss_damage_sound()
 
 func _on_player_took_damage(new_lives: int) -> void:
 	update_lives_ui(new_lives)
 
 func _on_player_died() -> void:
 	is_fight_active = false
+	_stop_bgm()
+	_play_player_death_sound()
+	_play_boss_victory_sound()
 	desc_label.text = "VOCÊ FOI DERROTADO! Retornando..."
-	await get_tree().create_timer(2.0).timeout
+	
+	var wait_time: float = 4.5
+	if player_sfx_player and player_sfx_player.stream:
+		wait_time = max(wait_time, player_sfx_player.stream.get_length())
+	if boss_voice_player and boss_voice_player.stream:
+		wait_time = max(wait_time, boss_voice_player.stream.get_length())
+		
+	await get_tree().create_timer(wait_time + 0.8).timeout
 	_return_to_main_room()
 
 func _init_hearts_ui() -> void:
 	var base_tex = load(HEART_TEXTURE_PATH) as Texture2D
 	if base_tex:
 		var tex_size = base_tex.get_size()
-		var frame_w = tex_size.x / 2.0
+		var frame_w = tex_size.x / 3.0
 		var frame_h = tex_size.y
 		
 		full_heart_tex = AtlasTexture.new()
@@ -539,7 +986,7 @@ func _init_hearts_ui() -> void:
 		
 		empty_heart_tex = AtlasTexture.new()
 		empty_heart_tex.atlas = base_tex
-		empty_heart_tex.region = Rect2(frame_w, 0, frame_w, frame_h)
+		empty_heart_tex.region = Rect2(frame_w * 2.0, 0, frame_w, frame_h)
 	
 	if lives_label:
 		lives_label.visible = false
@@ -571,11 +1018,11 @@ func _init_hearts_ui() -> void:
 			heart_rects.append(tr)
 		
 		for tr in heart_rects:
-			tr.custom_minimum_size = Vector2(36, 36)
+			tr.custom_minimum_size = Vector2(45, 45)
 			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			tr.pivot_offset = Vector2(18, 18)
+			tr.pivot_offset = Vector2(22.5, 22.5)
 
 func update_lives_ui(lives: int) -> void:
 	if heart_rects.is_empty():
@@ -610,6 +1057,7 @@ func _on_return_button_pressed() -> void:
 	_return_to_main_room()
 
 func _return_to_main_room() -> void:
+	_stop_all_audio()
 	if player and player.current_lives <= 0:
 		player.current_lives = player.max_lives
 	get_tree().change_scene_to_file("res://scenes/fase3_parser/main_room.tscn")

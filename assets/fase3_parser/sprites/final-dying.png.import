@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfqgnwhn30bgq"
-path="res://.godot/imported/placasPressao.png-2f5a55e23f424d0587ee9edb92f56728.ctex"
+uid="uid://dqdonkyqhbvfd"
+path="res://.godot/imported/final-dying.png-60d76cacf1daf32bd8e2137ce021ffd5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase3_parser/sprites/placasPressao.png"
-dest_files=["res://.godot/imported/placasPressao.png-2f5a55e23f424d0587ee9edb92f56728.ctex"]
+source_file="res://assets/fase3_parser/sprites/final-dying.png"
+dest_files=["res://.godot/imported/final-dying.png-60d76cacf1daf32bd8e2137ce021ffd5.ctex"]
 
 [params]
 

@@ -65,8 +65,7 @@ func aplicar_estilos_prototipo() -> void:
 	if card2: estilar_card(card2, Color("#19376D"), cor_borda_preta)
 
 	var card3 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3")
-	if card3: estilar_card(card3, Color("#5C4A1E"), cor_borda_preta)
-
+	if card3: estilar_card(card3, Color("#7B1E1E"), cor_borda_preta)
 	var card4 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4")
 	if card4: estilar_card(card4, Color("#442A5C"), cor_borda_preta)
 

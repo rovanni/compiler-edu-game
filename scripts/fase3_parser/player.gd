@@ -31,6 +31,8 @@ func _ready() -> void:
 
 func take_damage() -> void:
 	current_lives -= 1
+	if SoundManager:
+		SoundManager.play_hurt()
 	player_took_damage.emit(current_lives)
 	if current_lives <= 0:
 		die()

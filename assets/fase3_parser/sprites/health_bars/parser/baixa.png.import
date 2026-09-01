@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bd2a401p4itoi"
-path="res://.godot/imported/image (1).png-96c4d3296f7410ee95c55973eb16a5d6.ctex"
+uid="uid://beqwmxu423l3j"
+path="res://.godot/imported/baixa.png-577caae2677456de739903e2a6a38ff6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image (1).png"
-dest_files=["res://.godot/imported/image (1).png-96c4d3296f7410ee95c55973eb16a5d6.ctex"]
+source_file="res://assets/fase3_parser/sprites/health_bars/parser/baixa.png"
+dest_files=["res://.godot/imported/baixa.png-577caae2677456de739903e2a6a38ff6.ctex"]
 
 [params]
 

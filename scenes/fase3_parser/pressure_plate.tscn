@@ -1,109 +1,55 @@
 [gd_scene format=3 uid="uid://c8gab4e3a2d1"]
 
 [ext_resource type="Script" uid="uid://bmobhkbfi4k1g" path="res://scripts/fase3_parser/pressure_plate.gd" id="1_plate_script"]
-[ext_resource type="Texture2D" uid="uid://cfqgnwhn30bgq" path="res://assets/fase3_parser/sprites/placasPressao.png" id="2_plate_texture"]
-[ext_resource type="FontFile" uid="uid://byqyruh7burnt" path="res://fonts/BalooThambi2-Bold.ttf" id="3_font"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_0"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(0, 0, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_1"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(300, 0, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_2"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(600, 0, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_3"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(900, 0, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_4"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(1200, 0, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pressed_0"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(0, 300, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pressed_1"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(300, 300, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pressed_2"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(600, 300, 300, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pressed_3"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(900, 300, 300, 300)
+[ext_resource type="Texture2D" uid="uid://dkkdlofhemiuy" path="res://assets/fase3_parser/sprites/nPressionado.png" id="2_unpressed_texture"]
+[ext_resource type="Texture2D" uid="uid://cmpressio002b" path="res://assets/fase3_parser/sprites/pressionado.png" id="3_pressed_texture"]
+[ext_resource type="FontFile" uid="uid://byqyruh7burnt" path="res://fonts/BalooThambi2-Bold.ttf" id="4_font"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pressed_4"]
-atlas = ExtResource("2_plate_texture")
-region = Rect2(1200, 300, 300, 300)
+atlas = ExtResource("3_pressed_texture")
+region = Rect2(444, 4, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed_4"]
+atlas = ExtResource("2_unpressed_texture")
+region = Rect2(444, 4, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_plate"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_unpressed_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_unpressed_1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_unpressed_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_unpressed_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_unpressed_4")
+"texture": SubResource("AtlasTexture_pressed_4")
 }],
-"loop": true,
-"name": &"unpressed",
+"loop": 1,
+"name": &"pressed",
 "speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pressed_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pressed_1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pressed_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pressed_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pressed_4")
+"texture": SubResource("AtlasTexture_unpressed_4")
 }],
-"loop": true,
-"name": &"pressed",
+"loop": 1,
+"name": &"unpressed",
 "speed": 6.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_plate"]
 size = Vector2(64, 56)
 
-[node name="PressurePlate" type="Area2D"]
+[node name="PressurePlate" type="Area2D" unique_id=1308079846]
 script = ExtResource("1_plate_script")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.28, 0.28)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1442394394]
+texture_filter = 1
+scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_plate")
-animation = &"unpressed"
+animation = &"pressed"
 autoplay = "unpressed"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=866469154]
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_plate")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=585230242]
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -117,12 +63,12 @@ offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.04, 0.04, 0.08, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
-theme_override_constants/outline_size = 6
+theme_override_colors/font_outline_color = Color(0.04, 0.04, 0.08, 1)
 theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 2
-theme_override_fonts/font = ExtResource("3_font")
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 20
 text = "token"
 horizontal_alignment = 1

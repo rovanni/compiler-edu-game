@@ -6,12 +6,16 @@ extends Node2D
 @onready var hint_button: Button = $CanvasLayer/UI/HeaderPanel/HintButton
 
 var active_entrance: BossEntrance = null
+var bgm_player: AudioStreamPlayer = null
+
+const BGM_PATH: String = "res://assets/fase3_parser/audio/escolha_boss.mp3"
 
 static var gosma_defeated: bool = false
 static var fantasma_defeated: bool = false
 static var final_defeated: bool = false
 
 func _ready() -> void:
+	_setup_bgm()
 	if prompt_panel:
 		prompt_panel.visible = false
 		
@@ -36,6 +40,36 @@ func _ready() -> void:
 	if btn_voltar:
 		btn_voltar.pressed.connect(_on_btn_voltar_menu_pressed)
 
+func _setup_bgm() -> void:
+	bgm_player = AudioStreamPlayer.new()
+	bgm_player.name = "MainRoomBGMPlayer"
+	bgm_player.volume_db = -6.0
+	add_child(bgm_player)
+	
+	var stream: AudioStream = null
+	if ResourceLoader.exists(BGM_PATH):
+		var res = load(BGM_PATH)
+		if res is AudioStream:
+			stream = res
+			
+	if stream == null:
+		var global_p = ProjectSettings.globalize_path(BGM_PATH)
+		stream = AudioStreamMP3.load_from_file(global_p)
+		
+	if stream:
+		if stream is AudioStreamMP3:
+			(stream as AudioStreamMP3).loop = true
+		bgm_player.stream = stream
+		bgm_player.play()
+		bgm_player.finished.connect(func():
+			if bgm_player and bgm_player.stream:
+				bgm_player.play()
+		)
+
+func _stop_bgm() -> void:
+	if bgm_player and bgm_player.playing:
+		bgm_player.stop()
+
 func _start_ambient_animations(node: Node) -> void:
 	for child in node.get_children():
 		if child is AnimatedSprite2D:
@@ -50,6 +84,7 @@ func _start_ambient_animations(node: Node) -> void:
 		_start_ambient_animations(child)
 
 func _on_btn_voltar_menu_pressed() -> void:
+	_stop_bgm()
 	get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
 
 func _on_hint_button_pressed() -> void:
@@ -68,6 +103,7 @@ func _update_hint_button_ui() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
+		_stop_bgm()
 		get_tree().change_scene_to_file("res://scenes/menu/menu.tscn")
 		return
 
@@ -110,6 +146,7 @@ func _on_boss_entrance_player_exited(entrance: BossEntrance) -> void:
 			prompt_panel.visible = false
 
 func _enter_boss_phase(entrance: BossEntrance) -> void:
+	_stop_bgm()
 	var BossFightScript = load("res://scripts/fase3_parser/boss_fight.gd")
 	if BossFightScript:
 		BossFightScript.current_boss_id = entrance.boss_id
