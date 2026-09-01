@@ -1,26 +1,35 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://53mr30ltx87u"]
 
-[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/castelo.png" id="1_castelo"]
+[ext_resource type="Texture2D" uid="uid://h0h87gc4pndu" path="res://assets/fase6_sintatico/castelo.png" id="1_castelo"]
+[ext_resource type="Texture2D" uid="uid://cuw57t32iw8tt" path="res://assets/fase6_sintatico/fundodofundo.png" id="2_1yecc"]
 [ext_resource type="PackedScene" uid="uid://c6f1chao001" path="res://scenes/fase6_sintatico/chao.tscn" id="2_chao"]
 
-[node name="CenarioFase6" type="Node2D"]
+[node name="CenarioFase6" type="Node2D" unique_id=430884782]
 
-[node name="Ceu" type="Polygon2D" parent="."]
+[node name="Ceu" type="Polygon2D" parent="." unique_id=2086242596]
+visible = false
 z_index = -30
-polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 620, 0, 620)
 color = Color(0.035, 0.09, 0.15, 1)
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 620, 0, 620)
 
-[node name="Castelo" type="Sprite2D" parent="."]
+[node name="Castelo" type="Sprite2D" parent="." unique_id=1876872563]
+self_modulate = Color(0.72, 0.78, 0.86, 1)
 z_index = -20
 position = Vector2(640, 381)
 scale = Vector2(0.833333, 0.8)
 texture = ExtResource("1_castelo")
-self_modulate = Color(0.72, 0.78, 0.86, 1)
 
-[node name="ContrasteDoJogo" type="Polygon2D" parent="."]
+[node name="Ceu2" type="Sprite2D" parent="Castelo" unique_id=40864244]
+show_behind_parent = true
+position = Vector2(1.7999907, 33.124977)
+scale = Vector2(1.1757817, 1.1169432)
+texture = ExtResource("2_1yecc")
+
+[node name="ContrasteDoJogo" type="Polygon2D" parent="." unique_id=928072363]
 z_index = -10
-polygon = PackedVector2Array(0, 84, 1280, 84, 1280, 620, 0, 620)
+position = Vector2(1, 0)
 color = Color(0.01, 0.035, 0.065, 0.18)
+polygon = PackedVector2Array(0, 84, 1280, 84, 1280, 620, 0, 620)
 
-[node name="Chao" parent="." instance=ExtResource("2_chao")]
+[node name="Chao" parent="." unique_id=817522776 instance=ExtResource("2_chao")]
 position = Vector2(640, 620)
