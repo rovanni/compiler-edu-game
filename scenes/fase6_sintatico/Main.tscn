@@ -10,7 +10,7 @@
 [ext_resource type="FontFile" path="res://fonts/BalooThambi2-Bold.ttf" id="8_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleObjetivo"]
-bg_color = Color(0.025, 0.075, 0.12, 0.94)
+bg_color = Color(0.025, 0.075, 0.12, 0.58)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -29,7 +29,7 @@ shadow_size = 5
 shadow_offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleControles"]
-bg_color = Color(0.025, 0.075, 0.12, 0.96)
+bg_color = Color(0.025, 0.075, 0.12, 0.56)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -78,7 +78,7 @@ position = Vector2(640, 660)
 [node name="PainelObjetivo" type="PanelContainer" parent="UI"]
 offset_left = 12.0
 offset_top = 88.0
-offset_right = 612.0
+offset_right = 360.0
 offset_bottom = 178.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleObjetivo")
@@ -89,7 +89,7 @@ mouse_filter = 2
 theme_override_constants/separation = 1
 
 [node name="LabelExpressao" type="RichTextLabel" parent="UI/PainelObjetivo/VBox" unique_id=1213400901]
-custom_minimum_size = Vector2(564, 46)
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.95, 0.98, 1, 1)

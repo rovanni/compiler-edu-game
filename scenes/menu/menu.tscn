@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://chl4sjdwgm526" path="res://assets/fase2_scanner/vale_scanner_background.png" id="6_fase2_preview"]
 [ext_resource type="Texture2D" uid="uid://1v7heon8j2x5" path="res://assets/menu/fase5_erroLexico.png" id="7_3y2rt"]
 [ext_resource type="Texture2D" path="res://assets/menu/fase3_parser_card.png" id="8_fase3_preview"]
-[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/castelo.png" id="9_fase6_preview"]
+[ext_resource type="Texture2D" path="res://assets/menu/capafase6.png" id="9_fase6_preview"]
 
 [node name="Menu" type="Control" unique_id=10098437]
 layout_mode = 3

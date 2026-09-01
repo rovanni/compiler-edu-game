@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsjfe37c6r25i"
-path="res://.godot/imported/Nivel4.png-9021f41f7cff20a945dbb1dd4a9a783f.ctex"
+uid="uid://dowcw0ffslqrk"
+path="res://.godot/imported/fase2_ponte_completa.png-8c4e1353db4325c533b320ff052e6a93.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase5_erroLexico/Nivel4.png"
-dest_files=["res://.godot/imported/Nivel4.png-9021f41f7cff20a945dbb1dd4a9a783f.ctex"]
+source_file="res://docs/fase2_scanner/img/fase2_ponte_completa.png"
+dest_files=["res://.godot/imported/fase2_ponte_completa.png-8c4e1353db4325c533b320ff052e6a93.ctex"]
 
 [params]
 

@@ -9,5 +9,5 @@ rotulo_fase = "Fase 2/3"
 proxima_fase_config_path = "res://resources/fase6_sintatico/fase3.tres"
 intervalo_spawn = 1.2
 chance_token_correto = 0.4
-paleta_cores = Array[Color]([Color(0.55, 0.6, 0.75, 1), Color(0.85, 0.55, 0.35, 1), Color(0.4, 0.75, 0.55, 1)])
+paleta_cores = Array[Color]([Color(0.55, 0.6, 0.75, 1), Color(0.85, 0.55, 0.35, 1), Color(0.48, 0.52, 0.86, 1)])
 chance_balao_fortificado = 0.3
