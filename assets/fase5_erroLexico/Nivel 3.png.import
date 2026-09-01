@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dap1roybsyokl"
-path="res://.godot/imported/Nivel2.png-e63c891f83b2fbac510993a231b98d02.ctex"
+uid="uid://kgi1jk4npy7x"
+path="res://.godot/imported/Nivel 3.png-72da466c4ae0f3722de7e26b6fae4b85.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase5_erroLexico/Nivel2.png"
-dest_files=["res://.godot/imported/Nivel2.png-e63c891f83b2fbac510993a231b98d02.ctex"]
+source_file="res://assets/fase5_erroLexico/Nivel 3.png"
+dest_files=["res://.godot/imported/Nivel 3.png-72da466c4ae0f3722de7e26b6fae4b85.ctex"]
 
 [params]
 
