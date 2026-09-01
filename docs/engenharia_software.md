@@ -8,7 +8,7 @@ A aplicação das práticas de Engenharia de Software garante que o desenvolvime
 
 ## 📋 1. Visão Geral dos Artefatos Exigidos
 
-Cada grupo (Grupos 1 a 6) deverá gerar e manter atualizado um **Documento de Engenharia da Fase** dentro de `docs/fases/faseX_nome.md`, utilizando o [Template Padrão de Fase](templates/template_documentacao_fase.md).
+Cada grupo (Grupos 1 a 6) deverá gerar e manter atualizado um **Documento de Engenharia da Fase** dentro de sua respectiva pasta em `docs/faseX_nome/README.md`, utilizando o [Template Padrão de Fase](templates/template_documentacao_fase.md).
 
 Os artefatos dividem-se em 5 pilares principais:
 
@@ -104,18 +104,35 @@ A **Matriz RACI** é uma ferramenta de gestão usada na Engenharia de Software p
 ---
 
 ## 📂 3. Organização dos Arquivos nos Repositórios
-
-Cada grupo deve salvar a documentação no seguinte caminho:
-
-```text
-docs/
-├── fases/
-│   ├── fase1_tokens.md      # Documentação de Eng. de Software do Grupo 1
-│   ├── fase2_scanner.md     # Documentação de Eng. de Software do Grupo 2
-│   ├── fase3_parser.md      # Documentação de Eng. de Software do Grupo 3
-│   ├── fase4_ast.md         # Documentação de Eng. de Software do Grupo 4
-│   ├── fase5_lexico.md      # Documentação de Eng. de Software do Grupo 5
-│   └── fase6_sintatico.md   # Documentação de Eng. de Software do Grupo 6
-└── templates/
-    └── template_documentacao_fase.md  # Template base para copiar
-```
+ 
+ Cada grupo deve salvar a documentação no seguinte caminho:
+ 
+ ```text
+ docs/
+ ├── fase1_tokens/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 1
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 1
+ │   └── img/                 # Prints e diagramas da Fase 1
+ ├── fase2_scanner/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 2
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 2
+ │   └── img/                 # Prints e diagramas da Fase 2
+ ├── fase3_parser/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 3
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 3
+ │   └── img/                 # Prints e diagramas da Fase 3
+ ├── fase4_ast/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 4
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 4
+ │   └── img/                 # Prints e diagramas da Fase 4
+ ├── fase5_erroLexico/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 5
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 5
+ │   └── img/                 # Prints e diagramas da Fase 5
+ ├── fase6_sintatico/
+ │   ├── README.md            # Documentação de Eng. de Software do Grupo 6
+ │   ├── evidencias_aex.md    # Evidências e oficinas da Fase 6
+ │   └── img/                 # Prints e diagramas da Fase 6
+ └── templates/
+     └── template_documentacao_fase.md  # Template base para copiar
+ ```

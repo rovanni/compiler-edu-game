@@ -250,7 +250,7 @@ func atualizar_estado_da_sessao() -> void:
 
 	var card_fase_3: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase3")
 	if card_fase_3 and GameManager.is_phase_completed(3):
-		card_fase_3.text = "✓ 3\nCAVERNA PARSER\n(CONCLUÍDA)"
+		card_fase_3.text = "✓ 3\nCAVERNA DO PARSER\n(CONCLUÍDA)"
 
 	var card_fase_6: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
 	if card_fase_6 and GameManager.is_phase_completed(6):
