@@ -10,13 +10,23 @@ func _init() -> void:
 	_test_sequence_validation_logic()
 	_test_plate_highlight_logic()
 	_test_boss_audio_paths()
+	_test_custom_health_bars()
 	
 	if failures == 0:
-		print("PASS: Fase 3 Parser - Novas opções de tokens, integridade, validação sintática e trilhas sonoras")
+		print("PASS: Fase 3 Parser - Novas opções de tokens, integridade, validação sintática, áudio e barras de vida")
 		quit(0)
 	else:
 		push_error("FAIL: %d teste(s) da Fase 3 falharam" % failures)
 		quit(1)
+
+func _test_custom_health_bars() -> void:
+	var bosses = ["slime", "fantasma", "parser"]
+	var levels = ["alta", "media", "baixa"]
+	for b in bosses:
+		for lvl in levels:
+			var path = "res://assets/fase3_parser/sprites/health_bars/%s/%s.png" % [b, lvl]
+			var exists = FileAccess.file_exists(path)
+			_expect(exists, "Barra de vida '%s' deve existir" % path)
 
 func _test_boss_audio_paths() -> void:
 	_expect(BossFightScript.AUDIO_PATHS.size() >= 19, "Deveria haver pelo menos 19 arquivos de áudio registrados")

@@ -75,6 +75,7 @@ res://
 │   │   └── escolha_boss.mp3 # Música tema da Sala Principal / Escolha de Chefão
 │   ├── backgrouds/          # Imagens de fundo das arenas e sala principal
 │   └── sprites/             # Spritesheets de animações (jogador, monstros, efeitos)
+│       └── health_bars/     # Barras de vida temáticas segmentadas (Gosma, Fantasma, Rei Parser)
 ├── scenes/fase3_parser/
 │   ├── main_room.tscn       # Sala principal com portais de acesso
 │   ├── boss_fight.tscn      # Arena base de combate
@@ -87,14 +88,14 @@ res://
 │   └── boss_entrance.tscn   # Portal de teleporte para as arenas
 ├── scripts/fase3_parser/
 │   ├── main_room.gd         # Gerenciamento da sala principal e portais
-│   ├── boss_fight.gd        # Lógica de validação sintática, combate, audio ducking e áudio
+│   ├── boss_fight.gd        # Lógica de validação sintática, combate, barras de vida e áudio
 │   ├── player.gd            # Física de movimento, vida, animação e áudio de dano
 │   ├── pressure_plate.gd    # Detecção de acionamento das placas
 │   ├── projectile.gd        # Movimentação e colisão de projéteis
 │   ├── boss_body.gd         # Receptor de dano dos chefões
 │   └── effect_helper.gd     # Utilitário para instanciação de efeitos visuais
 └── tests/
-    └── headless_fase3_parser_test.gd # Testes unitários de regras sintáticas e integridade de áudio
+    └── headless_fase3_parser_test.gd # Testes unitários de regras sintáticas, integridade de áudio e barras de vida
 ```
 
 ---
@@ -106,8 +107,9 @@ res://
 | **CT-01** | RF-01 | Selecionar Fase 3 no Menu Principal | Carrega a Sala Principal da Caverna do Parser | ✅ PASS |
 | **CT-02** | RF-01, RF-07 | Pressionar ESC ou botão MENU na sala principal | Retorna ao Menu Principal | ✅ PASS |
 | **CT-03** | RF-01 | Aproximar de um portal e pressionar E/Enter | Carrega a arena correspondente do Boss, toca BGM e som de entrada com ducking | ✅ PASS |
-| **CT-04** | RF-03 | Pisar nas placas na sequência sintática correta | Toca som de ataque do Edu (abaixa o volume da BGM temporariamente), projeta projétil azul e boss sofre dano | ✅ PASS |
+| **CT-04** | RF-03 | Pisar nas placas na sequência sintática correta | Toca som de ataque do Edu, atualiza a barra de vida personalizada do Boss com animação de impacto | ✅ PASS |
 | **CT-05** | RF-04 | Pisar nas placas na ordem incorreta e zerar as vidas | Player morre (som de morte do Edu), chefão celebra (som de vitória do Boss) e retorna à sala | ✅ PASS |
 | **CT-06** | RF-05 | Derrotar o chefão (ou Rei Parser) | Toca som de derrota do boss, vitória do Edu, e no Rei Parser encerra BGM para a cutscene | ✅ PASS |
 | **CT-07** | RF-02, RP-01 | Execução do teste headless de tokens (`headless_fase3_parser_test.gd`) | Todas as sentenças de 3, 4, 5 e 6 tokens são validadas sem falhas | ✅ PASS |
 | **CT-08** | RF-03, RF-04, RF-05 | Validação de integridade de arquivos de áudio | Todos os 23 arquivos de áudio dos chefões e jogador carregam perfeitamente | ✅ PASS |
+| **CT-09** | RF-03, RF-05 | Validação das barras de vida personalizadas | Todas as 9 texturas de barra de vida (alta, média e baixa para os 3 bosses) carregam com sucesso | ✅ PASS |

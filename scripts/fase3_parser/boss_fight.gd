@@ -6,6 +6,8 @@ extends Node2D
 @onready var boss_name_label: Label = $Arena/BossBody/BossBlock/BossNameLabel
 @onready var background_sprite: Sprite2D = $Background
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/BossHealthBar
+@onready var boss_health_texture: TextureRect = $CanvasLayer/UI/BossHealthTexture if $CanvasLayer/UI.has_node("BossHealthTexture") else null
+@onready var boss_hud_bottom_label: Label = $CanvasLayer/UI/BossHUDBottomLabel if $CanvasLayer/UI.has_node("BossHUDBottomLabel") else null
 @onready var hearts_container: HBoxContainer = $CanvasLayer/UI/HeartsContainer if $CanvasLayer/UI.has_node("HeartsContainer") else null
 @onready var lives_label: Label = $CanvasLayer/UI/LivesLabel if $CanvasLayer/UI.has_node("LivesLabel") else null
 @onready var return_button: Button = $CanvasLayer/UI/ReturnButton
@@ -454,7 +456,7 @@ func _update_ghost_scale(_anim_name: String = "") -> void:
 func _ready() -> void:
 	_setup_audio_players()
 	_init_hearts_ui()
-	_setup_health_bar_style()
+	_init_boss_health_ui()
 	if arena_boss_name != "":
 		current_boss_name = arena_boss_name
 	if arena_boss_id != "":
@@ -528,24 +530,110 @@ func _ready() -> void:
 	_start_ambient_animations(self)
 	_start_boss_audio()
 
-func _setup_health_bar_style() -> void:
-	if not health_bar:
+func _init_boss_health_ui() -> void:
+	var ui = $CanvasLayer/UI if has_node("CanvasLayer/UI") else null
+	if not ui:
 		return
-	
-	var bg_style := StyleBoxFlat.new()
-	bg_style.bg_color = Color("#112410", 0.85) # Fundo escuro com tom verde musgo
-	bg_style.border_color = Color("#071406", 0.9) # Borda escura profunda
-	bg_style.set_border_width_all(2)
-	bg_style.set_corner_radius_all(6)
+		
+	# 1. Rótulo do Nome do Chefão (estilo Souls na parte inferior)
+	if ui.has_node("BossHUDBottomLabel"):
+		boss_hud_bottom_label = ui.get_node("BossHUDBottomLabel") as Label
+	else:
+		boss_hud_bottom_label = Label.new()
+		boss_hud_bottom_label.name = "BossHUDBottomLabel"
+		boss_hud_bottom_label.anchor_left = 0.5
+		boss_hud_bottom_label.anchor_right = 0.5
+		boss_hud_bottom_label.anchor_top = 1.0
+		boss_hud_bottom_label.anchor_bottom = 1.0
+		boss_hud_bottom_label.offset_left = -300.0
+		boss_hud_bottom_label.offset_top = -105.0
+		boss_hud_bottom_label.offset_right = 300.0
+		boss_hud_bottom_label.offset_bottom = -70.0
+		boss_hud_bottom_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		boss_hud_bottom_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		boss_hud_bottom_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		boss_hud_bottom_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		boss_hud_bottom_label.add_theme_font_size_override("font_size", 18)
+		boss_hud_bottom_label.add_theme_color_override("font_color", Color("#f5f6fa"))
+		boss_hud_bottom_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
+		boss_hud_bottom_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+		boss_hud_bottom_label.add_theme_constant_override("outline_size", 6)
+		boss_hud_bottom_label.add_theme_constant_override("shadow_offset_y", 2)
+		ui.add_child(boss_hud_bottom_label)
+		
+	boss_hud_bottom_label.text = current_boss_name.to_upper()
+		
+	# 2. Barra de Vida do Chefão (estilo Souls na parte inferior)
+	if ui.has_node("BossHealthTexture"):
+		boss_health_texture = ui.get_node("BossHealthTexture") as TextureRect
+	else:
+		boss_health_texture = TextureRect.new()
+		boss_health_texture.name = "BossHealthTexture"
+		boss_health_texture.anchor_left = 0.5
+		boss_health_texture.anchor_right = 0.5
+		boss_health_texture.anchor_top = 1.0
+		boss_health_texture.anchor_bottom = 1.0
+		boss_health_texture.offset_left = -260.0
+		boss_health_texture.offset_top = -75.0
+		boss_health_texture.offset_right = 260.0
+		boss_health_texture.offset_bottom = -15.0
+		boss_health_texture.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		boss_health_texture.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		boss_health_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		boss_health_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		boss_health_texture.pivot_offset = Vector2(260, 30)
+		ui.add_child(boss_health_texture)
+		
+	if health_bar:
+		health_bar.visible = false
+		
+	update_boss_health_ui(false)
 
-	var fill_style := StyleBoxFlat.new()
-	fill_style.bg_color = Color("#4cd137") # Verde gosma / slime vibrante
-	fill_style.border_color = Color("#8cf858") # Borda verde ácido / brilho
-	fill_style.set_border_width_all(1)
-	fill_style.set_corner_radius_all(6)
-
-	health_bar.add_theme_stylebox_override("background", bg_style)
-	health_bar.add_theme_stylebox_override("fill", fill_style)
+func update_boss_health_ui(animate: bool = true) -> void:
+	if not boss_health_texture:
+		return
+		
+	var boss_key := "slime"
+	if _is_fantasma():
+		boss_key = "fantasma"
+	elif _is_final():
+		boss_key = "parser"
+		
+	var level := "alta"
+	if boss_health == 2:
+		level = "media"
+	elif boss_health <= 1:
+		level = "baixa"
+		
+	var path := "res://assets/fase3_parser/sprites/health_bars/%s/%s.png" % [boss_key, level]
+	var tex: Texture2D = null
+	if ResourceLoader.exists(path):
+		var res = load(path)
+		if res is Texture2D:
+			tex = res
+			
+	if not tex:
+		var global_p = ProjectSettings.globalize_path(path)
+		var img = Image.load_from_file(global_p)
+		if img:
+			tex = ImageTexture.create_from_image(img)
+			
+	if tex:
+		boss_health_texture.texture = tex
+		
+	if boss_health <= 0:
+		var t = create_tween()
+		t.set_parallel(true)
+		t.tween_property(boss_health_texture, "modulate:a", 0.0, 0.4)
+		if boss_hud_bottom_label:
+			t.tween_property(boss_hud_bottom_label, "modulate:a", 0.0, 0.4)
+	elif animate:
+		boss_health_texture.modulate.a = 1.0
+		if boss_hud_bottom_label:
+			boss_hud_bottom_label.modulate.a = 1.0
+		var t = create_tween()
+		t.tween_property(boss_health_texture, "scale", Vector2(1.12, 1.12), 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		t.tween_property(boss_health_texture, "scale", Vector2(1.0, 1.0), 0.15).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 func _setup_exit_portal_animation() -> void:
 	if not exit_portal:
@@ -754,9 +842,9 @@ func boss_take_damage() -> void:
 	if not is_fight_active: return
 	
 	boss_health -= 1
+	update_boss_health_ui(true)
 	if health_bar:
-		var tween = create_tween()
-		tween.tween_property(health_bar, "value", float(boss_health), 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		health_bar.value = float(boss_health)
 		
 	if boss_health <= 0:
 		is_fight_active = false
@@ -789,9 +877,13 @@ func boss_take_damage() -> void:
 			boss_body.queue_free()
 			
 		if is_final:
-			_stop_all_audio()
 			desc_label.text = "VOCÊ VENCEU O DESAFIO FINAL!"
-			await get_tree().create_timer(2.0).timeout
+			var final_wait: float = 4.5
+			if boss_sfx_player and boss_sfx_player.stream:
+				final_wait = max(final_wait, boss_sfx_player.stream.get_length())
+			if player_sfx_player and player_sfx_player.stream:
+				final_wait = max(final_wait, player_sfx_player.stream.get_length())
+			await get_tree().create_timer(final_wait + 0.8).timeout
 			_stop_all_audio()
 			get_tree().change_scene_to_file("res://scenes/fase3_parser/outro_cutscene.tscn")
 		else:
@@ -814,7 +906,14 @@ func _on_player_died() -> void:
 	_play_player_death_sound()
 	_play_boss_victory_sound()
 	desc_label.text = "VOCÊ FOI DERROTADO! Retornando..."
-	await get_tree().create_timer(2.0).timeout
+	
+	var wait_time: float = 4.5
+	if player_sfx_player and player_sfx_player.stream:
+		wait_time = max(wait_time, player_sfx_player.stream.get_length())
+	if boss_voice_player and boss_voice_player.stream:
+		wait_time = max(wait_time, boss_voice_player.stream.get_length())
+		
+	await get_tree().create_timer(wait_time + 0.8).timeout
 	_return_to_main_room()
 
 func _init_hearts_ui() -> void:
