@@ -861,9 +861,15 @@ func _spawn_projectile(spawn_pos: Vector2, target_node: Node2D, is_enemy: bool) 
 	if is_enemy and _is_gosma():
 		if proj.has_method("set_slime_attack_sprite"):
 			proj.set_slime_attack_sprite()
+	elif is_enemy and _is_fantasma():
+		if proj.has_method("set_ghost_attack_sprite"):
+			proj.set_ghost_attack_sprite()
 	elif is_enemy and _is_final():
 		if proj.has_method("set_final_attack_sprite"):
 			proj.set_final_attack_sprite()
+	elif not is_enemy:
+		if proj.has_method("set_player_attack_sprite"):
+			proj.set_player_attack_sprite()
 	else:
 		var color_rect = proj.get_node_or_null("ColorRect")
 		if color_rect:
