@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bry2xupp8vryf" path="res://assets/fase5_erroLexico/BaseCodigo.png" id="3_v8jfv"]
 [ext_resource type="FontFile" uid="uid://cnx4xc45l47hm" path="res://fonts/Friend Bestie.otf" id="4_05s5f"]
 [ext_resource type="Script" uid="uid://dh033iktc8c3j" path="res://scripts/fase5_erroLexico/monstroValido.gd" id="4_y6jaq"]
-[ext_resource type="Texture2D" uid="uid://dw8d3tq8vwseq" path="res://assets/fase5_erroLexico/Coracao.png" id="7_cinvf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x2cvn"]
 size = Vector2(248.375, 20)
@@ -39,6 +38,16 @@ size = Vector2(40, 74)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8xaes"]
 size = Vector2(63.5, 80)
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_utjk5"]
+b = Vector2(-1, 722)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8m7dx"]
+b = Vector2(1277, -1)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_h3uhx"]
+a = Vector2(1280, -1)
+b = Vector2(1282, 714)
+
 [node name="Nivel1" type="Node2D" unique_id=1610137793]
 script = ExtResource("1_a8278")
 
@@ -51,17 +60,17 @@ texture = ExtResource("2_0umkd")
 
 [node name="TextureRect" type="TextureRect" parent="Cenario" unique_id=964900617]
 offset_left = 192.0
-offset_top = -8.0
+offset_top = 43.0
 offset_right = 1092.0
-offset_bottom = 182.0
+offset_bottom = 233.0
 texture = ExtResource("3_v8jfv")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="Cenario" unique_id=1450596956]
 offset_left = 537.0
-offset_top = 81.0
+offset_top = 130.0
 offset_right = 753.0
-offset_bottom = 113.0
+offset_bottom = 162.0
 theme_override_fonts/font = ExtResource("4_05s5f")
 theme_override_font_sizes/font_size = 30
 text = "int idade = 10;"
@@ -135,35 +144,13 @@ position = Vector2(320, 350)
 script = ExtResource("4_y6jaq")
 caractere = "idade"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=884202045]
+[node name="paredes" type="StaticBody2D" parent="." unique_id=2033346784]
 
-[node name="HUD" type="Control" parent="CanvasLayer" unique_id=693446307]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="paredeEsquerda" type="CollisionShape2D" parent="paredes" unique_id=596292218]
+shape = SubResource("SegmentShape2D_utjk5")
 
-[node name="Coracao1" type="TextureRect" parent="CanvasLayer/HUD" unique_id=115248303]
-layout_mode = 0
-offset_right = 80.0
-offset_bottom = 80.0
-offset_transform_position = Vector2(40, 40)
-texture = ExtResource("7_cinvf")
-expand_mode = 1
+[node name="paredeSuperior" type="CollisionShape2D" parent="paredes" unique_id=1995298456]
+shape = SubResource("SegmentShape2D_8m7dx")
 
-[node name="Coracao2" type="TextureRect" parent="CanvasLayer/HUD" unique_id=289634693]
-layout_mode = 0
-offset_left = 64.0
-offset_right = 144.0
-offset_bottom = 80.0
-texture = ExtResource("7_cinvf")
-expand_mode = 1
-
-[node name="Coracao3" type="TextureRect" parent="CanvasLayer/HUD" unique_id=1998224911]
-layout_mode = 0
-offset_left = 126.0
-offset_top = -1.0
-offset_right = 206.0
-offset_bottom = 79.0
-texture = ExtResource("7_cinvf")
-expand_mode = 1
+[node name="paredeDireita" type="CollisionShape2D" parent="paredes" unique_id=1335244277]
+shape = SubResource("SegmentShape2D_h3uhx")

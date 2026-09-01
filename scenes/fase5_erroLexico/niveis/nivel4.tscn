@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bn5i5yr3cnj35"]
 
 [ext_resource type="Script" uid="uid://qpxku2q1yfkl" path="res://scripts/fase5_erroLexico/nivel.gd" id="1_sqe8u"]
-[ext_resource type="Texture2D" uid="uid://dsjfe37c6r25i" path="res://assets/fase5_erroLexico/Nivel4.png" id="1_wbv1p"]
+[ext_resource type="Texture2D" uid="uid://cjstohesqn46p" path="res://assets/fase5_erroLexico/Nivel 4.png" id="2_fuvkr"]
 [ext_resource type="Script" uid="uid://2j87fuwdtk4h" path="res://scripts/fase5_erroLexico/perigo.gd" id="2_sqe8u"]
 [ext_resource type="PackedScene" uid="uid://bdfnj4qxyn0r3" path="res://scenes/fase5_erroLexico/jogador.tscn" id="3_fuvkr"]
 [ext_resource type="Texture2D" uid="uid://bry2xupp8vryf" path="res://assets/fase5_erroLexico/BaseCodigo.png" id="3_jsxh2"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://cecoj78xsp33y" path="res://scripts/fase5_erroLexico/monstroInvalido.gd" id="5_75oil"]
 [ext_resource type="PackedScene" uid="uid://fq2bnpem17yx" path="res://scenes/fase5_erroLexico/monstroValido.tscn" id="6_7rxp7"]
 [ext_resource type="Script" uid="uid://dh033iktc8c3j" path="res://scripts/fase5_erroLexico/monstroValido.gd" id="7_qa321"]
-[ext_resource type="Texture2D" uid="uid://dw8d3tq8vwseq" path="res://assets/fase5_erroLexico/Coracao.png" id="8_is11b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ti3g6"]
 size = Vector2(44.1875, 42)
@@ -60,6 +59,16 @@ size = Vector2(896, 26)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mawk2"]
 size = Vector2(55.75, 72)
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fuvkr"]
+b = Vector2(-1, 722)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_jsxh2"]
+b = Vector2(1277, -1)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_75oil"]
+a = Vector2(1280, -1)
+b = Vector2(1282, 714)
+
 [node name="Nivel4" type="Node2D" unique_id=1325829087]
 script = ExtResource("1_sqe8u")
 numero_nivel = 4
@@ -67,23 +76,23 @@ numero_nivel = 4
 [node name="Cenario" type="Node2D" parent="." unique_id=1177057872]
 
 [node name="Sprite2D" type="Sprite2D" parent="Cenario" unique_id=1266588649]
-position = Vector2(639.7282, 373.00003)
-scale = Vector2(0.8011624, 0.8105469)
-texture = ExtResource("1_wbv1p")
+position = Vector2(641.78845, 374.48633)
+scale = Vector2(1.1925588, 1.2173649)
+texture = ExtResource("2_fuvkr")
 
 [node name="TextureRect" type="TextureRect" parent="Cenario" unique_id=1389429084]
 offset_left = 192.0
-offset_top = -30.0
+offset_top = 44.0
 offset_right = 1092.0
-offset_bottom = 160.0
+offset_bottom = 234.0
 texture = ExtResource("3_jsxh2")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="Cenario" unique_id=833508936]
 offset_left = 480.0
-offset_top = 59.0
+offset_top = 133.0
 offset_right = 808.0
-offset_bottom = 85.0
+offset_bottom = 159.0
 theme_override_fonts/font = ExtResource("4_75oil")
 theme_override_font_sizes/font_size = 30
 text = "float dinheiro = 67.28;"
@@ -99,19 +108,19 @@ position = Vector2(98.375, 721.1875)
 shape = SubResource("RectangleShape2D_rdk7c")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=318154213]
-position = Vector2(244, 232)
+position = Vector2(311, 296)
 shape = SubResource("RectangleShape2D_3qc7g")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=519194677]
-position = Vector2(800, 496)
+position = Vector2(777, 577)
 shape = SubResource("RectangleShape2D_wfnnr")
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=1546086416]
-position = Vector2(800, 265.375)
+position = Vector2(853, 359)
 shape = SubResource("RectangleShape2D_iofj7")
 
 [node name="CollisionShape2D6" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=1954908263]
-position = Vector2(949.25, 615.625)
+position = Vector2(952, 652)
 shape = SubResource("RectangleShape2D_hpfoa")
 
 [node name="CollisionShape2D9" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=342956890]
@@ -119,19 +128,19 @@ position = Vector2(1190, 741)
 shape = SubResource("RectangleShape2D_ows3p")
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=496353441]
-position = Vector2(1188.875, 176)
+position = Vector2(1212, 273)
 shape = SubResource("RectangleShape2D_blixq")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=34133926]
-position = Vector2(664, 384)
+position = Vector2(674, 483)
 shape = SubResource("RectangleShape2D_j7xv6")
 
 [node name="CollisionShape2D10" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=664147427]
-position = Vector2(598.75, 346)
+position = Vector2(606, 452)
 shape = SubResource("RectangleShape2D_fjecl")
 
 [node name="CollisionShape2D11" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=2102898246]
-position = Vector2(904, 176)
+position = Vector2(956, 302)
 shape = SubResource("SegmentShape2D_4lm64")
 
 [node name="CollisionShape2D12" type="CollisionShape2D" parent="Cenario/Plataforma" unique_id=106485454]
@@ -146,7 +155,7 @@ shape = SubResource("RectangleShape2D_irjij")
 script = ExtResource("2_sqe8u")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Cenario/Espinho" unique_id=1988231651]
-position = Vector2(248, 208)
+position = Vector2(316, 271)
 shape = SubResource("RectangleShape2D_70bgb")
 
 [node name="Lava" type="Area2D" parent="Cenario" unique_id=956259928]
@@ -168,44 +177,22 @@ position = Vector2(-272, 192)
 [node name="Monstros" type="Node2D" parent="." unique_id=1330194638]
 
 [node name="MonstroInvalido" parent="Monstros" unique_id=2071243007 instance=ExtResource("4_jsxh2")]
-position = Vector2(208, -488)
+position = Vector2(234, -389)
 script = ExtResource("5_75oil")
 caractere = "@"
 
 [node name="MonstroValido2" parent="Monstros" unique_id=911208172 instance=ExtResource("6_7rxp7")]
-position = Vector2(-232, -97)
+position = Vector2(-166, -33)
 script = ExtResource("7_qa321")
 caractere = "float"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2094057603]
+[node name="paredes" type="StaticBody2D" parent="." unique_id=1787018975]
 
-[node name="HUD" type="Control" parent="CanvasLayer" unique_id=333359595]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="paredeEsquerda" type="CollisionShape2D" parent="paredes" unique_id=728805039]
+shape = SubResource("SegmentShape2D_fuvkr")
 
-[node name="Coracao1" type="TextureRect" parent="CanvasLayer/HUD" unique_id=1594283443]
-layout_mode = 0
-offset_right = 80.0
-offset_bottom = 80.0
-offset_transform_position = Vector2(40, 40)
-texture = ExtResource("8_is11b")
-expand_mode = 1
+[node name="paredeSuperior" type="CollisionShape2D" parent="paredes" unique_id=424161613]
+shape = SubResource("SegmentShape2D_jsxh2")
 
-[node name="Coracao2" type="TextureRect" parent="CanvasLayer/HUD" unique_id=1693462266]
-layout_mode = 0
-offset_left = 64.0
-offset_right = 144.0
-offset_bottom = 80.0
-texture = ExtResource("8_is11b")
-expand_mode = 1
-
-[node name="Coracao3" type="TextureRect" parent="CanvasLayer/HUD" unique_id=687729168]
-layout_mode = 0
-offset_left = 126.0
-offset_top = -1.0
-offset_right = 206.0
-offset_bottom = 79.0
-texture = ExtResource("8_is11b")
-expand_mode = 1
+[node name="paredeDireita" type="CollisionShape2D" parent="paredes" unique_id=314854178]
+shape = SubResource("SegmentShape2D_75oil")
