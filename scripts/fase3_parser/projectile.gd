@@ -58,6 +58,78 @@ func set_final_attack_sprite() -> void:
 	add_child(anim)
 	anim.play("default")
 
+func set_ghost_attack_sprite() -> void:
+	var color_rect = get_node_or_null("ColorRect")
+	if color_rect:
+		color_rect.visible = false
+		
+	var tex = load("res://assets/fase3_parser/sprites/ghost-attack.png") as Texture2D
+	if not tex:
+		return
+		
+	var sf = SpriteFrames.new()
+	if not sf.has_animation("default"):
+		sf.add_animation("default")
+	sf.set_animation_loop("default", true)
+	sf.set_animation_speed("default", 12.0)
+	
+	var cols = 2
+	var rows = 5
+	var frame_w = float(tex.get_width()) / float(cols)
+	var frame_h = float(tex.get_height()) / float(rows)
+	
+	for y in range(rows):
+		for x in range(cols):
+			var atlas = AtlasTexture.new()
+			atlas.atlas = tex
+			atlas.region = Rect2(x * frame_w, y * frame_h, frame_w, frame_h)
+			sf.add_frame("default", atlas)
+			
+	var anim = AnimatedSprite2D.new()
+	anim.sprite_frames = sf
+	if frame_h > 0:
+		var s = 64.0 / frame_h
+		anim.scale = Vector2(s, s)
+	anim.rotation_degrees = 180.0
+	add_child(anim)
+	anim.play("default")
+
+func set_player_attack_sprite() -> void:
+	var color_rect = get_node_or_null("ColorRect")
+	if color_rect:
+		color_rect.visible = false
+		
+	var tex = load("res://assets/fase3_parser/sprites/player-attack.png") as Texture2D
+	if not tex:
+		return
+		
+	var sf = SpriteFrames.new()
+	if not sf.has_animation("default"):
+		sf.add_animation("default")
+	sf.set_animation_loop("default", true)
+	sf.set_animation_speed("default", 12.0)
+	
+	var cols = 2
+	var rows = 4
+	var frame_w = float(tex.get_width()) / float(cols)
+	var frame_h = float(tex.get_height()) / float(rows)
+	
+	for y in range(rows):
+		for x in range(cols):
+			var atlas = AtlasTexture.new()
+			atlas.atlas = tex
+			atlas.region = Rect2(x * frame_w, y * frame_h, frame_w, frame_h)
+			sf.add_frame("default", atlas)
+			
+	var anim = AnimatedSprite2D.new()
+	anim.sprite_frames = sf
+	if frame_h > 0:
+		var s = 64.0 / frame_h
+		anim.scale = Vector2(s, s)
+	anim.rotation_degrees = 180.0
+	add_child(anim)
+	anim.play("default")
+
 func _physics_process(delta: float) -> void:
 	if target != null and is_instance_valid(target):
 		var direction = (target.global_position - global_position).normalized()
