@@ -31,9 +31,6 @@ extends Node2D
 
 const HUD_SCENE := preload("res://scenes/common/game_hud.tscn")
 const CAMINHO_TUTORIAL := "res://scenes/fase6_sintatico/Tutorial.tscn"
-const DEBUG_PATH_FASE_1 := "res://resources/fase6_sintatico/fase1.tres"
-const DEBUG_PATH_FASE_2 := "res://resources/fase6_sintatico/fase2.tres"
-const DEBUG_PATH_FASE_3 := "res://resources/fase6_sintatico/fase3.tres"
 
 @onready var gerenciador: GerenciadorExpressao = $GerenciadorExpressao
 @onready var spawner: SpawnerBaloes = $SpawnerBaloes
@@ -337,32 +334,6 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			_on_overlay_mecanica_confirmado()
 		return
-	_processar_atalho_debug(event)
-
-func _processar_atalho_debug(event: InputEvent) -> void:
-	if not OS.is_debug_build() or not event is InputEventKey or not event.pressed or event.echo:
-		return
-	var caminho_config := ""
-	match event.keycode:
-		KEY_1:
-			caminho_config = DEBUG_PATH_FASE_1
-		KEY_2:
-			caminho_config = DEBUG_PATH_FASE_2
-		KEY_3:
-			caminho_config = DEBUG_PATH_FASE_3
-		_:
-			return
-	var proxima_config: ConfigFase = load(caminho_config)
-	if proxima_config == null:
-		push_error("DEBUG: Falha ao carregar configuração: " + caminho_config)
-		return
-	GameManager.rollback_to(0)
-	GameManager.reset_lives()
-	Fase6Estado.iniciar_execucao()
-	Fase6Estado.definir_proxima_config(proxima_config)
-	get_viewport().set_input_as_handled()
-	get_tree().reload_current_scene()
-
 func _pausar() -> void:
 	if pausado or jogo_acabou:
 		return
