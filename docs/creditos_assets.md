@@ -3,6 +3,46 @@
 Este documento registra a procedência dos recursos externos distribuídos
 com o jogo. Os links foram conferidos em 29 de agosto de 2026.
 
+## Arte e Efeitos Visuais da Fase 3
+
+Os efeitos e sprites listados abaixo foram baixados de plataformas de distribuição de assets (Itch.io e CraftPix) e estão cobertos por licenças de uso livre (CC0, OGA-BY ou Custom Free Licenses comerciais/acadêmicas).
+
+- **Pixel Magic Sprite Effects**
+  - Autoria: FoozleCC
+  - Origem: <https://foozlecc.itch.io/pixel-magic-sprite-effects>
+- **Super Pixel Effects Gigapack**
+  - Autoria: Untied Games
+  - Origem: <https://untiedgames.itch.io/super-pixel-effects-gigapack>
+- **Pixel Fire Asset Pack**
+  - Autoria: DevKidd
+  - Origem: <https://devkidd.itch.io/pixel-fire-asset-pack>
+- **Pixel Hearts 16x16**
+  - Autoria: redreeh
+  - Origem: <https://redreeh.itch.io/pixelhearts-16x16>
+- **Pixel Art Animated Earth VFX**
+  - Autoria: Soggy Socks Studio
+  - Origem: <https://soggysocksstudio.itch.io/pixel-art-animated-earth-vfx-soggysocks>
+- **Free Cartoon Smoke Effects Asset Pack**
+  - Autoria: CraftPix
+  - Origem: <https://craftpix.net/freebies/free-cartoon-smoke-effects-asset-pack/>
+- **Free Water and Fire Magic Sprite Vector Pack**
+  - Autoria: CraftPix
+  - Origem: <https://craftpix.net/freebies/free-water-and-fire-magic-sprite-vector-pack/>
+
+## Áudio e Dublagem da Fase 3
+
+### Efeitos Sonoros Gerais
+Os efeitos sonoros utilizados nas arenas e interações da Fase 3 foram adquiridos gratuitamente através da biblioteca do Pixabay, sob a Pixabay Content License.
+- **Origem:** <https://pixabay.com/pt/sound-effects/search/game/>
+- **Resumo da licença:** <https://pixabay.com/service/license-summary/>
+
+### Elenco de Voz (Dublagem)
+As vozes dos chefões da Caverna do Parser foram gravadas voluntariamente pelos seguintes membros/colaboradores para uso exclusivo no Compiler Edu Game:
+- **Boss Gosma (Slime):** Eduardo Calza
+- **Boss Fantasma:** Gabi Faria
+- **Boss Final (Rei Parser):** Igor Henrique Koga Vigato
+
+
 ## Arte da Fase 6
 
 O castelo, o piso, o canhão, o balão e os quadros da animação de estouro
