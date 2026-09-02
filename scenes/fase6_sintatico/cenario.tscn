@@ -15,7 +15,7 @@ polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 620, 0, 620)
 [node name="Castelo" type="Sprite2D" parent="." unique_id=1876872563]
 self_modulate = Color(0.72, 0.78, 0.86, 1)
 z_index = -20
-position = Vector2(640, 381)
+position = Vector2(640, 400)
 scale = Vector2(0.833333, 0.8)
 texture = ExtResource("1_castelo")
 

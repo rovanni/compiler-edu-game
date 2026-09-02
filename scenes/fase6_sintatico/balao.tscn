@@ -1,32 +1,131 @@
 [gd_scene format=3 uid="uid://c6f1balao001"]
 
-[ext_resource type="Script" path="res://scripts/fase6_sintatico/balao.gd" id="1_balao"]
-[ext_resource type="Texture2D" path="res://assets/fase6_sintatico/balao.png" id="2_tex"]
-[ext_resource type="FontFile" path="res://fonts/BalooThambi2-ExtraBold.ttf" id="3_font"]
+[ext_resource type="Script" uid="uid://bkivhg2igpv0n" path="res://scripts/fase6_sintatico/balao.gd" id="1_balao"]
+[ext_resource type="Texture2D" uid="uid://jmeyqytgjlr6" path="res://assets/fase6_sintatico/balao.png" id="2_tex"]
+[ext_resource type="FontFile" uid="uid://bi3mhkw2rgvv5" path="res://fonts/BalooThambi2-ExtraBold.ttf" id="3_font"]
+[ext_resource type="Texture2D" uid="uid://cjgruhbksu8vq" path="res://assets/fase6_sintatico/chefe/normal.png" id="4_i8gia"]
+[ext_resource type="Texture2D" uid="uid://c0yl5pefg036n" path="res://assets/fase6_sintatico/chefe/danificado1.png" id="5_p7wah"]
+[ext_resource type="Texture2D" uid="uid://c7fydf38kqvgh" path="res://assets/fase6_sintatico/chefe/danificado3.png" id="6_1oswj"]
+[ext_resource type="Texture2D" uid="uid://ockfrkcj0ig" path="res://assets/fase6_sintatico/traced-balaoarma.png" id="7_1oswj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_balao"]
 radius = 29.0
 
-[node name="Balao" type="Area2D"]
-script = ExtResource("1_balao")
-simbolo = "x"
+[sub_resource type="Animation" id="Animation_i8gia"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("danificado1:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("normal:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [24]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("danificado2:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [24]
+}
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[sub_resource type="Animation" id="Animation_ldl5d"]
+resource_name = "move0"
+length = 1.2666667
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("normal:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2, 18]
+}
+
+[sub_resource type="Animation" id="Animation_1oswj"]
+resource_name = "move1"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("danificado1:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 24]
+}
+
+[sub_resource type="Animation" id="Animation_kov8e"]
+resource_name = "move2"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("danificado2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 24]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ldl5d"]
+_data = {
+&"RESET": SubResource("Animation_i8gia"),
+&"move0": SubResource("Animation_ldl5d"),
+&"move1": SubResource("Animation_1oswj"),
+&"move2": SubResource("Animation_kov8e")
+}
+
+[node name="Balao" type="Area2D" unique_id=1093683690]
+script = ExtResource("1_balao")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=43650310]
 position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_balao")
 
-[node name="Sombra" type="Sprite2D" parent="."]
+[node name="Sombra" type="Sprite2D" parent="." unique_id=1971085045]
+self_modulate = Color(0.01, 0.02, 0.04, 0.42)
 position = Vector2(3, 21)
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("2_tex")
-self_modulate = Color(0.01, 0.02, 0.04, 0.42)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=713911251]
 position = Vector2(0, 18)
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("2_tex")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=2045821744]
 offset_left = -30.0
 offset_top = -50.0
 offset_right = 30.0
@@ -39,3 +138,39 @@ theme_override_font_sizes/font_size = 38
 text = "x"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1005854892]
+libraries/ = SubResource("AnimationLibrary_ldl5d")
+
+[node name="normal" type="Sprite2D" parent="." unique_id=14251766]
+visible = false
+position = Vector2(2, -23.999998)
+scale = Vector2(0.4350668, 0.50281894)
+texture = ExtResource("4_i8gia")
+hframes = 5
+vframes = 5
+frame = 24
+
+[node name="danificado1" type="Sprite2D" parent="." unique_id=1299107319]
+visible = false
+position = Vector2(1.7694681, -25.035921)
+scale = Vector2(0.44711354, 0.49971938)
+texture = ExtResource("5_p7wah")
+hframes = 5
+vframes = 5
+
+[node name="danificado2" type="Sprite2D" parent="." unique_id=130631692]
+visible = false
+position = Vector2(0.9999995, -24.102262)
+scale = Vector2(0.40784782, 0.48517394)
+texture = ExtResource("6_1oswj")
+hframes = 5
+vframes = 5
+frame = 24
+
+[node name="arma" type="Sprite2D" parent="." unique_id=570844310]
+visible = false
+position = Vector2(1.9999998, 15)
+scale = Vector2(0.24715094, 0.24715096)
+texture = ExtResource("7_1oswj")

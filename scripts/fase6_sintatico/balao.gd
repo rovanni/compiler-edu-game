@@ -14,6 +14,7 @@ signal precisa_gerar_filhos(posicao: Vector2)
 
 # Variáveis para controle de vidas e status
 var vidas: int = 1
+var eh_fortificado = false
 var eh_gigante: bool = false
 var _ja_resolvido := false
 var _material_antes_destaque: Material = null
@@ -21,12 +22,24 @@ var _material_destaque: ShaderMaterial = null
 
 @onready var label: Label = $Label
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var sombra: Sprite2D = $Sombra
+@onready var sprite_vida_cheia: Sprite2D = $normal
+@onready var sprite_vida_2_tercos: Sprite2D = $danificado1
+@onready var sprite_vida_1_terco: Sprite2D = $danificado2
+@onready var animate: AnimationPlayer = $AnimationPlayer
+
+@onready var blabel: Label = $Label
+@onready var bsprite: Sprite2D = $Sprite2D
+@onready var barma: Sprite2D = $arma
 
 func _ready() -> void:
 	if label:
 		label.text = simbolo
 	if sprite:
 		_atualizar_cor_visual()
+		
+	_atualizar_visual_vida()
+	_atualizar_visual_fortificado()
 
 func definir_cor(cor: Color) -> void:
 	cor_balao = cor
@@ -37,6 +50,53 @@ func _atualizar_cor_visual() -> void:
 	# Mantém a variedade da paleta sem sacrificar o contraste do balão.
 	# A cor é decorativa; o símbolo textual continua sendo a pista principal.
 	sprite.self_modulate = cor_balao.lerp(Color.WHITE, 0.42)
+	
+func _atualizar_visual_fortificado() -> void:	
+	if(eh_gigante):
+		return
+
+	var fortificado := vidas == 2
+	
+	blabel.visible = not fortificado
+	bsprite.visible = not fortificado
+	barma.visible = fortificado
+	
+	eh_fortificado = fortificado
+	
+func _atualizar_visual_vida() -> void:
+	if not eh_gigante:
+		return
+	
+	sprite.visible = false
+	sombra.visible = false
+	
+	var porcentagem := float(vidas) / 22.0
+	
+	sprite_vida_cheia.visible = false
+	sprite_vida_2_tercos.visible = false
+	sprite_vida_1_terco.visible = false
+	
+	if porcentagem > 0.66:
+		sprite_vida_cheia.visible = true
+		
+		if animate.current_animation != "move0":
+			animate.play("move0")
+	
+	elif porcentagem > 0.33:
+		sprite_vida_2_tercos.visible = true
+		
+		if animate.current_animation != "move1":
+			animate.play("move1")
+	
+	elif porcentagem > 0.0:
+		sprite_vida_1_terco.visible = true
+		
+		if animate.current_animation != "move2":
+			animate.play("move2")
+	
+	else:
+		animate.stop()
+	
 
 ## Aplica um filtro somente durante o mini tutorial. A textura original não
 ## é modificada e qualquer material futuro do asset é restaurado ao sair.
@@ -70,25 +130,27 @@ func _process(delta: float) -> void:
 func estourar() -> void:
 	if _ja_resolvido:
 		return
-		
-	vidas -= 1
 	
-	# Feedback visual simples se o balão ainda não estourar (Fortificado ou Gigante)
+	if(eh_fortificado):
+		EfeitoEstouro.tocar_em(get_parent(), global_position)
+
+	vidas -= 1
+		
+	_atualizar_visual_fortificado()
+	_atualizar_visual_vida()
+	
 	if vidas > 0:
-		if sprite:
-			sprite.self_modulate = sprite.self_modulate.darkened(0.2) # Escurece a cor atual
-		scale *= 0.9 # Encolhe ligeiramente a cada "hit"
 		return
 
 	_ja_resolvido = true
 
-	# Se for o balão gigante, emite o sinal antes de sumir
 	if eh_gigante:
 		precisa_gerar_filhos.emit(global_position)
 
 	EfeitoEstouro.tocar_em(get_parent(), global_position)
 	estourado.emit(simbolo)
 	queue_free()
+
 
 func cair_no_chao() -> void:
 	if _ja_resolvido:

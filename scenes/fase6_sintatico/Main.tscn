@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://7kdbixtraymx" path="res://scripts/fase6_sintatico/spawner_baloes.gd" id="3_spa"]
 [ext_resource type="PackedScene" uid="uid://c6f1balao001" path="res://scenes/fase6_sintatico/balao.tscn" id="4_balao"]
 [ext_resource type="Resource" path="res://resources/fase6_sintatico/fase1.tres" id="5_config"]
-[ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/cenario.tscn" id="6_cenario"]
+[ext_resource type="PackedScene" uid="uid://53mr30ltx87u" path="res://scenes/fase6_sintatico/cenario.tscn" id="6_cenario"]
 [ext_resource type="PackedScene" path="res://scenes/fase6_sintatico/canhao.tscn" id="7_canhao"]
 [ext_resource type="FontFile" uid="uid://byqyruh7burnt" path="res://fonts/BalooThambi2-Bold.ttf" id="8_font"]
 
@@ -56,26 +56,32 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Main" type="Node2D" unique_id=326718271]
+[node name="Main" type="Node2D" unique_id=1547379980]
 script = ExtResource("1_main")
 config = ExtResource("5_config")
 
-[node name="Cenario" parent="." unique_id=1110733919 instance=ExtResource("6_cenario")]
 
-[node name="GerenciadorExpressao" type="Node" parent="." unique_id=257824786]
+[node name="Cenario" parent="." unique_id=778926169 instance=ExtResource("6_cenario")]
+
+
+[node name="GerenciadorExpressao" type="Node" parent="." unique_id=6303868]
 script = ExtResource("2_ger")
 
-[node name="SpawnerBaloes" type="Node2D" parent="." unique_id=1787895029]
+[node name="SpawnerBaloes" type="Node2D" parent="." unique_id=1382391893]
 position = Vector2(20, 0)
 script = ExtResource("3_spa")
 cena_balao = ExtResource("4_balao")
 
-[node name="Canhao" parent="." unique_id=296846773 instance=ExtResource("7_canhao")]
+
+[node name="Canhao" parent="." unique_id=419539021 instance=ExtResource("7_canhao")]
+
 position = Vector2(640, 660)
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=2062564688]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1140946784]
 
-[node name="PainelObjetivo" type="PanelContainer" parent="UI" unique_id=1250879985]
+
+[node name="PainelObjetivo" type="PanelContainer" parent="UI" unique_id=1217131168]
+
 offset_left = 12.0
 offset_top = 88.0
 offset_right = 360.0
@@ -83,12 +89,14 @@ offset_bottom = 178.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleObjetivo")
 
-[node name="VBox" type="VBoxContainer" parent="UI/PainelObjetivo" unique_id=183628041]
+
+[node name="VBox" type="VBoxContainer" parent="UI/PainelObjetivo" unique_id=1742921487]
+
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="LabelExpressao" type="RichTextLabel" parent="UI/PainelObjetivo/VBox" unique_id=1213400901]
+[node name="LabelExpressao" type="RichTextLabel" parent="UI/PainelObjetivo/VBox" unique_id=1392128378]
 custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 mouse_filter = 2
@@ -101,7 +109,7 @@ bbcode_enabled = true
 text = "Expressão: "
 scroll_active = false
 
-[node name="LabelProgresso" type="Label" parent="UI/PainelObjetivo/VBox" unique_id=68649177]
+[node name="LabelProgresso" type="Label" parent="UI/PainelObjetivo/VBox" unique_id=684109502]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.78, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
@@ -110,7 +118,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 18
 text = "Próximo símbolo: x   •   Progresso: 0/0"
 
-[node name="LabelMensagem" type="Label" parent="UI" unique_id=613313213]
+[node name="LabelMensagem" type="Label" parent="UI" unique_id=67844192]
 offset_left = 190.0
 offset_top = 548.0
 offset_right = 1090.0
@@ -123,7 +131,9 @@ theme_override_font_sizes/font_size = 23
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PainelControles" type="PanelContainer" parent="UI" unique_id=1003434094]
+
+[node name="PainelControles" type="PanelContainer" parent="UI" unique_id=903128103]
+
 offset_left = 12.0
 offset_top = 662.0
 offset_right = 1268.0
@@ -131,7 +141,9 @@ offset_bottom = 708.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleControles")
 
-[node name="LabelControles" type="Label" parent="UI/PainelControles" unique_id=1777291442]
+
+[node name="LabelControles" type="Label" parent="UI/PainelControles" unique_id=1410275446]
+
 layout_mode = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
 theme_override_fonts/font = ExtResource("8_font")
@@ -140,7 +152,9 @@ text = "Mova com o mouse, A/D ou setas   •   Clique ou Espaço: atirar   •  
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OverlayMecanica" type="Control" parent="UI" unique_id=686603465]
+
+[node name="OverlayMecanica" type="Control" parent="UI" unique_id=1396643782]
+
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -149,7 +163,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Escurecer" type="ColorRect" parent="UI/OverlayMecanica" unique_id=1790131628]
+
+[node name="Escurecer" type="ColorRect" parent="UI/OverlayMecanica" unique_id=1896543259]
+
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -159,7 +175,9 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.01, 0.02, 0.04, 0.72)
 
-[node name="AlertaFundo" type="Label" parent="UI/OverlayMecanica" unique_id=893255555]
+
+[node name="AlertaFundo" type="Label" parent="UI/OverlayMecanica" unique_id=877652771]
+
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -182,7 +200,9 @@ text = "CUIDADO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AlertaExclamacoes" type="Label" parent="UI/OverlayMecanica" unique_id=510956746]
+
+[node name="AlertaExclamacoes" type="Label" parent="UI/OverlayMecanica" unique_id=114186464]
+
 visible = false
 layout_mode = 1
 anchors_preset = 10
@@ -201,7 +221,9 @@ text = "!  !  !"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Painel" type="ColorRect" parent="UI/OverlayMecanica" unique_id=1377259828]
+
+[node name="Painel" type="ColorRect" parent="UI/OverlayMecanica" unique_id=1986590950]
+
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -216,7 +238,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.035, 0.095, 0.15, 0.98)
 
-[node name="OverlayTitulo" type="Label" parent="UI/OverlayMecanica/Painel" unique_id=2126211962]
+
+[node name="OverlayTitulo" type="Label" parent="UI/OverlayMecanica/Painel" unique_id=650558280]
+
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -232,7 +256,9 @@ theme_override_font_sizes/font_size = 30
 text = "NOVA MECÂNICA"
 horizontal_alignment = 1
 
-[node name="OverlayTexto" type="Label" parent="UI/OverlayMecanica/Painel" unique_id=1438020310]
+
+[node name="OverlayTexto" type="Label" parent="UI/OverlayMecanica/Painel" unique_id=1511955566]
+
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -251,7 +277,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="OverlayBotao" type="Button" parent="UI/OverlayMecanica/Painel" unique_id=262743328]
+
+[node name="OverlayBotao" type="Button" parent="UI/OverlayMecanica/Painel" unique_id=323873552]
+
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8jfjy3sy57im"
-path="res://.godot/imported/Introdução.png-46e31f0819fa5db02be3c1d9aa695a1a.ctex"
+uid="uid://53jortgf4v6g"
+path="res://.godot/imported/Conclus�o.png-6cd1a11335da423ec7044456e4d99599.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fase5_erroLexico/Introdução.png"
-dest_files=["res://.godot/imported/Introdução.png-46e31f0819fa5db02be3c1d9aa695a1a.ctex"]
+source_file="res://assets/fase5_erroLexico/Conclus�o.png"
+dest_files=["res://.godot/imported/Conclus�o.png-6cd1a11335da423ec7044456e4d99599.ctex"]
 
 [params]
 

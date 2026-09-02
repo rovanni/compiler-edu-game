@@ -5,9 +5,10 @@ signal balao_criado(balao: Balao)
 signal chefe_pronto_para_spawn
 
 const PROGRESSO_GATILHO_CHEFE := 0.5
-const VIDAS_CHEFE := 22
-const VELOCIDADE_CHEFE := 22.0
-const ESCALA_CHEFE := Vector2(3.0, 3.0)
+const VIDA_MAXIMA := 40
+const VIDAS_CHEFE := VIDA_MAXIMA
+const VELOCIDADE_CHEFE := 18.0
+const ESCALA_CHEFE := Vector2(2.0,2.0)
 const QUANTIDADE_FILHOS_MIN := 6
 const QUANTIDADE_FILHOS_MAX := 7
 const MAX_FILHOS_FORTIFICADOS := 2
@@ -31,6 +32,7 @@ const TENTATIVAS_POSICAO_LIVRE := 24
 @export_range(0.0, 1.0) var vies_mesmo_tipo: float = 0.75
 @export var paleta_cores: Array[Color] = [Color(0.55, 0.6, 0.75)]
 
+var eh_fortificado = false
 var chance_fortificado: float = 0.0
 var tem_chefe: bool = false
 
@@ -56,6 +58,7 @@ func _ready() -> void:
 	_timer.autostart = false
 	_timer.timeout.connect(_spawnar)
 	add_child(_timer)
+
 
 func iniciar(gerenciador_expressao: GerenciadorExpressao) -> void:
 	gerenciador = gerenciador_expressao
@@ -92,6 +95,7 @@ func _on_token_avancou(_simbolo: String, _indice: int) -> void:
 func _verificar_gatilho_chefe() -> void:
 	if not tem_chefe or _chefe_solicitado or gerenciador == null:
 		return
+			
 	var total := gerenciador.expressao.size()
 	if total <= 0 or gerenciador.indice_atual >= total:
 		return
@@ -109,7 +113,7 @@ func spawnar_chefe() -> void:
 	
 	# O chefe nunca pode carregar um caractere da expressão, mesmo fora da
 	# posição atual. Assim ele sempre é um alvo inválido inequívoco.
-	var simbolo_chefe := _escolher_lixo_invalido()
+	var simbolo_chefe := "" #_escolher_lixo_invalido()
 		
 	balao.simbolo = simbolo_chefe
 	balao.position = Vector2((margem_esquerda + largura_area) / 2.0, pos_y_inicial)
@@ -118,7 +122,7 @@ func spawnar_chefe() -> void:
 	balao.vidas = VIDAS_CHEFE
 	balao.eh_gigante = true
 	balao.velocidade_queda = VELOCIDADE_CHEFE
-	balao.scale = ESCALA_CHEFE
+	balao.scale = ESCALA_CHEFE	
 	
 	# Conecta o sinal para gerar os balões de dentro dele ao morrer
 	balao.precisa_gerar_filhos.connect(_on_balao_gigante_destruido)
@@ -168,8 +172,8 @@ func _on_balao_gigante_destruido(pos_origem: Vector2) -> void:
 			and _rng.randf() < CHANCE_FILHO_FORTIFICADO
 		):
 			filho.vidas = 2
-			filho.scale = Vector2(1.3, 1.3)
 			fortificados_criados += 1
+			eh_fortificado = true
 			
 		add_child(filho)
 		_registrar_balao_expressao_vivo(filho)
@@ -204,8 +208,7 @@ func _spawnar() -> void:
 	if not eh_alvo:
 		if chance_fortificado > 0.0 and _rng.randf() < chance_fortificado:
 			balao.vidas = 2
-			balao.scale = Vector2(1.3, 1.3)
-			
+			eh_fortificado = true
 	add_child(balao)
 
 	if eh_alvo:
@@ -313,3 +316,5 @@ func _escolher_lixo_invalido() -> String:
 	if candidatos.is_empty():
 		return "§"
 	return candidatos[_rng.randi_range(0, candidatos.size() - 1)]
+	
+	
