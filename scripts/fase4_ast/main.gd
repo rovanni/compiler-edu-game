@@ -233,6 +233,7 @@ func _connect_hud() -> void:
 	hud.hint_requested.connect(_use_hint)
 	hud.retry_requested.connect(_retry_phase)
 	hud.replay_requested.connect(_replay_phase)
+	hud.next_phase_requested.connect(_go_to_next_phase)
 
 
 func _start_challenge(index: int) -> void:
@@ -441,6 +442,11 @@ func _replay_phase() -> void:
 	GameManager.reset_lives()
 	GameManager.begin_phase(4)
 	_start_challenge((challenge_index + 1) % CHALLENGES.size())
+
+
+func _go_to_next_phase() -> void:
+	GameManager.begin_phase(5)
+	get_tree().change_scene_to_file("res://scenes/fase5_erroLexico/introducao.tscn")
 
 
 func _return_to_menu() -> void:

@@ -7,6 +7,7 @@ signal menu_requested
 signal hint_requested
 signal retry_requested
 signal replay_requested
+signal next_phase_requested
 
 const GAME_FONT := preload("res://fonts/Friend Bestie.otf")
 const INK := Color("06111d")
@@ -100,6 +101,7 @@ func show_game_over() -> void:
 
 func show_completion(expression: String, bonus: int) -> void:
 	_show_dialog("FLORESTA DA AST CONCLUÍDA!", "Você transformou [b]%s[/b] em uma árvore sintática correta.\n\n[b]+%d pontos de conclusão.[/b]\n\nOperadores de maior precedência aparecem em subárvores mais profundas; a raiz representa a última operação avaliada." % [expression, bonus], [
+		{"text": "PRÓXIMA FASE", "action": "next_phase"},
 		{"text": "NOVA EXPRESSÃO", "action": "replay"},
 		{"text": "VOLTAR AO MENU", "action": "menu"},
 	])
@@ -291,6 +293,7 @@ func _on_dialog_action(action: String) -> void:
 		"menu": hide_dialog(); menu_requested.emit()
 		"retry": hide_dialog(); retry_requested.emit()
 		"replay": hide_dialog(); replay_requested.emit()
+		"next_phase": hide_dialog(); next_phase_requested.emit()
 
 
 func _expression_bbcode(expression: String) -> String:
