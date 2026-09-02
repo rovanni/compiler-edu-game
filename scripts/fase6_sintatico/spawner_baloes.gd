@@ -5,9 +5,10 @@ signal balao_criado(balao: Balao)
 signal chefe_pronto_para_spawn
 
 const PROGRESSO_GATILHO_CHEFE := 0.5
-const VIDAS_CHEFE := 22
-const VELOCIDADE_CHEFE := 22.0
-const ESCALA_CHEFE := Vector2(3.0, 3.0)
+const VIDA_MAXIMA := 40
+const VIDAS_CHEFE := VIDA_MAXIMA
+const VELOCIDADE_CHEFE := 18.0
+const ESCALA_CHEFE := Vector2(2.0,2.0)
 const QUANTIDADE_FILHOS_MIN := 6
 const QUANTIDADE_FILHOS_MAX := 7
 const MAX_FILHOS_FORTIFICADOS := 2
@@ -31,6 +32,7 @@ const TENTATIVAS_POSICAO_LIVRE := 24
 @export_range(0.0, 1.0) var vies_mesmo_tipo: float = 0.75
 @export var paleta_cores: Array[Color] = [Color(0.55, 0.6, 0.75)]
 
+var eh_fortificado = false
 var chance_fortificado: float = 0.0
 var tem_chefe: bool = false
 
@@ -57,6 +59,7 @@ func _ready() -> void:
 	_timer.timeout.connect(_spawnar)
 	add_child(_timer)
 
+
 func iniciar(gerenciador_expressao: GerenciadorExpressao) -> void:
 	gerenciador = gerenciador_expressao
 	gerenciador.token_correto_coletado.connect(_on_token_avancou)
@@ -71,10 +74,10 @@ func aplicar_config(config: ConfigFase) -> void:
 	intervalo_spawn = config.intervalo_spawn
 	chance_token_correto = config.chance_token_correto
 	vies_mesmo_tipo = config.vies_mesmo_tipo
-	
+
 	chance_fortificado = config.chance_balao_fortificado
 	tem_chefe = config.inicia_com_chefe
-	
+
 	if not config.paleta_cores.is_empty():
 		paleta_cores = config.paleta_cores
 	if _timer:
@@ -92,6 +95,7 @@ func _on_token_avancou(_simbolo: String, _indice: int) -> void:
 func _verificar_gatilho_chefe() -> void:
 	if not tem_chefe or _chefe_solicitado or gerenciador == null:
 		return
+
 	var total := gerenciador.expressao.size()
 	if total <= 0 or gerenciador.indice_atual >= total:
 		return
@@ -106,23 +110,23 @@ func spawnar_chefe() -> void:
 		return
 	_chefe_spawnado = true
 	var balao: Balao = cena_balao.instantiate()
-	
+
 	# O chefe nunca pode carregar um caractere da expressão, mesmo fora da
 	# posição atual. Assim ele sempre é um alvo inválido inequívoco.
-	var simbolo_chefe := _escolher_lixo_invalido()
-		
+	var simbolo_chefe := "" #_escolher_lixo_invalido()
+
 	balao.simbolo = simbolo_chefe
 	balao.position = Vector2((margem_esquerda + largura_area) / 2.0, pos_y_inicial)
 	balao.cor_balao = _cor_para_simbolo(simbolo_chefe)
-	
+
 	balao.vidas = VIDAS_CHEFE
 	balao.eh_gigante = true
 	balao.velocidade_queda = VELOCIDADE_CHEFE
 	balao.scale = ESCALA_CHEFE
-	
+
 	# Conecta o sinal para gerar os balões de dentro dele ao morrer
 	balao.precisa_gerar_filhos.connect(_on_balao_gigante_destruido)
-	
+
 	add_child(balao)
 	balao_criado.emit(balao)
 
@@ -130,22 +134,22 @@ func _on_balao_gigante_destruido(pos_origem: Vector2) -> void:
 	var qtd_filhos := _rng.randi_range(QUANTIDADE_FILHOS_MIN, QUANTIDADE_FILHOS_MAX)
 	var fortificados_criados := 0
 	var pos_origem_local := to_local(pos_origem)
-	
+
 	for _i in range(qtd_filhos):
 		var filho: Balao = cena_balao.instantiate()
-		
+
 		# Sorteia os símbolos dos balões de dentro do chefe
 		var simbolo := _escolher_simbolo()
 		if simbolo == "":
 			simbolo = _escolher_lixo_diferente_de(gerenciador.proximo_esperado())
-			
+
 		filho.simbolo = simbolo
 		var eh_alvo := simbolo == gerenciador.proximo_esperado()
-			
+
 		# Espalha os filhos usando um arco para cima e pros lados
 		var offset_x := _rng.randf_range(-180.0, 180.0)
 		var offset_y := _rng.randf_range(-150.0, 20.0)
-		
+
 		var posicao_filho: Variant = _encontrar_posicao_livre(
 			pos_origem_local.y + offset_y,
 			clampf(pos_origem_local.x + offset_x, margem_esquerda, largura_area),
@@ -159,22 +163,22 @@ func _on_balao_gigante_destruido(pos_origem: Vector2) -> void:
 			_balao_alvo_vivo = true
 			filho.chegou_ao_chao.connect(_on_balao_alvo_resolvido_no_chao, CONNECT_ONE_SHOT)
 			filho.estourado.connect(_on_balao_alvo_resolvido_estourado, CONNECT_ONE_SHOT)
-		
+
 		filho.cor_balao = _cor_para_simbolo(simbolo)
-		
+
 		if (
 			not eh_alvo
 			and fortificados_criados < MAX_FILHOS_FORTIFICADOS
 			and _rng.randf() < CHANCE_FILHO_FORTIFICADO
 		):
 			filho.vidas = 2
-			filho.scale = Vector2(1.3, 1.3)
 			fortificados_criados += 1
-			
+			eh_fortificado = true
+
 		add_child(filho)
 		_registrar_balao_expressao_vivo(filho)
 		balao_criado.emit(filho)
-		
+
 	# Somente após o balão gigante morrer, o spawner normal é ligado.
 	_timer.start()
 
@@ -182,7 +186,7 @@ func _spawnar() -> void:
 	if gerenciador == null or cena_balao == null:
 		return
 	if gerenciador.indice_atual >= gerenciador.expressao.size():
-		return 
+		return
 
 	var simbolo := _escolher_simbolo()
 	if simbolo == "":
@@ -200,12 +204,11 @@ func _spawnar() -> void:
 	balao.simbolo = simbolo
 	balao.position = posicao_spawn
 	balao.cor_balao = _cor_para_simbolo(simbolo)
-	
+
 	if not eh_alvo:
 		if chance_fortificado > 0.0 and _rng.randf() < chance_fortificado:
 			balao.vidas = 2
-			balao.scale = Vector2(1.3, 1.3)
-			
+			eh_fortificado = true
 	add_child(balao)
 
 	if eh_alvo:
@@ -286,7 +289,7 @@ func _escolher_lixo() -> String:
 	var usar_mesmo_tipo := _rng.randf() < vies_mesmo_tipo
 	var usar_digitos := espera_digito == usar_mesmo_tipo
 	var lista := digitos_lixo if usar_digitos else simbolos_lixo
-	
+
 	if lista.is_empty():
 		lista = simbolos_lixo if digitos_lixo.is_empty() else digitos_lixo
 	if lista.is_empty():

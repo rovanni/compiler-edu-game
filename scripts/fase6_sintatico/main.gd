@@ -556,6 +556,7 @@ func _verificar_tutorial_fortificado_pendente() -> void:
 	# o próximo reforçado para apresentar a propriedade ainda intacta.
 	if _balao_fortificado_pendente.vidas < 2:
 		_balao_fortificado_pendente = null
+
 		return
 	var altura_tela := get_viewport_rect().size.y
 	if _balao_fortificado_pendente.global_position.y < altura_tela * 0.20:
