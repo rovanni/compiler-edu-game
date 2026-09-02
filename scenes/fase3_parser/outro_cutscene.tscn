@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://j110edcrjybu"]
+[gd_scene format=3 uid="uid://j110edcrjybu"]
 
 [ext_resource type="Script" uid="uid://cj6xl5oc80xib" path="res://scripts/fase3_parser/outro_cutscene.gd" id="1_script"]
 [ext_resource type="VideoStream" uid="uid://4q5nbjy3a4mj" path="res://assets/fase3_parser/cutscenes/outro.ogv" id="2_video"]
@@ -15,7 +15,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="OutroCutscene" type="Control"]
+[node name="OutroCutscene" type="Control" unique_id=1895101465]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=679624257]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1510775502]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +44,7 @@ stream = ExtResource("2_video")
 autoplay = true
 expand = true
 
-[node name="SkipButton" type="Button" parent="."]
+[node name="SkipButton" type="Button" parent="." unique_id=1477439028]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -58,8 +58,8 @@ offset_bottom = -102.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(1.12, 1.1600013)
-theme_override_styles/normal = SubResource("StyleBoxFlat_skip")
-theme_override_styles/hover = SubResource("StyleBoxFlat_skip")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_skip")
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_skip")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_skip")
+theme_override_styles/hover = SubResource("StyleBoxFlat_skip")
 text = "Pular >>"

@@ -11,9 +11,8 @@
 
 | Artefato | Arquivo / Caminho | Status |
 |---|---|---|
-| Sala Principal / Portais | `docs/fase3_parser/img/sala_principal.png` | ⏳ Pendente |
-| Arenas de Boss e Placas de Pressão | `docs/fase3_parser/img/boss_arena.png` | ⏳ Pendente |
-| Sequências Sintáticas e Feedback Didático | `docs/fase3_parser/img/feedback_sintatico.png` | ⏳ Pendente |
+| Sala Principal / Portais | `docs/fase3_parser/img/screenshot_main_room.png` | ✅ OK |
+| Arenas de Boss e Placas de Pressão | `docs/fase3_parser/img/screenshot_boss1.png`, `docs/fase3_parser/img/screenshot_boss2.png` e `docs/fase3_parser/img/screenshot_boss3.png` | ✅ OK |
 
 ---
 
