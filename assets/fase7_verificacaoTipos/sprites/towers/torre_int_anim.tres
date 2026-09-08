@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/towers/torre_int_quadro_01.png" id="1_int1q"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/towers/torre_int_quadro_02.png" id="2_int2q"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/towers/torre_int_quadro_03.png" id="3_int3q"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/towers/torre_int_quadro_04.png" id="4_int4q"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/towers/torre_int_quadro_05.png" id="5_int5q"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_int1q")
+}],
+"loop": true,
+"name": &"parado",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_int1q")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("2_int2q")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("3_int3q")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("4_int4q")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("5_int5q")
+}],
+"loop": false,
+"name": &"ataque",
+"speed": 10.0
+}]

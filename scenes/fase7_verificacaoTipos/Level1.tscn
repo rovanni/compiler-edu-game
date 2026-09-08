@@ -1,0 +1,224 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/fase7_verificacaoTipos/level1_controller.gd" id="1_1pwbc"]
+[ext_resource type="FontFile" path="res://fonts/Friend Bestie.otf" id="1_x4si1"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/backgrounds/mundo7_torre_fundo.png" id="3_fh0io"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/effects/explosao_falha_anim.tres" id="4_fh0io"]
+
+[sub_resource type="Theme" id="Theme_68ib6"]
+default_font = ExtResource("1_x4si1")
+
+[node name="Level1" type="Control" unique_id=1429920028]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_68ib6")
+script = ExtResource("1_1pwbc")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1347588103]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_fh0io")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HUD" type="Control" parent="." unique_id=1942140844]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 80.0
+
+[node name="PainelFundo" type="ColorRect" parent="HUD" unique_id=1883305046]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.06, 0.16, 0.62)
+
+[node name="Pontuacao" type="Label" parent="HUD" unique_id=1865253316]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 20.0
+offset_right = 64.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+text = "PONTOS: 0"
+
+[node name="BarraCompilador" type="ProgressBar" parent="HUD" unique_id=25574381]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 25.0
+offset_right = 600.0
+offset_bottom = 55.0
+value = 100.0
+
+[node name="Rotulo" type="Label" parent="HUD/BarraCompilador" unique_id=50110802]
+layout_mode = 0
+offset_top = -22.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+text = "COMPILADOR"
+
+[node name="Feedback" type="Label" parent="HUD" unique_id=2111174091]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 20.0
+offset_right = 1250.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+
+[node name="Colunas" type="Control" parent="." unique_id=216459263]
+anchors_preset = 0
+offset_top = 580.0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Coluna0" type="ColorRect" parent="Colunas" unique_id=958655912]
+layout_mode = 0
+offset_right = 252.0
+offset_bottom = 140.0
+color = Color(0.2, 0.22, 0.3, 1)
+
+[node name="Rotulo" type="Label" parent="Colunas/Coluna0" unique_id=522680915]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+text = "int"
+horizontal_alignment = 1
+
+[node name="Coluna1" type="ColorRect" parent="Colunas" unique_id=548761552]
+layout_mode = 0
+offset_left = 256.0
+offset_right = 508.0
+offset_bottom = 140.0
+color = Color(0.2, 0.22, 0.3, 1)
+
+[node name="Rotulo" type="Label" parent="Colunas/Coluna1" unique_id=800520770]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+text = "float"
+horizontal_alignment = 1
+
+[node name="Coluna2" type="ColorRect" parent="Colunas" unique_id=433480922]
+layout_mode = 0
+offset_left = 512.0
+offset_right = 764.0
+offset_bottom = 140.0
+color = Color(0.2, 0.22, 0.3, 1)
+
+[node name="Rotulo" type="Label" parent="Colunas/Coluna2" unique_id=766407554]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+text = "String"
+horizontal_alignment = 1
+
+[node name="Coluna3" type="ColorRect" parent="Colunas" unique_id=1525181522]
+layout_mode = 0
+offset_left = 768.0
+offset_right = 1020.0
+offset_bottom = 140.0
+color = Color(0.2, 0.22, 0.3, 1)
+
+[node name="Rotulo" type="Label" parent="Colunas/Coluna3" unique_id=551607305]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+text = "boolean"
+horizontal_alignment = 1
+
+[node name="Coluna4" type="ColorRect" parent="Colunas" unique_id=916709161]
+layout_mode = 0
+offset_left = 1024.0
+offset_right = 1276.0
+offset_bottom = 140.0
+color = Color(0.2, 0.22, 0.3, 1)
+
+[node name="Rotulo" type="Label" parent="Colunas/Coluna4" unique_id=945020937]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+text = "char"
+horizontal_alignment = 1
+
+[node name="PecaCaindo" type="ColorRect" parent="." unique_id=2020315556]
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 70.0
+color = Color(0.9, 0.85, 0.3, 1)
+
+[node name="Texto" type="Label" parent="PecaCaindo" unique_id=1208849896]
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.15, 0.1, 0.05, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 0.95, 1)
+theme_override_constants/outline_size = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExplosaoDerrota" type="TextureRect" parent="." unique_id=2029874405]
+visible = false
+layout_mode = 0
+offset_left = 460.0
+offset_top = 180.0
+offset_right = 820.0
+offset_bottom = 540.0
+mouse_filter = 2
+texture = ExtResource("4_fh0io")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextoDerrota" type="Label" parent="." unique_id=719044428]
+visible = false
+layout_mode = 0
+offset_left = 190.0
+offset_top = 290.0
+offset_right = 1090.0
+offset_bottom = 430.0
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.02, 1)
+theme_override_constants/outline_size = 6
+text = "A compilação falhou
+GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1

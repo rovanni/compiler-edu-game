@@ -289,6 +289,33 @@ Para derrotá-lo, o jogador precisa identificar e corrigir os problemas.
 
 ---
 
+## 7️⃣ Torre da Verificação de Tipos
+
+### Análise Semântica — Verificação de Tipos
+
+Nesta fase o jogador aprende a checar se um valor cabe no tipo declarado, se uma conversão é válida e qual o tipo resultante de uma expressão — a etapa do compilador que confere se o código faz sentido antes de virar algo executável.
+
+A fase tem dois momentos:
+
+- **Nível 1 (TypeTris):** peças com valores (`25`, `"Ana"`, `true`, `7.5`, `'A'`) caem estilo Tetris; o jogador direciona cada uma para a coluna do tipo certo.
+- **Níveis 2 a 4 (Torre de Defesa dos Tipos):** inimigos representando um valor, uma atribuição ou uma expressão avançam por um caminho até o portão do compilador; o jogador constrói torres de tipo (`int`, `float`, `String`, `boolean`, `char`, "Erro de Tipo") para destruir só os inimigos compatíveis.
+
+Exemplo da armadilha pedagógica central da fase — `char` (aspas simples) vs. `String` (aspas duplas):
+
+```text
+char inicial = "A";
+```
+
+Problema:
+
+```text
+"A" está entre aspas duplas — isso é String, não char! Char usa aspas simples: 'A'
+```
+
+Documentação completa da fase: [`docs/fase7_verificacaoTipos/README.md`](docs/fase7_verificacaoTipos/README.md).
+
+---
+
 # 🎮 Mecânicas
 
 O projeto poderá utilizar diferentes mecânicas de jogos:
@@ -382,7 +409,8 @@ compiler-edu-game/
 │   ├── fase3_parser/
 │   ├── fase4_ast/
 │   ├── fase5_lexico/
-│   └── fase6_sintatico/
+│   ├── fase6_sintatico/
+│   └── fase7_verificacaoTipos/
 │
 ├── scripts/
 │
@@ -415,6 +443,7 @@ Cada grupo é responsável pelo desenvolvimento de uma fase.
 | Grupo 4 | Erro Sintático | Identificação de erros sintáticos |
 | Grupo 5 | Parser | Análise sintática |
 | Grupo 6 | AST | Construção da árvore sintática |
+| Grupo 7 | Torre da Verificação de Tipos | Análise semântica / verificação de tipos |
 
 ---
 

@@ -75,6 +75,9 @@ func aplicar_estilos_prototipo() -> void:
 	var card6 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
 	if card6: estilar_card(card6, Color("#3A1A2A"), cor_borda_preta)
 
+	var card7 = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase7")
+	if card7: estilar_card(card7, Color("#2A2A4A"), cor_borda_preta)
+
 	# 4. Ribbon e Painéis de Fundo com borda PRETA
 	var ribbon = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/LeftPanel/HeaderContainer/RibbonBanner")
 	if ribbon:
@@ -222,6 +225,10 @@ func _on_card_fase_6_pressed() -> void:
 	preparar_fase(6)
 	iniciar_fase("res://scenes/fase6_sintatico/Tutorial.tscn")
 
+func _on_card_fase_7_pressed() -> void:
+	preparar_fase(7)
+	iniciar_fase("res://scenes/fase7_verificacaoTipos/Level1.tscn")
+
 # --- Helpers ---
 func iniciar_fase(caminho_cena: String) -> void:
 	get_tree().change_scene_to_file(caminho_cena)
@@ -233,6 +240,12 @@ func preparar_fase(fase_id: int) -> void:
 		GameManager.start_new_session(fase_id)
 	# NÃO deve manter as vidas perdidas para a fase 6
 	if fase_id == 6:
+		GameManager.reset_lives()
+	# A Fase 7 (Torre da Verificação de Tipos) não usa o sistema de vidas
+	# do GameManager — tem sua própria "barra do compilador" como vida
+	# (decisão de design registrada no GDD da fase, seção 13). Resetar
+	# aqui só evita que um jogador chegue com 0 vidas de outra fase.
+	if fase_id == 7:
 		GameManager.reset_lives()
 
 func atualizar_estado_da_sessao() -> void:
@@ -254,6 +267,10 @@ func atualizar_estado_da_sessao() -> void:
 	var card_fase_6: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6")
 	if card_fase_6 and GameManager.is_phase_completed(6):
 		card_fase_6.text = "✓ 6\nFORTALEZA DOS ERROS SINTÁTICOS\n(CONCLUÍDA)"
+
+	var card_fase_7: Button = get_node_or_null("MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase7")
+	if card_fase_7 and GameManager.is_phase_completed(7):
+		card_fase_7.text = "✓ 7\nTORRE DA VERIFICAÇÃO\n(CONCLUÍDA)"
 
 func exibir_mensagem_em_breve(nome_fase: String) -> void:
 	print("A fase '", nome_fase, "' está em desenvolvimento!")

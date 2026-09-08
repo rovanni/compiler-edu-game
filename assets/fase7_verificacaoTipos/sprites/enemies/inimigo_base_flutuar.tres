@@ -1,0 +1,38 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_01.png" id="1_4imjy"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_02.png" id="2_pllqa"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_03.png" id="3_q1tdk"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_04.png" id="4_jktqs"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_05.png" id="5_vpm5v"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_06.png" id="6_a1x8u"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_base_quadro_07.png" id="7_fidvd"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4imjy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_pllqa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q1tdk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jktqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vpm5v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_a1x8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fidvd")
+}],
+"loop": 1,
+"name": &"flutuar",
+"speed": 6.0
+}]
