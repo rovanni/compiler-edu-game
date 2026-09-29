@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_01.png" id="1_c01"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_02.png" id="2_c02"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_03.png" id="3_c03"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_04.png" id="4_c04"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_05.png" id="5_c05"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_06.png" id="6_c06"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_07.png" id="7_c07"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/enemies/inimigo_corrompido_quadro_08.png" id="8_c08"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_c01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_c02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_c03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_c04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_c05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_c06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_c07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_c08")
+}],
+"loop": 1,
+"name": &"flutuar",
+"speed": 6.0
+}]

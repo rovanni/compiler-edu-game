@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://1v7heon8j2x5" path="res://assets/menu/fase5_erroLexico.png" id="7_3y2rt"]
 [ext_resource type="Texture2D" path="res://assets/menu/fase3_parser_card.png" id="8_fase3_preview"]
 [ext_resource type="Texture2D" path="res://assets/menu/capafase6.png" id="9_fase6_preview"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/world_icons/mundo7_torre_icone.png" id="10_fase7_preview"]
 
 [node name="Menu" type="Control" unique_id=10098437]
 layout_mode = 3
@@ -375,6 +376,24 @@ mouse_filter = 2
 texture = ExtResource("9_fase6_preview")
 expand_mode = 1
 
+[node name="CardFase7" type="Button" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+
+[node name="PreviewFase7" type="TextureRect" parent="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_fase7_preview")
+expand_mode = 1
+
 [node name="FooterBar" type="HBoxContainer" parent="MarginContainer/VBoxRoot" unique_id=779493040]
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
@@ -623,6 +642,7 @@ text = "Fechar"
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase4" to="." method="_on_card_fase_4_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase5" to="." method="_on_card_fase_5_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase6" to="." method="_on_card_fase_6_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxRoot/HBoxMain/RightPanel/VBoxMundos/GridCards/CardFase7" to="." method="_on_card_fase_7_pressed"]
 [connection signal="pressed" from="Modais/ModalConfig/VBoxConfig/BtnVoltarConfig" to="." method="_on_btn_fechar_modal_pressed"]
 [connection signal="pressed" from="Modais/ModalRanking/VBoxRanking/BtnVoltarRanking" to="." method="_on_btn_fechar_modal_pressed"]
 [connection signal="pressed" from="Modais/ModalTutorial/VBoxTutorial/BtnVoltarTutorial" to="." method="_on_btn_fechar_modal_pressed"]

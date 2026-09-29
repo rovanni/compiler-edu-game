@@ -1,0 +1,468 @@
+[gd_scene format=3]
+
+[ext_resource type="FontFile" path="res://fonts/Friend Bestie.otf" id="1_nxpvw"]
+[ext_resource type="Script" path="res://scripts/fase7_verificacaoTipos/tower_defense_level_controller.gd" id="2_rrgde"]
+[ext_resource type="Script" path="res://scripts/fase7_verificacaoTipos/defense_level_data.gd" id="3_reskh"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/backgrounds/mundo7_torre_fundo.png" id="4_g8eim"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/paths/caminho_trilha.png" id="5_2xj4m"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/gate/portao_compilador.png" id="6_u5dj7"]
+[ext_resource type="Texture2D" path="res://assets/fase7_verificacaoTipos/sprites/effects/explosao_falha_anim.tres" id="7_h6fe6"]
+
+[sub_resource type="Theme" id="Theme_bs2pm"]
+default_font = ExtResource("1_nxpvw")
+
+[sub_resource type="Resource" id="Resource_ml44n"]
+script = ExtResource("3_reskh")
+numero = 4
+nome = "NÍVEL 4"
+tipos_disponiveis = [0, 1, 2, 3, -99]
+custo_defesa = {
+-99: 150,
+0: 100,
+1: 100,
+2: 100,
+3: 100
+}
+slots = [{
+"alcance": 0.14,
+"posicao": 0.2
+}, {
+"alcance": 0.14,
+"posicao": 0.42
+}, {
+"alcance": 0.14,
+"posicao": 0.64
+}, {
+"alcance": 0.14,
+"posicao": 0.85
+}]
+ondas = [{
+"inimigos": [{
+"atraso": 0.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "5 + 3",
+"velocidade": 0.045
+}, {
+"atraso": 3.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "2.5 + 1",
+"velocidade": 0.045
+}, {
+"atraso": 6.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 3,
+"pontos_recompensa": 100,
+"texto": "true && false",
+"velocidade": 0.045
+}, {
+"atraso": 9.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 2,
+"pontos_recompensa": 100,
+"texto": "\"Ana\" + \"Bem\"",
+"velocidade": 0.045
+}]
+}, {
+"inimigos": [{
+"atraso": 0.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "10 - 4",
+"velocidade": 0.05
+}, {
+"atraso": 2.5,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "\"!\" - 2",
+"velocidade": 0.05
+}, {
+"atraso": 5.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "8 * 2.5",
+"velocidade": 0.05
+}, {
+"atraso": 7.5,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "true + 1",
+"velocidade": 0.05
+}, {
+"atraso": 10.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "3 / 2",
+"velocidade": 0.05
+}]
+}, {
+"inimigos": [{
+"atraso": 0.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "4.0 * 2",
+"velocidade": 0.055
+}, {
+"atraso": 2.2,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 3,
+"pontos_recompensa": 100,
+"texto": "false || true",
+"velocidade": 0.055
+}, {
+"atraso": 4.4,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "5 && 3",
+"velocidade": 0.055
+}, {
+"atraso": 6.6,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "2 + 8",
+"velocidade": 0.055
+}, {
+"atraso": 8.8,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "\"Ana\" * 2",
+"velocidade": 0.055
+}, {
+"atraso": 11.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "1.5 / 3",
+"velocidade": 0.055
+}]
+}, {
+"inimigos": [{
+"atraso": 0.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "10 + 2.5",
+"velocidade": 0.06
+}, {
+"atraso": 2.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "true - false",
+"velocidade": 0.06
+}, {
+"atraso": 4.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "3 * 3",
+"velocidade": 0.06
+}, {
+"atraso": 6.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 2,
+"pontos_recompensa": 100,
+"texto": "\"Bem\" + \"!\"",
+"velocidade": 0.06
+}, {
+"atraso": 8.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "8 / 2.0",
+"velocidade": 0.06
+}, {
+"atraso": 10.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "2 - \"!\"",
+"velocidade": 0.06
+}]
+}, {
+"inimigos": [{
+"atraso": 0.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "5 + 2",
+"velocidade": 0.065
+}, {
+"atraso": 1.8,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "4.0 - 1.5",
+"velocidade": 0.065
+}, {
+"atraso": 3.6,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 3,
+"pontos_recompensa": 100,
+"texto": "true && true",
+"velocidade": 0.065
+}, {
+"atraso": 5.4,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "\"Ana\" && true",
+"velocidade": 0.065
+}, {
+"atraso": 7.2,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 1,
+"pontos_recompensa": 100,
+"texto": "2 * 4.0",
+"velocidade": 0.065
+}, {
+"atraso": 9.0,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": 0,
+"pontos_recompensa": 100,
+"texto": "10 / 3",
+"velocidade": 0.065
+}, {
+"atraso": 10.8,
+"categoria": "EXPRESSAO",
+"dano_escape": 18.0,
+"defesa_correta": -99,
+"pontos_recompensa": 100,
+"texto": "false + 2",
+"velocidade": 0.065
+}]
+}]
+pontos_iniciais = 400
+
+[node name="Level4" type="Control" unique_id=815401581]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_bs2pm")
+script = ExtResource("2_rrgde")
+level_data = SubResource("Resource_ml44n")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1255072677]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("4_g8eim")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CaminhoVisual" type="TextureRect" parent="." unique_id=10960329]
+layout_mode = 0
+offset_top = 59.808613
+offset_right = 1280.0
+offset_bottom = 780.19135
+mouse_filter = 2
+texture = ExtResource("5_2xj4m")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HUD" type="Control" parent="." unique_id=1040724728]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 80.0
+
+[node name="PainelFundo" type="ColorRect" parent="HUD" unique_id=1952388358]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.06, 0.16, 0.62)
+
+[node name="Info" type="Label" parent="HUD" unique_id=702383294]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 20.0
+offset_right = 900.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+text = "NÍVEL 4   ·   PONTOS: 0   ·   ONDA 1/5"
+
+[node name="BarraCompilador" type="ProgressBar" parent="HUD" unique_id=178907307]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 25.0
+offset_right = 1250.0
+offset_bottom = 55.0
+value = 100.0
+
+[node name="Rotulo" type="Label" parent="HUD/BarraCompilador" unique_id=1870755380]
+layout_mode = 0
+offset_top = -22.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+text = "COMPILADOR"
+
+[node name="Feedback" type="Label" parent="HUD" unique_id=980433499]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 46.0
+offset_right = 900.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+
+[node name="PainelExplicacao" type="Control" parent="." unique_id=1362359282]
+anchors_preset = 0
+offset_top = 80.0
+offset_right = 1280.0
+offset_bottom = 176.0
+
+[node name="Fundo" type="ColorRect" parent="PainelExplicacao" unique_id=851061840]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 96.0
+mouse_filter = 2
+color = Color(0.06, 0.08, 0.2, 0.78)
+
+[node name="Titulo" type="Label" parent="PainelExplicacao" unique_id=475064894]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 6.0
+offset_right = 1264.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+
+[node name="Corpo" type="Label" parent="PainelExplicacao" unique_id=1095575886]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 32.0
+offset_right = 1264.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.92, 0.94, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 2
+autowrap_mode = 3
+
+[node name="Dica" type="Label" parent="PainelExplicacao" unique_id=354174175]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 4.0
+offset_right = 1264.0
+offset_bottom = 27.0
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+
+[node name="Slots" type="Control" parent="." unique_id=147719589]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+
+[node name="Portao" type="Control" parent="." unique_id=1017496762]
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Arte" type="TextureRect" parent="Portao" unique_id=1633082648]
+layout_mode = 0
+offset_left = 1108.0
+offset_top = 313.5
+offset_right = 1268.0
+offset_bottom = 526.5
+mouse_filter = 2
+texture = ExtResource("6_u5dj7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Inimigos" type="Control" parent="." unique_id=1826418484]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Explosoes" type="Control" parent="." unique_id=220396548]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Paleta" type="Control" parent="." unique_id=892579006]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+
+[node name="ExplosaoDerrota" type="TextureRect" parent="." unique_id=1339106558]
+visible = false
+layout_mode = 0
+offset_left = 460.0
+offset_top = 180.0
+offset_right = 820.0
+offset_bottom = 540.0
+mouse_filter = 2
+texture = ExtResource("7_h6fe6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextoDerrota" type="Label" parent="." unique_id=1872443594]
+visible = false
+layout_mode = 0
+offset_left = 190.0
+offset_top = 290.0
+offset_right = 1090.0
+offset_bottom = 430.0
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 6
+horizontal_alignment = 1
+vertical_alignment = 1
